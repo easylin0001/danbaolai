@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员电商系统小票打印配置 - DANBAOLAI文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-header h2 {
+            color: white;
+            font-size: 18px;
+        }
+        .sidebar-content {
+            padding: 10px 0;
+        }
+        .nav-section {
+            margin-bottom: 5px;
+        }
+        .nav-title {
+            color: #4fc3f7;
+            font-size: 13px;
+            padding: 10px 20px 5px 20px;
+            font-weight: bold;
+        }
+        .nav-link {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 6px 20px 6px 30px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .nav-link.active {
+            background: white;
+            color: black;
+            text-decoration: underline;
+        }
+        .nav-link.active-old {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+            border-left: 3px solid #4fc3f7;
+        }
+        .main-content {
+            margin-left: 240px;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 30px 40px;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .header {
+            background: white;
+            color: #191919;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-box input:focus {
+            border-color: #4fc3f7;
+        }
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .search-results {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .search-item:hover {
+            background: #f5f7fa;
+        }
+        .search-item:last-child {
+            border-bottom: none;
+        }
+        .search-item-title {
+            font-weight: bold;
+            color: #191919;
+            margin-bottom: 5px;
+        }
+        .search-item-content {
+            font-size: 12px;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .search-item-content mark {
+            background: #ffeb3b;
+            padding: 0 2px;
+        }
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: #999;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #191919;
+        }
+        .back-link {
+            display: inline-block;
+            color: #4fc3f7;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .content h3 {
+            color: #1a1a2e;
+            font-size: 20px;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4fc3f7;
+        }
+        .content h4 {
+            color: #333;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+        }
+        .content p {
+            margin: 10px 0;
+            color: #555;
+        }
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .content ul, .content ol {
+            margin: 10px 0 10px 25px;
+        }
+        .content li {
+            margin: 5px 0;
+        }
+        .content strong {
+            color: #1a1a2e;
+        }
+        .content code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .content th, .content td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .content th {
+            background: #f5f7fa;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>📖 使用手册</h2>
+            </div>
+            <div class="sidebar-content">
+                <div class="nav-section">
+                    <div class="nav-title">📦 商品管理</div>
+                    <a href="page_34495.html" class="nav-link">商品添加</a>
+                    <a href="page_34600.html" class="nav-link">商品采集</a>
+                    <a href="page_34496.html" class="nav-link">商品分类</a>
+                    <a href="page_34497.html" class="nav-link">商品规格</a>
+                    <a href="page_34500.html" class="nav-link">商品评价</a>
+                    <a href="page_34498.html" class="nav-link">商品品牌</a>
+                    <a href="page_34499.html" class="nav-link">商品单位</a>
+                    <a href="page_34501.html" class="nav-link">商品参数</a>
+                    <a href="page_34502.html" class="nav-link">保障服务</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">👥 用户管理</div>
+                    <a href="page_34520.html" class="nav-link">用户管理</a>
+                    <a href="page_34521.html" class="nav-link">用户运营</a>
+                    <a href="page_34522.html" class="nav-link">优惠券</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📋 订单管理</div>
+                    <a href="page_34525.html" class="nav-link">订单发货</a>
+                    <a href="page_34526.html" class="nav-link">订单退款</a>
+                    <a href="page_34527.html" class="nav-link">订单打印</a>
+                    <a href="page_34528.html" class="nav-link">订单提醒</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💬 客服管理</div>
+                    <a href="page_34530.html" class="nav-link">客服功能</a>
+                    <a href="page_34531.html" class="nav-link">客服接待</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🎁 营销管理</div>
+                    <a href="page_34533.html" class="nav-link">抽奖</a>
+                    <a href="page_34534.html" class="nav-link">礼品卡</a>
+                    <a href="page_34535.html" class="nav-link">拼团</a>
+                    <a href="page_34536.html" class="nav-link">秒杀</a>
+                    <a href="page_34537.html" class="nav-link">砍价</a>
+                    <a href="page_34538.html" class="nav-link">积分</a>
+                    <a href="page_34539.html" class="nav-link">每日签到</a>
+                    <a href="page_34540.html" class="nav-link">付费会员</a>
+                    <a href="page_34541.html" class="nav-link">优惠套餐</a>
+                    <a href="page_34542.html" class="nav-link">余额充值</a>
+                    <a href="page_34543.html" class="nav-link">优惠活动</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📝 内容管理</div>
+                    <a href="page_34548.html" class="nav-link">社区</a>
+                    <a href="page_34549.html" class="nav-link">文章</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📺 直播管理</div>
+                    <a href="page_34550.html" class="nav-link">直播前准备</a>
+                    <a href="page_34551.html" class="nav-link">直播功能</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💰 分销管理</div>
+                    <a href="page_34554.html" class="nav-link">分销员申请</a>
+                    <a href="page_34555.html" class="nav-link">分销介绍</a>
+                    <a href="page_34556.html" class="nav-link">分销配置</a>
+                    <a href="page_34557.html" class="nav-link">分销等级</a>
+                    <a href="page_34558.html" class="nav-link">分销员管理</a>
+                    <a href="page_34559.html" class="nav-link">佣金提现</a>
+                    <a href="page_34560.html" class="nav-link">团队管理</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💵 财务管理</div>
+                    <a href="page_34562.html" class="nav-link">财务操作</a>
+                    <a href="page_34563.html" class="nav-link">财务记录</a>
+                    <a href="page_34564.html" class="nav-link">佣金记录</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🎨 商城装修</div>
+                    <a href="page_34566.html" class="nav-link">主页装修</a>
+                    <a href="page_34567.html" class="nav-link">商品详情</a>
+                    <a href="page_34568.html" class="nav-link">个人中心</a>
+                    <a href="page_34569.html" class="nav-link">商品分类</a>
+                    <a href="page_34571.html" class="nav-link">主题风格</a>
+                    <a href="page_34572.html" class="nav-link">PC页面</a>
+                    <a href="page_34573.html" class="nav-link">系统表单</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📱 移动端商家</div>
+                    <a href="page_34576.html" class="nav-link">商家管理开关</a>
+                    <a href="page_34577.html" class="nav-link">工作台模块</a>
+                    <a href="page_34578.html" class="nav-link">商品管理</a>
+                    <a href="page_34579.html" class="nav-link">订单管理</a>
+                    <a href="page_34580.html" class="nav-link">扫码核销</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">⚙️ 商城设置</div>
+                    <a href="page_34585.html" class="nav-link">系统设置</a>
+                    <a href="page_34586.html" class="nav-link">同城配送</a>
+                    <a href="page_34589.html" class="nav-link">支付设置</a>
+                    <a href="page_34590.html" class="nav-link">交易设置</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🔌 应用设置</div>
+                    <a href="page_34595.html" class="nav-link">服务号</a>
+                    <a href="page_34596.html" class="nav-link">小程序</a>
+                    <a href="page_34597.html" class="nav-link">PC</a>
+                    <a href="page_34598.html" class="nav-link">APP</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🔗 第三方接口</div>
+                    <a href="page_34600.html" class="nav-link">一号通配置</a>
+                    <a href="page_34601.html" class="nav-link">小票打印</a>
+                    <a href="page_34603.html" class="nav-link">物流查询</a>
+                    <a href="page_34606.html" class="nav-link">短信</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🏢 企业微信</div>
+                    <a href="page_34608.html" class="nav-link">客户管理</a>
+                    <a href="page_34609.html" class="nav-link">客户群运营</a>
+                    <a href="page_34610.html" class="nav-link">企业微信设置</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🏭 供应商</div>
+                    <a href="page_34612.html" class="nav-link">供应商申请</a>
+                    <a href="page_34613.html" class="nav-link">供应商管理</a>
+                    <a href="page_34614.html" class="nav-link">供应商财务</a>
+                    <a href="page_34616.html" class="nav-link">供应商后台</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📦 库存管理</div>
+                    <a href="page_34626.html" class="nav-link">入库管理</a>
+                    <a href="page_34627.html" class="nav-link">出库管理</a>
+                    <a href="page_34628.html" class="nav-link">库存查询</a>
+                    <a href="page_34629.html" class="nav-link">库存盘点</a>
+                </div>
+            </div>
+        </div>
+    <div class="main-content">
+    <div class="container">
+        <div class="header">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索全站内容..." onkeyup="handleSearch(event)">
+                <button onclick="performSearch()">🔍</button>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+            <a href="../index.html" class="back-link" style="color: #191919;">← 返回目录</a>
+            <h1>会员电商系统小票打印配置 - DANBAOLAI文档</h1>
+        </div>
+        <div class="content">
+            
+                  <h3 id="h3--strong-strong-"><a name="小票打印配置" class="reference-link"></a><span class="header-link octicon octicon-link"></span><strong>小票打印配置</strong></h3><p>DANBAOLAI系统已内置小票打印系统，开启长链接之后，用户在下单完成时候会自动推送给后台，进行小票自动出票，或者在订单列表中，右侧更多设置里面，选择小票打印手动打印</p>
+<p>设备购买可在第三方平台购买。<br>易联云购买地址<a href="https://item.jd.com/100007033765.html">https://item.jd.com/100007033765.html</a><br><img src="images/214a9fca6a44a6ad2b8007aaabfe1435.png" alt=""><br>飞鹅云购买地址<a href="https://item.jd.com/10052549727891.html">https://item.jd.com/10052549727891.html</a><br><img src="images/e6f3b197bb7bc01a139c176cc86d07dc.png" alt=""></p>
+<h2 id="h2-u6613u8054u4E91u5C0Fu7968u6253u5370u673Au914Du7F6E"><a name="易联云小票打印机配置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>易联云小票打印机配置</h2><h3 id="h3-1-"><a name="1、易联云开发者申请" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1、易联云开发者申请</h3><h4 id="h4--code-https-dev-10ss-net-code-"><a name="易联云网址：https://dev.10ss.net/，注册、登录" class="reference-link"></a><span class="header-link octicon octicon-link"></span>易联云网址：<code>https://dev.10ss.net/</code>，注册、登录</h4><p><img src="images/screenshot_1572252724770.png" alt=""></p>
+<h3 id="h3-2-"><a name="2、在应用列表申请 自有型应用服务类型 应用" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2、在应用列表申请 自有型应用服务类型 应用</h3><p><img src="images/screenshot_1608609541285.png" alt=""></p>
+<h3 id="h3-3-"><a name="3、申请自有型应用" class="reference-link"></a><span class="header-link octicon octicon-link"></span>3、申请自有型应用</h3><p><img src="images/screenshot_1572252921711.png" alt=""></p>
+<h3 id="h3-u83B7u53D6u4FE1u606F"><a name="获取信息" class="reference-link"></a><span class="header-link octicon octicon-link"></span>获取信息</h3><h3 id="h3-4-id-id-"><a name="4、点击添加就会提示添加成功，点击应用列表查看”用户ID”、 “应用ID”、”应用密钥”。" class="reference-link"></a><span class="header-link octicon octicon-link"></span>4、点击添加就会提示添加成功，点击应用列表查看”用户ID”、 “应用ID”、”应用密钥”。</h3><p><img src="images/screenshot_1572252980844.png" alt=""></p>
+<h3 id="h3-u7CFBu7EDFu540Eu53F0u914Du7F6E"><a name="系统后台配置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>系统后台配置</h3><h3 id="h3-5-danbaolai-"><a name="5、登陆DANBAOLAI系统后台，设置/小票配置，添加打印机和填写相关信息，提交。" class="reference-link"></a><span class="header-link octicon octicon-link"></span>5、登陆DANBAOLAI系统后台，设置/小票配置，添加打印机和填写相关信息，提交。</h3><h4 id="h4--id-id"><a name="用户ID即为后台配置的开发者ID" class="reference-link"></a><span class="header-link octicon octicon-link"></span>用户ID即为后台配置的开发者ID</h4><h4 id="h4--"><a name="注：终端号在打印机的底部。" class="reference-link"></a><span class="header-link octicon octicon-link"></span>注：终端号在打印机的底部。</h4><p><img src="images/fde471bb5da0b107b2f9bc30a10632ac.png" alt=""><br><img src="images/51bc1d7bd2eb6682fa671e9f5d957d9e.png" alt=""></p>
+<h4 id="h4-u70B9u8BBEu8BA1u9009u597Du4EE5u540Eu5E76u4FDDu5B58"><a name="点设计选好以后并保存" class="reference-link"></a><span class="header-link octicon octicon-link"></span>点设计选好以后并保存</h4><p><img src="images/13ccb940845588a54caef199abd8f044.png" alt=""><br><img src="images/2340f7c71e34a2386c85a559a2b2a93a.png" alt=""></p>
+<h2 id="h2-u98DEu9E45u4E91u5C0Fu7968u6253u5370u673Au914Du7F6E"><a name="飞鹅云小票打印机配置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>飞鹅云小票打印机配置</h2><h3 id="h3--"><a name="申请飞鹅云开发者平台账号，并进行实名认证" class="reference-link"></a><span class="header-link octicon octicon-link"></span>申请飞鹅云开发者平台账号，并进行实名认证</h3><h4 id="h4--https-admin-feieyun-com-login-php"><a name="访问地址   https://admin.feieyun.com/login.php" class="reference-link"></a><span class="header-link octicon octicon-link"></span>访问地址 <a href="https://admin.feieyun.com/login.php">https://admin.feieyun.com/login.php</a></h4><h4 id="h4--"><a name="点击立即注册，申请开发者账号" class="reference-link"></a><span class="header-link octicon octicon-link"></span>点击立即注册，申请开发者账号</h4><p><img src="images/22770f49f6d74157133fafd7c3d0fb2a.png" alt=""></p>
+<h4 id="h4-u5DE6u4FA7u4E2Au4EBAu4E2Du5FC3u5960u57FAu5B9Eu540Du8BA4u8BC1u8FDBu884Cu8BA4u8BC1"><a name="左侧个人中心奠基实名认证进行认证" class="reference-link"></a><span class="header-link octicon octicon-link"></span>左侧个人中心奠基实名认证进行认证</h4><p><img src="images/319f41b01498d67275e5a724757c051d.png" alt=""></p>
+<h3 id="h3-u6DFBu52A0u6253u5370u673A"><a name="添加打印机" class="reference-link"></a><span class="header-link octicon octicon-link"></span>添加打印机</h3><h4 id="h4--"><a name="点击左侧打印机管理，添加打印机" class="reference-link"></a><span class="header-link octicon octicon-link"></span>点击左侧打印机管理，添加打印机</h4><p><img src="images/b5c7d63b338e2c13e6f103d6aa773f54.png" alt=""></p>
+<h4 id="h4-u5728u6253u5370u673Au5E95u90E8u83B7u53D6u4E24u4E2Au53C2u6570"><a name="在打印机底部获取两个参数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>在打印机底部获取两个参数</h4><p><img src="images/6127efd5f6dbf6386d73420178056e09.png" alt=""></p>
+<h3 id="h3-u83B7u53D6u914Du7F6Eu53C2u6570"><a name="获取配置参数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>获取配置参数</h3><h4 id="h4--"><a name="左侧个人中心进入用户信息，获取开发者信息" class="reference-link"></a><span class="header-link octicon octicon-link"></span>左侧个人中心进入用户信息，获取开发者信息</h4><p><img src="images/4ae18d6c7771b8503f28c4ec5ce5fcf4.png" alt=""></p>
+<h4 id="h4--sn-"><a name="程序后台填写开发者信息，最后一项为打印机底部标签上的SN编号" class="reference-link"></a><span class="header-link octicon octicon-link"></span>程序后台填写开发者信息，最后一项为打印机底部标签上的SN编号</h4><p><img src="images/358cbda66f318bd399c39c235054b09b.png" alt=""></p>
+                
+        </div>
+        <div class="footer">
+            <p>DANBAOLAI 使用手册</p>
+        </div>
+    </div>
+</div>
+
+    <script>
+        let searchData = [];
+        let searchIndex = 0;
+        
+        async function loadSearchData() {
+            try {
+                const response = await fetch('search_index.json');
+                searchData = await response.json();
+            } catch (e) {
+                console.log('搜索数据加载失败');
+            }
+        }
+        
+        loadSearchData();
+        
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            } else if (event.key === 'Escape') {
+                hideResults();
+            }
+        }
+        
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!query) {
+                hideResults();
+                return;
+            }
+            
+            const results = [];
+            
+            for (let item of searchData) {
+                const titleMatch = item.title.toLowerCase().includes(query);
+                const contentMatch = item.content.toLowerCase().includes(query);
+                
+                if (titleMatch || contentMatch) {
+                    let snippet = '';
+                    if (contentMatch) {
+                        const idx = item.content.toLowerCase().indexOf(query);
+                        const start = Math.max(0, idx - 30);
+                        const end = Math.min(item.content.length, idx + query.length + 50);
+                        snippet = (start > 0 ? '...' : '') + 
+                                  item.content.substring(start, end) + 
+                                  (end < item.content.length ? '...' : '');
+                    } else {
+                        snippet = item.content.substring(0, 80) + '...';
+                    }
+                    
+                    const highlighted = snippet.replace(
+                        new RegExp(query, 'gi'),
+                        match => '<mark>' + match + '</mark>'
+                    );
+                    
+                    results.push({
+                        title: item.title,
+                        url: item.url,
+                        snippet: highlighted
+                    });
+                    
+                    if (results.length >= 20) break;
+                }
+            }
+            
+            if (results.length > 0) {
+                resultsDiv.innerHTML = results.map(r => 
+                    '<div class="search-item" onclick="goToResult(\'' + r.url + '\')">' +
+                    '<div class="search-item-title">' + r.title + '</div>' +
+                    '<div class="search-item-content">' + r.snippet + '</div>' +
+                    '</div>'
+                ).join('');
+            } else {
+                resultsDiv.innerHTML = '<div class="no-results">未找到相关内容</div>';
+            }
+            
+            resultsDiv.classList.add('show');
+        }
+        
+        function goToResult(url) {
+            window.location.href = url;
+        }
+        
+        function hideResults() {
+            document.getElementById('searchResults').classList.remove('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-box')) {
+                hideResults();
+            }
+        });
+    </script>
+</body>
+</html>

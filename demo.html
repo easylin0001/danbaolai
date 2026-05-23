@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>列表页 - 高保真演示</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+  <style>
+    :root {
+      --primary-color: #409EFF;
+      --success-color: #67C23A;
+      --warning-color: #E6A23C;
+      --danger-color: #F56C6C;
+      --info-color: #909399;
+      --text-color-primary: #303133;
+      --text-color-regular: #606266;
+      --text-color-secondary: #909399;
+      --bg-color-page: #F5F7FA;
+      --bg-color-white: #FFFFFF;
+      --border-color-base: #DCDFE6;
+      --border-radius-lg: 8px;
+      --box-shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: var(--text-color-primary);
+      background-color: var(--bg-color-page);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .list-page {
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .list-page__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .list-page__title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-color-primary);
+    }
+
+    .list-page__content {
+      background-color: var(--bg-color-white);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--box-shadow-light);
+      padding: 24px;
+    }
+
+    .list-page__toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .list-page__search {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .search-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .search-item__label {
+      font-size: 12px;
+      color: var(--text-color-secondary);
+    }
+
+    .search-item__input {
+      width: 180px;
+    }
+
+    .search-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      height: 32px;
+    }
+
+    .list-page__pagination {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+
+    .name-cell {
+      font-weight: 500;
+      color: #409EFF;
+    }
+
+    .time-cell {
+      color: #909399;
+      font-size: 13px;
+    }
+
+    .status-tag {
+      font-size: 12px;
+    }
+
+    .el-table {
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .batch-actions {
+      margin-bottom: 16px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .selected-count {
+      color: var(--text-color-secondary);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1200px) {
+      .search-item__input {
+        width: 160px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .list-page {
+        padding: 16px;
+      }
+      
+      .list-page__toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .list-page__search {
+        width: 100%;
+      }
+      
+      .search-item__input {
+        width: 100%;
+      }
+      
+      .search-buttons {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="list-page">
+      <div class="list-page__header">
+        <h1 class="list-page__title">数据列表</h1>
+        <el-button type="primary" @click="handleAdd">
+          <el-icon><plus /></el-icon>
+          新增
+        </el-button>
+      </div>
+      
+      <div class="list-page__content">
+        <div class="list-page__toolbar">
+          <div class="list-page__search">
+            <div class="search-item">
+              <span class="search-item__label">用户名称</span>
+              <el-input
+                v-model="searchForm.userName"
+                placeholder="请输入用户名称"
+                clearable
+                class="search-item__input"
+              />
+            </div>
+            
+            <div class="search-item">
+              <span class="search-item__label">状态</span>
+              <el-select
+                v-model="searchForm.status"
+                placeholder="请选择状态"
+                clearable
+                class="search-item__input"
+              >
+                <el-option label="启用" value="enabled" />
+                <el-option label="禁用" value="disabled" />
+                <el-option label="待审核" value="pending" />
+              </el-select>
+            </div>
+            
+            <div class="search-item">
+              <span class="search-item__label">开始日期</span>
+              <el-date-picker
+                v-model="searchForm.startDate"
+                type="date"
+                placeholder="选择开始日期"
+                class="search-item__input"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+              />
+            </div>
+            
+            <div class="search-buttons">
+              <el-button type="primary" @click="handleSearch">
+                <el-icon><search /></el-icon>
+                搜索
+              </el-button>
+              <el-button @click="handleReset">
+                <el-icon><refresh /></el-icon>
+                重置
+              </el-button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="batch-actions" v-if="selectedRows.length > 0">
+          <el-button type="danger" @click="handleBatchDelete">
+            <el-icon><delete /></el-icon>
+            批量删除
+          </el-button>
+          <el-button type="success" @click="handleBatchAuthorize">
+            <el-icon><check /></el-icon>
+            批量授权
+          </el-button>
+          <span class="selected-count">已选择 {{ selectedRows.length }} 项</span>
+        </div>
+        
+        <el-table
+          ref="tableRef"
+          v-loading="loading"
+          :data="tableData"
+          stripe
+          border
+          style="width: 100%"
+          @selection-change="handleSelectionChange"
+          @sort-change="handleSortChange"
+        >
+          <el-table-column type="selection" width="55" align="center" />
+          
+          <el-table-column type="index" label="序号" width="60" align="center" :index="indexMethod" />
+          
+          <el-table-column
+            prop="userName"
+            label="用户名称"
+            min-width="120"
+            sortable="custom"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <span class="name-cell">{{ row.userName }}</span>
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+            prop="name"
+            label="名字"
+            min-width="120"
+            sortable="custom"
+            show-overflow-tooltip
+          />
+          
+          <el-table-column
+            prop="status"
+            label="状态"
+            min-width="100"
+            align="center"
+          >
+            <template #default="{ row }">
+              <el-tag
+                :type="getStatusType(row.status)"
+                class="status-tag"
+              >
+                {{ getStatusLabel(row.status) }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+            prop="startDate"
+            label="开始日期"
+            min-width="120"
+            sortable="custom"
+            align="center"
+          >
+            <template #default="{ row }">
+              <span class="time-cell">{{ row.startDate }}</span>
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+            prop="createdAt"
+            label="生成时间"
+            min-width="160"
+            sortable="custom"
+            align="center"
+          >
+            <template #default="{ row }">
+              <span class="time-cell">{{ formatDate(row.createdAt) }}</span>
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+            prop="tenant"
+            label="来源租户"
+            min-width="120"
+            show-overflow-tooltip
+          />
+          
+          <el-table-column
+            prop="authorized"
+            label="是否授权"
+            min-width="100"
+            align="center"
+          >
+            <template #default="{ row }">
+              <el-tag
+                :type="row.authorized ? 'success' : 'info'"
+                class="status-tag"
+              >
+                {{ row.authorized ? '已授权' : '未授权' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          
+          <el-table-column
+            label="操作"
+            width="180"
+            align="center"
+            fixed="right"
+          >
+            <template #default="{ row }">
+              <el-button type="primary" link @click="handleView(row)">查看</el-button>
+              <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
+              <el-button type="danger" link @click="handleDelete(row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        
+        <div class="list-page__pagination">
+          <el-pagination
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+            :page-sizes="[10, 20, 50, 100]"
+            :total="total"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/element-plus"></script>
+  <script src="https://unpkg.com/@element-plus/icons-vue"></script>
+  <script src="https://unpkg.com/dayjs/dayjs.min.js"></script>
+  <script>
+    const { createApp, ref, reactive, onMounted, computed } = Vue;
+    const { ElMessage, ElMessageBox } = ElementPlus;
+
+    const tenants = ['租户A', '租户B', '租户C', '租户D', '租户E'];
+    const statuses = ['enabled', 'disabled', 'pending'];
+    const userNames = ['张三', '李四', '王五', '赵六', '钱七', '孙八', '周九', '吴十'];
+
+    const app = createApp({
+      setup() {
+        const tableRef = ref(null);
+        const loading = ref(false);
+        const selectedRows = ref([]);
+        const currentPage = ref(1);
+        const pageSize = ref(10);
+        const total = ref(0);
+        const sortParams = reactive({ prop: '', order: '' });
+        
+        const searchForm = reactive({
+          userName: '',
+          status: '',
+          startDate: ''
+        });
+
+        const tableData = ref([]);
+
+        const mockData = Array.from({ length: 50 }, (_, index) => ({
+          id: `${index + 1}`,
+          userName: userNames[Math.floor(Math.random() * userNames.length)],
+          name: `项目 ${String(index + 1).padStart(3, '0')}`,
+          status: statuses[Math.floor(Math.random() * statuses.length)],
+          startDate: dayjs().subtract(Math.floor(Math.random() * 30), 'day').format('YYYY-MM-DD'),
+          createdAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+          tenant: tenants[Math.floor(Math.random() * tenants.length)],
+          authorized: Math.random() > 0.5
+        }));
+
+        const formatDate = (date) => {
+          const d = new Date(date);
+          const year = d.getFullYear();
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          const hours = String(d.getHours()).padStart(2, '0');
+          const minutes = String(d.getMinutes()).padStart(2, '0');
+          const seconds = String(d.getSeconds()).padStart(2, '0');
+          return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        };
+
+        const getStatusType = (status) => {
+          const types = {
+            enabled: 'success',
+            disabled: 'danger',
+            pending: 'warning'
+          };
+          return types[status] || 'info';
+        };
+
+        const getStatusLabel = (status) => {
+          const labels = {
+            enabled: '启用',
+            disabled: '禁用',
+            pending: '待审核'
+          };
+          return labels[status] || status;
+        };
+
+        const indexMethod = (index) => {
+          return (currentPage.value - 1) * pageSize.value + index + 1;
+        };
+
+        const fetchData = async () => {
+          loading.value = true;
+          
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          let filteredData = [...mockData];
+          
+          if (searchForm.userName) {
+            filteredData = filteredData.filter(item =>
+              item.userName.toLowerCase().includes(searchForm.userName.toLowerCase())
+            );
+          }
+          
+          if (searchForm.status) {
+            filteredData = filteredData.filter(item => item.status === searchForm.status);
+          }
+          
+          if (searchForm.startDate) {
+            filteredData = filteredData.filter(item => item.startDate === searchForm.startDate);
+          }
+          
+          if (sortParams.prop && sortParams.order) {
+            filteredData.sort((a, b) => {
+              const aVal = a[sortParams.prop];
+              const bVal = b[sortParams.prop];
+              return sortParams.order === 'ascending' ? (aVal > bVal ? 1 : -1) : (aVal < bVal ? 1 : -1);
+            });
+          }
+          
+          total.value = filteredData.length;
+          const start = (currentPage.value - 1) * pageSize.value;
+          const end = start + pageSize.value;
+          tableData.value = filteredData.slice(start, end);
+          
+          loading.value = false;
+        };
+
+        const handleSearch = () => {
+          currentPage.value = 1;
+          fetchData();
+        };
+
+        const handleReset = () => {
+          searchForm.userName = '';
+          searchForm.status = '';
+          searchForm.startDate = '';
+          currentPage.value = 1;
+          fetchData();
+        };
+
+        const handleSortChange = ({ prop, order }) => {
+          sortParams.prop = prop;
+          sortParams.order = order;
+          fetchData();
+        };
+
+        const handleSizeChange = (size) => {
+          pageSize.value = size;
+          currentPage.value = 1;
+          fetchData();
+        };
+
+        const handleCurrentChange = (page) => {
+          currentPage.value = page;
+          fetchData();
+        };
+
+        const handleSelectionChange = (selection) => {
+          selectedRows.value = selection;
+        };
+
+        const handleAdd = () => {
+          ElMessage.info('新增功能待实现');
+        };
+
+        const handleView = (row) => {
+          ElMessage.info(`查看：${row.name}`);
+        };
+
+        const handleEdit = (row) => {
+          ElMessage.info(`编辑：${row.name}`);
+        };
+
+        const handleDelete = (row) => {
+          ElMessageBox.confirm(
+            `确定要删除 "${row.name}" 吗？`,
+            '删除确认',
+            {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }
+          ).then(() => {
+            ElMessage.success('删除成功');
+            fetchData();
+          }).catch(() => {
+            ElMessage.info('已取消删除');
+          });
+        };
+
+        const handleBatchDelete = () => {
+          ElMessageBox.confirm(
+            `确定要删除选中的 ${selectedRows.value.length} 项吗？`,
+            '批量删除确认',
+            {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }
+          ).then(() => {
+            ElMessage.success(`成功删除 ${selectedRows.value.length} 项`);
+            selectedRows.value = [];
+            fetchData();
+          }).catch(() => {
+            ElMessage.info('已取消删除');
+          });
+        };
+
+        const handleBatchAuthorize = () => {
+          ElMessageBox.confirm(
+            `确定要授权选中的 ${selectedRows.value.length} 项吗？`,
+            '批量授权确认',
+            {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'info'
+            }
+          ).then(() => {
+            ElMessage.success(`成功授权 ${selectedRows.value.length} 项`);
+            selectedRows.value = [];
+            fetchData();
+          }).catch(() => {
+            ElMessage.info('已取消授权');
+          });
+        };
+
+        onMounted(() => {
+          fetchData();
+        });
+
+        return {
+          tableRef,
+          loading,
+          searchForm,
+          tableData,
+          selectedRows,
+          currentPage,
+          pageSize,
+          total,
+          formatDate,
+          getStatusType,
+          getStatusLabel,
+          indexMethod,
+          handleSearch,
+          handleReset,
+          handleSortChange,
+          handleSizeChange,
+          handleCurrentChange,
+          handleSelectionChange,
+          handleAdd,
+          handleView,
+          handleEdit,
+          handleDelete,
+          handleBatchDelete,
+          handleBatchAuthorize
+        };
+      }
+    });
+
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+      app.component(key, component);
+    }
+
+    app.use(ElementPlus);
+    app.mount('#app');
+  </script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员电商系统一号通常见问题总结 - DANBAOLAI文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-header h2 {
+            color: white;
+            font-size: 18px;
+        }
+        .sidebar-content {
+            padding: 10px 0;
+        }
+        .nav-section {
+            margin-bottom: 5px;
+        }
+        .nav-title {
+            color: #4fc3f7;
+            font-size: 13px;
+            padding: 10px 20px 5px 20px;
+            font-weight: bold;
+        }
+        .nav-link {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 6px 20px 6px 30px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .nav-link.active {
+            background: white;
+            color: black;
+            text-decoration: underline;
+        }
+        .nav-link.active-old {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+            border-left: 3px solid #4fc3f7;
+        }
+        .main-content {
+            margin-left: 240px;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 30px 40px;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .header {
+            background: white;
+            color: #191919;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-box input:focus {
+            border-color: #4fc3f7;
+        }
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .search-results {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .search-item:hover {
+            background: #f5f7fa;
+        }
+        .search-item:last-child {
+            border-bottom: none;
+        }
+        .search-item-title {
+            font-weight: bold;
+            color: #191919;
+            margin-bottom: 5px;
+        }
+        .search-item-content {
+            font-size: 12px;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .search-item-content mark {
+            background: #ffeb3b;
+            padding: 0 2px;
+        }
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: #999;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #191919;
+        }
+        .back-link {
+            display: inline-block;
+            color: #4fc3f7;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .content h3 {
+            color: #1a1a2e;
+            font-size: 20px;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4fc3f7;
+        }
+        .content h4 {
+            color: #333;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+        }
+        .content p {
+            margin: 10px 0;
+            color: #555;
+        }
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .content ul, .content ol {
+            margin: 10px 0 10px 25px;
+        }
+        .content li {
+            margin: 5px 0;
+        }
+        .content strong {
+            color: #1a1a2e;
+        }
+        .content code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .content th, .content td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .content th {
+            background: #f5f7fa;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>📖 使用手册</h2>
+            </div>
+            <div class="sidebar-content">
+                <div class="nav-section">
+                    <div class="nav-title">📦 商品管理</div>
+                    <a href="page_34495.html" class="nav-link">商品添加</a>
+                    <a href="page_34600.html" class="nav-link">商品采集</a>
+                    <a href="page_34496.html" class="nav-link">商品分类</a>
+                    <a href="page_34497.html" class="nav-link">商品规格</a>
+                    <a href="page_34500.html" class="nav-link">商品评价</a>
+                    <a href="page_34498.html" class="nav-link">商品品牌</a>
+                    <a href="page_34499.html" class="nav-link">商品单位</a>
+                    <a href="page_34501.html" class="nav-link">商品参数</a>
+                    <a href="page_34502.html" class="nav-link">保障服务</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">👥 用户管理</div>
+                    <a href="page_34520.html" class="nav-link">用户管理</a>
+                    <a href="page_34521.html" class="nav-link">用户运营</a>
+                    <a href="page_34522.html" class="nav-link">优惠券</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📋 订单管理</div>
+                    <a href="page_34525.html" class="nav-link">订单发货</a>
+                    <a href="page_34526.html" class="nav-link">订单退款</a>
+                    <a href="page_34527.html" class="nav-link">订单打印</a>
+                    <a href="page_34528.html" class="nav-link">订单提醒</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💬 客服管理</div>
+                    <a href="page_34530.html" class="nav-link">客服功能</a>
+                    <a href="page_34531.html" class="nav-link">客服接待</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🎁 营销管理</div>
+                    <a href="page_34533.html" class="nav-link">抽奖</a>
+                    <a href="page_34534.html" class="nav-link">礼品卡</a>
+                    <a href="page_34535.html" class="nav-link">拼团</a>
+                    <a href="page_34536.html" class="nav-link">秒杀</a>
+                    <a href="page_34537.html" class="nav-link">砍价</a>
+                    <a href="page_34538.html" class="nav-link">积分</a>
+                    <a href="page_34539.html" class="nav-link">每日签到</a>
+                    <a href="page_34540.html" class="nav-link">付费会员</a>
+                    <a href="page_34541.html" class="nav-link">优惠套餐</a>
+                    <a href="page_34542.html" class="nav-link">余额充值</a>
+                    <a href="page_34543.html" class="nav-link">优惠活动</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📝 内容管理</div>
+                    <a href="page_34548.html" class="nav-link">社区</a>
+                    <a href="page_34549.html" class="nav-link">文章</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📺 直播管理</div>
+                    <a href="page_34550.html" class="nav-link">直播前准备</a>
+                    <a href="page_34551.html" class="nav-link">直播功能</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💰 分销管理</div>
+                    <a href="page_34554.html" class="nav-link">分销员申请</a>
+                    <a href="page_34555.html" class="nav-link">分销介绍</a>
+                    <a href="page_34556.html" class="nav-link">分销配置</a>
+                    <a href="page_34557.html" class="nav-link">分销等级</a>
+                    <a href="page_34558.html" class="nav-link">分销员管理</a>
+                    <a href="page_34559.html" class="nav-link">佣金提现</a>
+                    <a href="page_34560.html" class="nav-link">团队管理</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💵 财务管理</div>
+                    <a href="page_34562.html" class="nav-link">财务操作</a>
+                    <a href="page_34563.html" class="nav-link">财务记录</a>
+                    <a href="page_34564.html" class="nav-link">佣金记录</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🎨 商城装修</div>
+                    <a href="page_34566.html" class="nav-link">主页装修</a>
+                    <a href="page_34567.html" class="nav-link">商品详情</a>
+                    <a href="page_34568.html" class="nav-link">个人中心</a>
+                    <a href="page_34569.html" class="nav-link">商品分类</a>
+                    <a href="page_34571.html" class="nav-link">主题风格</a>
+                    <a href="page_34572.html" class="nav-link">PC页面</a>
+                    <a href="page_34573.html" class="nav-link">系统表单</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📱 移动端商家</div>
+                    <a href="page_34576.html" class="nav-link">商家管理开关</a>
+                    <a href="page_34577.html" class="nav-link">工作台模块</a>
+                    <a href="page_34578.html" class="nav-link">商品管理</a>
+                    <a href="page_34579.html" class="nav-link">订单管理</a>
+                    <a href="page_34580.html" class="nav-link">扫码核销</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">⚙️ 商城设置</div>
+                    <a href="page_34585.html" class="nav-link">系统设置</a>
+                    <a href="page_34586.html" class="nav-link">同城配送</a>
+                    <a href="page_34589.html" class="nav-link">支付设置</a>
+                    <a href="page_34590.html" class="nav-link">交易设置</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🔌 应用设置</div>
+                    <a href="page_34595.html" class="nav-link">服务号</a>
+                    <a href="page_34596.html" class="nav-link">小程序</a>
+                    <a href="page_34597.html" class="nav-link">PC</a>
+                    <a href="page_34598.html" class="nav-link">APP</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🔗 第三方接口</div>
+                    <a href="page_34600.html" class="nav-link">一号通配置</a>
+                    <a href="page_34601.html" class="nav-link">小票打印</a>
+                    <a href="page_34603.html" class="nav-link">物流查询</a>
+                    <a href="page_34606.html" class="nav-link">短信</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🏢 企业微信</div>
+                    <a href="page_34608.html" class="nav-link">客户管理</a>
+                    <a href="page_34609.html" class="nav-link">客户群运营</a>
+                    <a href="page_34610.html" class="nav-link">企业微信设置</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🏭 供应商</div>
+                    <a href="page_34612.html" class="nav-link">供应商申请</a>
+                    <a href="page_34613.html" class="nav-link">供应商管理</a>
+                    <a href="page_34614.html" class="nav-link active">供应商财务</a>
+                    <a href="page_34616.html" class="nav-link">供应商后台</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📦 库存管理</div>
+                    <a href="page_34626.html" class="nav-link">入库管理</a>
+                    <a href="page_34627.html" class="nav-link">出库管理</a>
+                    <a href="page_34628.html" class="nav-link">库存查询</a>
+                    <a href="page_34629.html" class="nav-link">库存盘点</a>
+                </div>
+            </div>
+        </div>
+    <div class="main-content">
+    <div class="container">
+        <div class="header">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索全站内容..." onkeyup="handleSearch(event)">
+                <button onclick="performSearch()">🔍</button>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+            <a href="../index.html" class="back-link" style="color: #191919;">← 返回目录</a>
+            <h1>会员电商系统一号通常见问题总结 - DANBAOLAI文档</h1>
+        </div>
+        <div class="content">
+            
+                  <h3 id="h3-u77EDu4FE1"><a name="短信" class="reference-link"></a><span class="header-link octicon octicon-link"></span>短信</h3><h5 id="h5-1-"><a name="1、为什么短信签名修改了没用" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1、为什么短信签名修改了没用</h5><pre><code>    签名修改需要人工审核，一般为1个工作日哦。通过后已添加模板和默认模板签名就自动变成修改后的签名。如需加急联系售前
+</code></pre><h5 id="h5-2-"><a name="2、短信开通后短信模板不需要添加吗" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2、短信开通后短信模板不需要添加吗</h5><pre><code>    一号通短信服务开通，会自动添加默认短信模板。
+    如需二开新增模板，需要自行申请短信模板。
+</code></pre><h5 id="h5-3-"><a name="3、手机收不到短信排查" class="reference-link"></a><span class="header-link octicon octicon-link"></span>3、手机收不到短信排查</h5><pre><code>    一、先排查下是否登录一号通
+    二、可以换个手机号测试下，有可能因为信号问题会有延迟
+    三、可以在官方演示站注册看是否可以收到短信验证码
+        1）如果可以收到那就排查系统问题可以联系官方技术看是否安装的系统问题或者其他问题
+        2）如果也收不到短信，这一般有2种可能，一种是携号转网手机号需要重新入库才可以收到，一种是该手机号之前退订过短信，这种情况联系客服。
+     四、短信验证码是实时的，通知类短信会有延迟，但延迟也不会太久的。
+</code></pre><h5 id="h5-4-"><a name="4、如何申请自定义模板" class="reference-link"></a><span class="header-link octicon octicon-link"></span>4、如何申请自定义模板</h5><pre><code>    进入一号通页面，短信服务页，点击左上角【申请模板】
+</code></pre><h6 id="h6--"><a name="申请模板注意事项：" class="reference-link"></a><span class="header-link octicon octicon-link"></span>申请模板注意事项：</h6><pre><code>    自定义模板需经过DANBAOLAI官方审核，通过后可使用。
+    自定义短信模板发送需在代码程序中二开添加触发条件，不能手动发送。
+    新增字段请先完善相关字段内容。
+    短信分为三种类型：验证码、通知、推广，各类型的发送渠道不同，请勿混用，会导致账号禁封。
+    请遵守国家相关法律法规，切勿用于其他违法用途，造成的一切后果需自行承担。
+</code></pre><h3 id="h3-u7269u6D41u67E5u8BE2u67E5u8BE2u4E0Du5230u95EEu9898"><a name="物流查询查询不到问题" class="reference-link"></a><span class="header-link octicon octicon-link"></span>物流查询查询不到问题</h3><pre><code>    一、先在一号通确认是否开启了物流查询和是否有物流查询条数
+    二、顺丰快递需要添加手机号后四位  快递单号 【顺丰和丰网请输入单号 : 收件人或寄件人手机号后四位。例如：123456789:1234】
+    三、可以先去快递查询平台看是否有物流信息
+</code></pre><h3 id="h3-u5546u54C1u91C7u96C6u5E38u89C1u95EEu9898"><a name="商品采集常见问题" class="reference-link"></a><span class="header-link octicon octicon-link"></span>商品采集常见问题</h3><pre><code>    一、使用前请购买采集次数套餐，方可正常使用
+    二、目前商品采集支持一键采集：淘宝、天猫、京东、苏宁、1688
+    三、部分产品详情图有防盗链设置，可能存在无法采集情况，请谅解
+    四、采集的为基础数据，最好自行编辑完善再上架
+    五、因采集的接口会变，有部分商品会采集不到商品详情
+</code></pre>                
+        </div>
+        <div class="footer">
+            <p>DANBAOLAI 使用手册</p>
+        </div>
+    </div>
+</div>
+
+    <script>
+        let searchData = [];
+        let searchIndex = 0;
+        
+        async function loadSearchData() {
+            try {
+                const response = await fetch('search_index.json');
+                searchData = await response.json();
+            } catch (e) {
+                console.log('搜索数据加载失败');
+            }
+        }
+        
+        loadSearchData();
+        
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            } else if (event.key === 'Escape') {
+                hideResults();
+            }
+        }
+        
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!query) {
+                hideResults();
+                return;
+            }
+            
+            const results = [];
+            
+            for (let item of searchData) {
+                const titleMatch = item.title.toLowerCase().includes(query);
+                const contentMatch = item.content.toLowerCase().includes(query);
+                
+                if (titleMatch || contentMatch) {
+                    let snippet = '';
+                    if (contentMatch) {
+                        const idx = item.content.toLowerCase().indexOf(query);
+                        const start = Math.max(0, idx - 30);
+                        const end = Math.min(item.content.length, idx + query.length + 50);
+                        snippet = (start > 0 ? '...' : '') + 
+                                  item.content.substring(start, end) + 
+                                  (end < item.content.length ? '...' : '');
+                    } else {
+                        snippet = item.content.substring(0, 80) + '...';
+                    }
+                    
+                    const highlighted = snippet.replace(
+                        new RegExp(query, 'gi'),
+                        match => '<mark>' + match + '</mark>'
+                    );
+                    
+                    results.push({
+                        title: item.title,
+                        url: item.url,
+                        snippet: highlighted
+                    });
+                    
+                    if (results.length >= 20) break;
+                }
+            }
+            
+            if (results.length > 0) {
+                resultsDiv.innerHTML = results.map(r => 
+                    '<div class="search-item" onclick="goToResult(\'' + r.url + '\')">' +
+                    '<div class="search-item-title">' + r.title + '</div>' +
+                    '<div class="search-item-content">' + r.snippet + '</div>' +
+                    '</div>'
+                ).join('');
+            } else {
+                resultsDiv.innerHTML = '<div class="no-results">未找到相关内容</div>';
+            }
+            
+            resultsDiv.classList.add('show');
+        }
+        
+        function goToResult(url) {
+            window.location.href = url;
+        }
+        
+        function hideResults() {
+            document.getElementById('searchResults').classList.remove('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-box')) {
+                hideResults();
+            }
+        });
+    </script>
+</body>
+</html>

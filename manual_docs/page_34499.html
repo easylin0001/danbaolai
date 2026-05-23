@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员电商系统订单发货 - DANBAOLAI文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-header h2 {
+            color: white;
+            font-size: 18px;
+        }
+        .sidebar-content {
+            padding: 10px 0;
+        }
+        .nav-section {
+            margin-bottom: 5px;
+        }
+        .nav-title {
+            color: #4fc3f7;
+            font-size: 13px;
+            padding: 10px 20px 5px 20px;
+            font-weight: bold;
+        }
+        .nav-link {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 6px 20px 6px 30px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .nav-link.active {
+            background: white;
+            color: black;
+            text-decoration: underline;
+        }
+        .nav-link.active-old {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+            border-left: 3px solid #4fc3f7;
+        }
+        .main-content {
+            margin-left: 240px;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 30px 40px;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .header {
+            background: white;
+            color: #191919;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-box input:focus {
+            border-color: #4fc3f7;
+        }
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .search-results {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .search-item:hover {
+            background: #f5f7fa;
+        }
+        .search-item:last-child {
+            border-bottom: none;
+        }
+        .search-item-title {
+            font-weight: bold;
+            color: #191919;
+            margin-bottom: 5px;
+        }
+        .search-item-content {
+            font-size: 12px;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .search-item-content mark {
+            background: #ffeb3b;
+            padding: 0 2px;
+        }
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: #999;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #191919;
+        }
+        .back-link {
+            display: inline-block;
+            color: #4fc3f7;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .content h3 {
+            color: #1a1a2e;
+            font-size: 20px;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4fc3f7;
+        }
+        .content h4 {
+            color: #333;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+        }
+        .content p {
+            margin: 10px 0;
+            color: #555;
+        }
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .content ul, .content ol {
+            margin: 10px 0 10px 25px;
+        }
+        .content li {
+            margin: 5px 0;
+        }
+        .content strong {
+            color: #1a1a2e;
+        }
+        .content code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .content th, .content td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .content th {
+            background: #f5f7fa;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>📖 使用手册</h2>
+            </div>
+            <div class="sidebar-content">
+                <div class="nav-section">
+                    <div class="nav-title">📦 商品管理</div>
+                    <a href="page_34495.html" class="nav-link">商品添加</a>
+                    <a href="page_34600.html" class="nav-link">商品采集</a>
+                    <a href="page_34496.html" class="nav-link">商品分类</a>
+                    <a href="page_34497.html" class="nav-link">商品规格</a>
+                    <a href="page_34500.html" class="nav-link">商品评价</a>
+                    <a href="page_34498.html" class="nav-link">商品品牌</a>
+                    <a href="page_34499.html" class="nav-link active">商品单位</a>
+                    <a href="page_34501.html" class="nav-link">商品参数</a>
+                    <a href="page_34502.html" class="nav-link">保障服务</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">👥 用户管理</div>
+                    <a href="page_34520.html" class="nav-link">用户管理</a>
+                    <a href="page_34521.html" class="nav-link">用户运营</a>
+                    <a href="page_34522.html" class="nav-link">优惠券</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📋 订单管理</div>
+                    <a href="page_34525.html" class="nav-link">订单发货</a>
+                    <a href="page_34526.html" class="nav-link">订单退款</a>
+                    <a href="page_34527.html" class="nav-link">订单打印</a>
+                    <a href="page_34528.html" class="nav-link">订单提醒</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💬 客服管理</div>
+                    <a href="page_34530.html" class="nav-link">客服功能</a>
+                    <a href="page_34531.html" class="nav-link">客服接待</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🎁 营销管理</div>
+                    <a href="page_34533.html" class="nav-link">抽奖</a>
+                    <a href="page_34534.html" class="nav-link">礼品卡</a>
+                    <a href="page_34535.html" class="nav-link">拼团</a>
+                    <a href="page_34536.html" class="nav-link">秒杀</a>
+                    <a href="page_34537.html" class="nav-link">砍价</a>
+                    <a href="page_34538.html" class="nav-link">积分</a>
+                    <a href="page_34539.html" class="nav-link">每日签到</a>
+                    <a href="page_34540.html" class="nav-link">付费会员</a>
+                    <a href="page_34541.html" class="nav-link">优惠套餐</a>
+                    <a href="page_34542.html" class="nav-link">余额充值</a>
+                    <a href="page_34543.html" class="nav-link">优惠活动</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📝 内容管理</div>
+                    <a href="page_34548.html" class="nav-link">社区</a>
+                    <a href="page_34549.html" class="nav-link">文章</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📺 直播管理</div>
+                    <a href="page_34550.html" class="nav-link">直播前准备</a>
+                    <a href="page_34551.html" class="nav-link">直播功能</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💰 分销管理</div>
+                    <a href="page_34554.html" class="nav-link">分销员申请</a>
+                    <a href="page_34555.html" class="nav-link">分销介绍</a>
+                    <a href="page_34556.html" class="nav-link">分销配置</a>
+                    <a href="page_34557.html" class="nav-link">分销等级</a>
+                    <a href="page_34558.html" class="nav-link">分销员管理</a>
+                    <a href="page_34559.html" class="nav-link">佣金提现</a>
+                    <a href="page_34560.html" class="nav-link">团队管理</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💵 财务管理</div>
+                    <a href="page_34562.html" class="nav-link">财务操作</a>
+                    <a href="page_34563.html" class="nav-link">财务记录</a>
+                    <a href="page_34564.html" class="nav-link">佣金记录</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🎨 商城装修</div>
+                    <a href="page_34566.html" class="nav-link">主页装修</a>
+                    <a href="page_34567.html" class="nav-link">商品详情</a>
+                    <a href="page_34568.html" class="nav-link">个人中心</a>
+                    <a href="page_34569.html" class="nav-link">商品分类</a>
+                    <a href="page_34571.html" class="nav-link">主题风格</a>
+                    <a href="page_34572.html" class="nav-link">PC页面</a>
+                    <a href="page_34573.html" class="nav-link">系统表单</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📱 移动端商家</div>
+                    <a href="page_34576.html" class="nav-link">商家管理开关</a>
+                    <a href="page_34577.html" class="nav-link">工作台模块</a>
+                    <a href="page_34578.html" class="nav-link">商品管理</a>
+                    <a href="page_34579.html" class="nav-link">订单管理</a>
+                    <a href="page_34580.html" class="nav-link">扫码核销</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">⚙️ 商城设置</div>
+                    <a href="page_34585.html" class="nav-link">系统设置</a>
+                    <a href="page_34586.html" class="nav-link">同城配送</a>
+                    <a href="page_34589.html" class="nav-link">支付设置</a>
+                    <a href="page_34590.html" class="nav-link">交易设置</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🔌 应用设置</div>
+                    <a href="page_34595.html" class="nav-link">服务号</a>
+                    <a href="page_34596.html" class="nav-link">小程序</a>
+                    <a href="page_34597.html" class="nav-link">PC</a>
+                    <a href="page_34598.html" class="nav-link">APP</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🔗 第三方接口</div>
+                    <a href="page_34600.html" class="nav-link">一号通配置</a>
+                    <a href="page_34601.html" class="nav-link">小票打印</a>
+                    <a href="page_34603.html" class="nav-link">物流查询</a>
+                    <a href="page_34606.html" class="nav-link">短信</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🏢 企业微信</div>
+                    <a href="page_34608.html" class="nav-link">客户管理</a>
+                    <a href="page_34609.html" class="nav-link">客户群运营</a>
+                    <a href="page_34610.html" class="nav-link">企业微信设置</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🏭 供应商</div>
+                    <a href="page_34612.html" class="nav-link">供应商申请</a>
+                    <a href="page_34613.html" class="nav-link">供应商管理</a>
+                    <a href="page_34614.html" class="nav-link">供应商财务</a>
+                    <a href="page_34616.html" class="nav-link">供应商后台</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📦 库存管理</div>
+                    <a href="page_34626.html" class="nav-link">入库管理</a>
+                    <a href="page_34627.html" class="nav-link">出库管理</a>
+                    <a href="page_34628.html" class="nav-link">库存查询</a>
+                    <a href="page_34629.html" class="nav-link">库存盘点</a>
+                </div>
+            </div>
+        </div>
+    <div class="main-content">
+    <div class="container">
+        <div class="header">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索全站内容..." onkeyup="handleSearch(event)">
+                <button onclick="performSearch()">🔍</button>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+            <a href="../index.html" class="back-link" style="color: #191919;">← 返回目录</a>
+            <h1>会员电商系统订单发货 - DANBAOLAI文档</h1>
+        </div>
+        <div class="content">
+            
+                  <h3 id="h3--"><a name="一、功能介绍" class="reference-link"></a><span class="header-link octicon octicon-link"></span>一、功能介绍</h3><p>订单发货是订单模块的主要功能，包含单个订单发货、批量发货、电子面单打印、分单发货、订单核销等功能</p>
+<h3 id="h3--"><a name="二、操作流程" class="reference-link"></a><span class="header-link octicon octicon-link"></span>二、操作流程</h3><p>商城 ＞ 订单列表<br><img src="images/1c2d4b2f02b0367df9f31defaf174b79.png" alt=""></p>
+<h3 id="h3--"><a name="三、功能说明" class="reference-link"></a><span class="header-link octicon octicon-link"></span>三、功能说明</h3><h4 id="h4-1-"><a name="1、修改订单价格" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1、修改订单价格</h4><p>订单状态为【未支付】的订单。可于订单详情修改订单的实付款金额和赠送积分数（用户端实付款会变为修改后的金额）<br><img src="images/69cd0e2d3ab75a4dac4b1de390e63e4a.png" alt=""><br><img src="images/cf80904c057fa90ac0710524c5d5314c.png" alt=""><br><img src="images/45b8509a58ff4ec5810df31e3900bbd0.png" alt=""></p>
+<h4 id="h4-2-"><a name="2、 订单发送货" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2、 订单发送货</h4><h5 id="h5-a-"><a name="a、 订单发货" class="reference-link"></a><span class="header-link octicon octicon-link"></span>a、 订单发货</h5><p>选择物流公司，填写快递单号<br>此功能适用于线下手动发货，发完之后在后台手动录入发货的单号<br><img src="images/df3f2f01212be7a0b20891d6d23d8ace.png" alt=""></p>
+<h5 id="h5-b-"><a name="b、 电子面单打印" class="reference-link"></a><span class="header-link octicon octicon-link"></span>b、 电子面单打印</h5><pre><code>电子面单打印功能，主要适用于订单较多，不方便单个录入的使用场景
+比如电商直播订单较多时，就需要使用电子面单打印功能，有效节省人力及提高发货效率
+系统中使用此功能，需要开通一号通及配置电子面单打印机
+</code></pre><p>开通一号通：设置 ＞ 一号通管理 ＞ 电子面单<br>配置电子面单打印机：设置 ＞ 接口设置 ＞ 电子面单</p>
+<h5 id="h5-c-"><a name="c、订单送货" class="reference-link"></a><span class="header-link octicon octicon-link"></span>c、订单送货</h5><p>选择配送员，完成发货<br>此功能适用于商城有自己的配送员，自己负责发货，如经营同城配送模式<br><img src="images/54c70792fa33e351640efd0df4cc96b1.png" alt=""></p>
+<h5 id="h5-d-"><a name="d、无需配送" class="reference-link"></a><span class="header-link octicon octicon-link"></span>d、无需配送</h5><p>无需填写物流信息，后台填写备注后用户的订单有展示<br>此功能适用于虚拟的商品发货，通过备注信息的方式发货<br><img src="images/6f0ea55b4db97c429f69a41c366238c4.png" alt=""></p>
+<h4 id="h4-3-"><a name="3、 分单发货" class="reference-link"></a><span class="header-link octicon octicon-link"></span>3、 分单发货</h4><p>订单中有多件商品，且需要在不同的地方发货时，可以选择分单发货<br>可选择订单中的商品单个发货或组合发货<br>分单发货后，会生成不同的子订单，用户退款时可选择子订单单独退款<br><img src="images/23bd1a3c885a5a996dca43f71640b7c2.png" alt=""></p>
+<h4 id="h4-4-"><a name="4、订单核销" class="reference-link"></a><span class="header-link octicon octicon-link"></span>4、订单核销</h4><p>核销订单基本上归属于平台下的一个门店，仍保留有订单的核销功能<br>可输入核销码核销，也可以在订单上点击“立即核销“按钮进行核销<br><img src="images/878505d10091e79c2c0b338c3a8e7b44.png" alt=""></p>
+<h4 id="h4-5-"><a name="5、批量发货" class="reference-link"></a><span class="header-link octicon octicon-link"></span>5、批量发货</h4><h5 id="h5-a-"><a name="a、手动批量发货" class="reference-link"></a><span class="header-link octicon octicon-link"></span>a、手动批量发货</h5><p>第一步：导出发货单<br>第二步：下载物流公司对照表<br>第三步：在发货单手动填写上待发货订单对应的物流单号，物流公司可在“物流公司对照表“查看<br>第四步：选择手动批量发货，导入填写的发货单<br>第五步：完成导入，批量发货成功<br><img src="images/b9bb66de1ebc90354cef0af89f42345d.png" alt=""><br><img src="images/5cb99eb34da42f6ca98c39e45f6afe72.png" alt=""></p>
+<h5 id="h5-b-"><a name="b、自动批量发货" class="reference-link"></a><span class="header-link octicon octicon-link"></span>b、自动批量发货</h5><p>第一步：选中需发货的订单<br>第二步：选择打印电子面单/送货/虚拟发货，三种方式选择其一即可<br>第三步：批量发货完成<br><img src="images/bc8c0443aebd66b764d7ff718d0314fc.png" alt=""></p>
+<h4 id="h4-6-"><a name="6、立即退款" class="reference-link"></a><span class="header-link octicon octicon-link"></span>6、立即退款</h4><p>用户不想走售后退款流程，与商家协商，由商家主动发起退款操作。【除待付款外其他状态均可操作立即退款】<br>当订单中只有一个商品时，退款数量默认为该商品的实付款金额，可手动调整小于该金额，不可超出。<br><img src="images/09f14000117d8df2b18e9aa8565fb487.png" alt=""><br>当订单中有多个商品时，可分单退款。<br>开启分单退款后，退款金额为该订单所有可操作退款商品实付款之和（已操作退款或用户申请售后且仍在售后流程中的商品不可立即退款）；默认商品全部勾选，可勾选本次需退款的商品，可调整本次退款商品的数量。可调整退款金额，不可大于实付款。<br><img src="images/ccfa0d9753caa4ad3dc5a50079bbd492.png" alt=""></p>
+                
+        </div>
+        <div class="footer">
+            <p>DANBAOLAI 使用手册</p>
+        </div>
+    </div>
+</div>
+
+    <script>
+        let searchData = [];
+        let searchIndex = 0;
+        
+        async function loadSearchData() {
+            try {
+                const response = await fetch('search_index.json');
+                searchData = await response.json();
+            } catch (e) {
+                console.log('搜索数据加载失败');
+            }
+        }
+        
+        loadSearchData();
+        
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            } else if (event.key === 'Escape') {
+                hideResults();
+            }
+        }
+        
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!query) {
+                hideResults();
+                return;
+            }
+            
+            const results = [];
+            
+            for (let item of searchData) {
+                const titleMatch = item.title.toLowerCase().includes(query);
+                const contentMatch = item.content.toLowerCase().includes(query);
+                
+                if (titleMatch || contentMatch) {
+                    let snippet = '';
+                    if (contentMatch) {
+                        const idx = item.content.toLowerCase().indexOf(query);
+                        const start = Math.max(0, idx - 30);
+                        const end = Math.min(item.content.length, idx + query.length + 50);
+                        snippet = (start > 0 ? '...' : '') + 
+                                  item.content.substring(start, end) + 
+                                  (end < item.content.length ? '...' : '');
+                    } else {
+                        snippet = item.content.substring(0, 80) + '...';
+                    }
+                    
+                    const highlighted = snippet.replace(
+                        new RegExp(query, 'gi'),
+                        match => '<mark>' + match + '</mark>'
+                    );
+                    
+                    results.push({
+                        title: item.title,
+                        url: item.url,
+                        snippet: highlighted
+                    });
+                    
+                    if (results.length >= 20) break;
+                }
+            }
+            
+            if (results.length > 0) {
+                resultsDiv.innerHTML = results.map(r => 
+                    '<div class="search-item" onclick="goToResult(\'' + r.url + '\')">' +
+                    '<div class="search-item-title">' + r.title + '</div>' +
+                    '<div class="search-item-content">' + r.snippet + '</div>' +
+                    '</div>'
+                ).join('');
+            } else {
+                resultsDiv.innerHTML = '<div class="no-results">未找到相关内容</div>';
+            }
+            
+            resultsDiv.classList.add('show');
+        }
+        
+        function goToResult(url) {
+            window.location.href = url;
+        }
+        
+        function hideResults() {
+            document.getElementById('searchResults').classList.remove('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-box')) {
+                hideResults();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员电商系统商品添加 - DANBAOLAI文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-header h2 {
+            color: white;
+            font-size: 18px;
+        }
+        .sidebar-content {
+            padding: 10px 0;
+        }
+        .nav-section {
+            margin-bottom: 5px;
+        }
+        .nav-title {
+            color: #4fc3f7;
+            font-size: 13px;
+            padding: 10px 20px 5px 20px;
+            font-weight: bold;
+        }
+        .nav-link {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 6px 20px 6px 30px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .nav-link.active {
+            background: white;
+            color: black;
+            text-decoration: underline;
+        }
+        .nav-link.active-old {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+            border-left: 3px solid #4fc3f7;
+        }
+        .main-content {
+            margin-left: 240px;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 30px 40px;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .header {
+            background: white;
+            color: #191919;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-box input:focus {
+            border-color: #4fc3f7;
+        }
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .search-results {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .search-item:hover {
+            background: #f5f7fa;
+        }
+        .search-item:last-child {
+            border-bottom: none;
+        }
+        .search-item-title {
+            font-weight: bold;
+            color: #191919;
+            margin-bottom: 5px;
+        }
+        .search-item-content {
+            font-size: 12px;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .search-item-content mark {
+            background: #ffeb3b;
+            padding: 0 2px;
+        }
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: #999;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #191919;
+        }
+        .back-link {
+            display: inline-block;
+            color: #4fc3f7;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .content h3 {
+            color: #1a1a2e;
+            font-size: 20px;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4fc3f7;
+        }
+        .content h4 {
+            color: #333;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+        }
+        .content p {
+            margin: 10px 0;
+            color: #555;
+        }
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .content ul, .content ol {
+            margin: 10px 0 10px 25px;
+        }
+        .content li {
+            margin: 5px 0;
+        }
+        .content strong {
+            color: #1a1a2e;
+        }
+        .content code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .content th, .content td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .content th {
+            background: #f5f7fa;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>📖 使用手册</h2>
+            </div>
+            <div class="sidebar-content">
+                <div class="nav-section">
+                    <div class="nav-title">📦 商品管理</div>
+                    <a href="page_34495.html" class="nav-link active">商品添加</a>
+                    <a href="page_34600.html" class="nav-link">商品采集</a>
+                    <a href="page_34496.html" class="nav-link">商品分类</a>
+                    <a href="page_34497.html" class="nav-link">商品规格</a>
+                    <a href="page_34500.html" class="nav-link">商品评价</a>
+                    <a href="page_34498.html" class="nav-link">商品品牌</a>
+                    <a href="page_34499.html" class="nav-link">商品单位</a>
+                    <a href="page_34501.html" class="nav-link">商品参数</a>
+                    <a href="page_34502.html" class="nav-link">保障服务</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">👥 用户管理</div>
+                    <a href="page_34520.html" class="nav-link">用户管理</a>
+                    <a href="page_34521.html" class="nav-link">用户运营</a>
+                    <a href="page_34522.html" class="nav-link">优惠券</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📋 订单管理</div>
+                    <a href="page_34525.html" class="nav-link">订单发货</a>
+                    <a href="page_34526.html" class="nav-link">订单退款</a>
+                    <a href="page_34527.html" class="nav-link">订单打印</a>
+                    <a href="page_34528.html" class="nav-link">订单提醒</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💬 客服管理</div>
+                    <a href="page_34530.html" class="nav-link">客服功能</a>
+                    <a href="page_34531.html" class="nav-link">客服接待</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🎁 营销管理</div>
+                    <a href="page_34533.html" class="nav-link">抽奖</a>
+                    <a href="page_34534.html" class="nav-link">礼品卡</a>
+                    <a href="page_34535.html" class="nav-link">拼团</a>
+                    <a href="page_34536.html" class="nav-link">秒杀</a>
+                    <a href="page_34537.html" class="nav-link">砍价</a>
+                    <a href="page_34538.html" class="nav-link">积分</a>
+                    <a href="page_34539.html" class="nav-link">每日签到</a>
+                    <a href="page_34540.html" class="nav-link">付费会员</a>
+                    <a href="page_34541.html" class="nav-link">优惠套餐</a>
+                    <a href="page_34542.html" class="nav-link">余额充值</a>
+                    <a href="page_34543.html" class="nav-link">优惠活动</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📝 内容管理</div>
+                    <a href="page_34548.html" class="nav-link">社区</a>
+                    <a href="page_34549.html" class="nav-link">文章</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📺 直播管理</div>
+                    <a href="page_34550.html" class="nav-link">直播前准备</a>
+                    <a href="page_34551.html" class="nav-link">直播功能</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💰 分销管理</div>
+                    <a href="page_34554.html" class="nav-link">分销员申请</a>
+                    <a href="page_34555.html" class="nav-link">分销介绍</a>
+                    <a href="page_34556.html" class="nav-link">分销配置</a>
+                    <a href="page_34557.html" class="nav-link">分销等级</a>
+                    <a href="page_34558.html" class="nav-link">分销员管理</a>
+                    <a href="page_34559.html" class="nav-link">佣金提现</a>
+                    <a href="page_34560.html" class="nav-link">团队管理</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">💵 财务管理</div>
+                    <a href="page_34562.html" class="nav-link">财务操作</a>
+                    <a href="page_34563.html" class="nav-link">财务记录</a>
+                    <a href="page_34564.html" class="nav-link">佣金记录</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🎨 商城装修</div>
+                    <a href="page_34566.html" class="nav-link">主页装修</a>
+                    <a href="page_34567.html" class="nav-link">商品详情</a>
+                    <a href="page_34568.html" class="nav-link">个人中心</a>
+                    <a href="page_34569.html" class="nav-link">商品分类</a>
+                    <a href="page_34571.html" class="nav-link">主题风格</a>
+                    <a href="page_34572.html" class="nav-link">PC页面</a>
+                    <a href="page_34573.html" class="nav-link">系统表单</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📱 移动端商家</div>
+                    <a href="page_34576.html" class="nav-link">商家管理开关</a>
+                    <a href="page_34577.html" class="nav-link">工作台模块</a>
+                    <a href="page_34578.html" class="nav-link">商品管理</a>
+                    <a href="page_34579.html" class="nav-link">订单管理</a>
+                    <a href="page_34580.html" class="nav-link">扫码核销</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">⚙️ 商城设置</div>
+                    <a href="page_34585.html" class="nav-link">系统设置</a>
+                    <a href="page_34586.html" class="nav-link">同城配送</a>
+                    <a href="page_34589.html" class="nav-link">支付设置</a>
+                    <a href="page_34590.html" class="nav-link">交易设置</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🔌 应用设置</div>
+                    <a href="page_34595.html" class="nav-link">服务号</a>
+                    <a href="page_34596.html" class="nav-link">小程序</a>
+                    <a href="page_34597.html" class="nav-link">PC</a>
+                    <a href="page_34598.html" class="nav-link">APP</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🔗 第三方接口</div>
+                    <a href="page_34600.html" class="nav-link">一号通配置</a>
+                    <a href="page_34601.html" class="nav-link">小票打印</a>
+                    <a href="page_34603.html" class="nav-link">物流查询</a>
+                    <a href="page_34606.html" class="nav-link">短信</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🏢 企业微信</div>
+                    <a href="page_34608.html" class="nav-link">客户管理</a>
+                    <a href="page_34609.html" class="nav-link">客户群运营</a>
+                    <a href="page_34610.html" class="nav-link">企业微信设置</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🏭 供应商</div>
+                    <a href="page_34612.html" class="nav-link">供应商申请</a>
+                    <a href="page_34613.html" class="nav-link">供应商管理</a>
+                    <a href="page_34614.html" class="nav-link">供应商财务</a>
+                    <a href="page_34616.html" class="nav-link">供应商后台</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📦 库存管理</div>
+                    <a href="page_34626.html" class="nav-link">入库管理</a>
+                    <a href="page_34627.html" class="nav-link">出库管理</a>
+                    <a href="page_34628.html" class="nav-link">库存查询</a>
+                    <a href="page_34629.html" class="nav-link">库存盘点</a>
+                </div>
+            </div>
+        </div>
+    <div class="main-content">
+    <div class="container">
+        <div class="header">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索全站内容..." onkeyup="handleSearch(event)">
+                <button onclick="performSearch()">🔍</button>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+            <a href="../index.html" class="back-link" style="color: #191919;">← 返回目录</a>
+            <h1>会员电商系统商品添加 - DANBAOLAI文档</h1>
+        </div>
+        <div class="content">
+            
+                  <h3 id="h3--"><a name="一、功能介绍" class="reference-link"></a><span class="header-link octicon octicon-link"></span>一、功能介绍</h3><p>商品模块是商城的重要模块，商城的运营、活动等均围绕商品展开，添加商品也是运营的第一步</p>
+<h3 id="h3--"><a name="二、操作流程" class="reference-link"></a><span class="header-link octicon octicon-link"></span>二、操作流程</h3><p>商城 ＞ 商品列表 ＞ 添加商品<br><img src="images/2cec5372a23bc2cbed1c4fc44d38a6e1.png" alt=""></p>
+<h3 id="h3--"><a name="三、功能说明" class="reference-link"></a><span class="header-link octicon octicon-link"></span>三、功能说明</h3><h4 id="h4--"><a name="⚠️ 提前设置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>⚠️ 提前设置</h4><p> <strong>商品分类:</strong>商品 ＞ 商品分类<br> <strong>商品规格:</strong>商品 ＞ 商品规格<br>  <strong>商品品牌:</strong>商品 ＞ 商品品牌<br>   <strong>商品单位:</strong>商品 ＞ 商品单位<br><strong> 商品运费模板:</strong>设置 ＞ 配送设置 ＞ 运费模板</p>
+<h3 id="h3--"><a name="四、普通商品添加" class="reference-link"></a><span class="header-link octicon octicon-link"></span>四、普通商品添加</h3><p><img src="images/197241365036824bec47325f21428785.png" alt=""><br>商品添加可分为基础信息、规格库存、商品详情、物流设置、营销设置和其他设置。每个模块对应设置商品不同的信息。以下将按照商品添加的步骤对每个模块逐一说明。</p>
+<h4 id="h4-1-"><a name="1、基础信息" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1、基础信息</h4><p><strong> 商品类型：</strong>商品分为普通商品、卡密商品、虚拟商品(虚拟/卡密商品不能加入预售，但可以作为活动商品)</p>
+<pre><code>普通商品：主要适合需要快递发货的商品，例如服装、生鲜等
+卡密/网盘：主要适合自动发货的商品，例如游戏点卡、网盘链接等。卡密商品不可加入购物车，需直接购买
+虚拟商品：主要适用于不需要物流快递，但是需要手动发货的虚拟物品，例如网址链接、账号信息等
+次卡商品：主要用户可多次核销的商品，例如理发卡、美容卡等
+</code></pre><p><strong>商品分类：</strong>选择已有分类或者快捷新增分类；可设置多个分类。<br><strong>商品名称：</strong>名称格式尽量统一，字符数量相差不要过大，因为字符也会影响美观度<br><strong>商品品牌：</strong>选择已有品牌或者快捷新增品牌，单选。添加品牌后，移动端商品列表页可通过品牌筛选到该商品。<br><strong>单位：</strong>选择已有单位或者快捷新增单位，单选。<br><strong>商品编码：</strong>需与erp中该商品的编码相同，方便对接erp。可为空<br><strong>商品条码：</strong>商品吊牌或标签上的条码，可用于店家扫码搜索商品或扫码加入购物车。<br><strong>商品轮播图：</strong>最多可添加10张，图片支持常见格式：jpg、png，单张图片不能超过2M（系统内所有上传图片附件都不能超过2M）。<br><strong>主图视频：</strong></p>
+<pre><code>外部链接视频：**视频连接需要可以直接打开播放，通常以.mp4 结尾
+本地上传视频：**本地上传需先配置云储存，不支持直接上传到服务器
+</code></pre><p><strong>上架设置：</strong>分为立即上架、定时上架、放入仓库<br><strong>定时下架：</strong>开启定时下架后，系统会在设置时间下架该商品。下架时间需晚于开售时间，商品才能定时开售。<br><img src="images/d5876604a294569e7ab833dbaf521a39.png" alt=""></p>
+<h4 id="h4-2-"><a name="2、规格库存" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2、规格库存</h4><h5 id="h5--strong-strong-"><a name="①、单规格" class="reference-link"></a><span class="header-link octicon octicon-link"></span><strong>①、单规格</strong></h5><p>适用于仅有一种规格的商品价格，库存，重量，体积的设置<br><strong>图片：</strong>添加单规格图片<br><strong>售价：</strong>该商品当前售卖的价格<br><strong>成本价：</strong>商品成本价格<br><strong>原价：</strong>商品原始价格，于商品详情页显示的划线价格<br><strong>库存：</strong>商品剩余数量<br><strong>商品条形码：</strong>设置商品条形码，可用于线下商店使用。PRO版此栏位无实际作用<br><strong>重量：</strong>计算运费时使用。（当运费模板中计费方式为按重量时，该商品会获取此处设置的重量来计算运费）<br><strong>体积：</strong>计算运费时使用。（当运费模板中计费方式为按体积时，该商品会获取此处设置的体积来计算运费）<br><img src="images/0f0fadf988f91e81b546df921edf70b2.png" alt=""></p>
+<h5 id="h5--strong-strong-"><a name="②、多规格" class="reference-link"></a><span class="header-link octicon octicon-link"></span><strong>②、多规格</strong></h5><p>使用于有多种商品规格的价格，库存，重量，体积的设置。<br><strong>选择规格模板：</strong>可选择已维护好的商品规格（可删除或添加规格值），或者快捷新增规格。<br><strong>添加新规格：</strong>支持手动添加规格项<br><strong>修改规格：</strong>可点击白色框修改规格项、规格值名称；支持拖拽修改规格项、规格值顺序<br><strong>添加规格图：</strong></p>
+<pre><code>多规格内仅支持一个规格项添加规格图。勾选后，其他规格项添加规格图按钮将置灰
+勾选添加规格图后，该规格项的所有规格值均需要上传图片
+修改规格图后，支持将该规格关联属性的图片统一更换为该图片
+</code></pre><p><strong>批量设置：</strong>当多个规格价格/库存/图片/重量/体积等信息一致时，可批量设置。<br><strong>商品属性：</strong>可逐一设置每个规格的价格/库存/图片/重量/体积等信息。<br><img src="images/665fb660d3d9c1b153a58e7672c0d1fe.png" alt=""></p>
+<h4 id="h4-3-"><a name="3、商品详情" class="reference-link"></a><span class="header-link octicon octicon-link"></span>3、商品详情</h4><p>商品详情可添加图片、文字、视频<br>⚠️ 注：内容视频与主图视频一样，支持外链视频或本地配置云储存后上传</p>
+<h4 id="h4-4-"><a name="4、物流设置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>4、物流设置</h4><p><strong>物流方式：</strong>分为快递（支持快递发货）,到店自提（用户到店核销订单）<br><strong>运费设置：</strong>可设置包邮（该商品包邮，无需支付运费）；固定邮费（购买该商品需固定支付多少邮费）；运费模板（按照商品件数，重量，体积的不同设置运费的计算方式，购买该商品时按照运费模板计算订单的运费）<br><img src="images/70de9bc241ff719da855ed6016a216fe.png" alt=""></p>
+<h4 id="h4-5-"><a name="5、营销设置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>5、营销设置</h4><p><strong>已售数量：</strong>可设置商品已售数量。前端的商品销量为此处设置的已售数量+实际销量<br><strong>排序：</strong>商品在商品列表中的次序。数值越大越靠前<br><strong>赠送积分：</strong>维护购买该商品赠送的积分数量<br><strong>赠送优惠券：</strong>选择购买商品赠送的优惠券，此处显示类型为后台赠送的优惠券<br><strong>关联用户标签：</strong>用户购买该商品后，为其添加的标签；可多选相关的用户标签，精准营销<br><strong>仅会员可见：</strong>开启后，该商品仅付费会员可以查看并购买<br><strong>是否限购：</strong>限制用户购买数量。分为单次限购（限制每次下单最多购买的数量）和长期限购（是限制一个用户总共可以购买的数量）<br><strong>起购数量：</strong>设置商品最低起购数量，用户购买时不可低于该数量。且起购数量不可大于限购数量。<br><strong>预售商品：</strong>设置商品预售时间段以及预计发货时间。<br><strong>活动结束后状态：</strong>设置预售活动结束后，该预售商品的状态。选择上架时，预售活动结束后该上坡会作为普通商品继续售卖，下架时，该商品仍为预售商品，放在仓库。<br><strong>优品推荐：</strong>控制该商品是否作为优品推荐商品显示在其它商品详情页的优品推荐模块。<br><strong>活动优先级：</strong>商品参与这些活动时，商品详情页的活动标签显示顺序。<br><strong>选择优品推荐商品：</strong>设置该商品商品详情页优品推荐模块显示的推荐商品。此处不设置商品时，该商品商品详情页优品推荐模块显示开启了优品推荐的商品。<br><img src="images/6473ba4f9a6cd093d706c505fc5b1397.png" alt=""></p>
+<h4 id="h4-6-"><a name="6、其他设置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>6、其他设置</h4><p><strong>商品关键字：</strong>设置商品关键字，用户可搜索关键字快速查找该商品。多个关键字用英文逗号分开，关键字会影响用户前台搜索商品排名<br><strong>商品口令：</strong>可将淘宝、抖音等平台的口令复制在此处，用户点击商城商品详情后会自动复制口令，随后打开淘宝等平台会自动弹出口令弹窗<br><strong>分销文案：</strong>自动带出商品名称，支持编辑。于移动端商品详情页分销模块展示。<br><strong>商品推荐图：</strong>非必填，商品分类中商品大图显示时，显示的图片为此处设置。建议上传图片比例为5：2<br><strong>服务保障：</strong>可于服务保障页面维护服务保障信息，此处勾选后可于前端商品详情页显示。<br><strong>商品参数：</strong>可于商品参数页面维护参数模板，此处选择商品模板后，可添加/删除模板中的参数，模板中最少需剩余一个参数信息。<br><strong>自定义留言：</strong>可选择系统表单中维护的表单模板。路径：装修—&gt;系统表单<br><img src="images/b12098da4cf66fff913b3b71bcf5aa06.png" alt=""></p>
+<h3 id="h3--"><a name="五、卡密商品添加（仅说明区别于普通商品之处）" class="reference-link"></a><span class="header-link octicon octicon-link"></span>五、卡密商品添加（仅说明区别于普通商品之处）</h3><p>⚠此处仅说明与普通商品有区别的设置</p>
+<h4 id="h4-1-"><a name="1、规格库存" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1、规格库存</h4><p>卡密商品设置规格信息时，可维护卡密账号。<br><strong>库存：</strong>卡密商品无需维护库存。可添加多张卡密<br><strong>单规格：</strong>可点击添加单规格商品卡密信息<br><strong>多规格：</strong>可批量添加多个规格的卡密信息，可为商品的每个规格单独添加卡密信息<br><img src="images/f890b9b06517a91ef227567f57f15cb0.png" alt=""><br><img src="images/f962d01ec7fa7c36e6fe0845ace1b23a.png" alt=""></p>
+<h5 id="h5--strong-strong-"><a name="①固定卡密" class="reference-link"></a><span class="header-link octicon octicon-link"></span><strong>①固定卡密</strong></h5><p><strong>固定卡密：</strong>不同的订单会收到一样的卡密信息<br><strong>卡密信息：</strong>填写给用户发送的卡密信息。用户支付后，于订单详情页显示卡密信息。<br><strong>件数：</strong>此处的件数为库存数量。<br><img src="images/f133dcace31e12572bc95c03e38b45e1.png" alt=""></p>
+<h5 id="h5--strong-strong-"><a name="②一次性卡密" class="reference-link"></a><span class="header-link octicon octicon-link"></span><strong>②一次性卡密</strong></h5><p><strong>一次性卡密：</strong>不同的订单收到的卡密信息不一样。<br><strong>卡密：</strong>自定义卡密信息<br><strong>添加卡密：</strong>可添加多个卡密，添加的卡密数量为该卡密商品的库存。<br><img src="images/b9687717a5bcaa5020c74fad4b6aafab.png" alt=""><br><strong>卡密导入：</strong>点击下载卡密模板，于表格中维护卡号和卡密；维护完成后，点击导入卡密，将维护好的模板导入。即可批量添加卡密信息。<br><img src="images/830beaef6f18acd6180d5e135fa84426.png" alt=""></p>
+<h4 id="h4-2-"><a name="2、其他设置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2、其他设置</h4><p><strong>支持退款：</strong>卡密商品可设置是否支持退款。<br><img src="images/2ac668aeeda61e8cd9569c1fedc0bf69.png" alt=""><br><img src="images/9d3373d113c8092cc831281f53163320.png" alt=""></p>
+<h3 id="h3--"><a name="六、添加虚拟商品" class="reference-link"></a><span class="header-link octicon octicon-link"></span>六、添加虚拟商品</h3><p><strong>支持退款：</strong>虚拟商品可设置是否支持退款。<br><img src="images/6693a6701679012f9624a37181e46aff.png" alt=""><br><img src="images/d194dd91c16435349d10f2590a315e5a.png" alt=""></p>
+<h3 id="h3--"><a name="七、添加次卡" class="reference-link"></a><span class="header-link octicon octicon-link"></span>七、添加次卡</h3><h4 id="h4-1-"><a name="1、规格库存" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1、规格库存</h4><p><strong>核销次数：</strong>购买一件该商品可核销的次数<br><strong>核销时效：</strong><br>①永久有效：在未使用完核销次数前，都可使用该次卡商品。<br>②购买后几天有效：维护有效天数。有效期外不可核销该商品<br>③固定有效期：设置有效时间段，时间段外不可核销该商品。<br><img src="images/cbf456ea27b2db27f6f4d2a57713dfb2.png" alt=""><br><img src="images/7c373570d25540eef8bcc32f40fabe14.png" alt=""></p>
+<h4 id="h4-2-"><a name="2、其它设置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2、其它设置</h4><p><strong>支持退款：</strong>虚拟商品可设置是否支持退款。<br><img src="images/a9d97757918ca53078e35bfedad7d71d.png" alt=""></p>
+<h3 id="h3--"><a name="八、商品迁移" class="reference-link"></a><span class="header-link octicon octicon-link"></span>八、商品迁移</h3><p>支持批量导入导出商品信息。<br><img src="images/bf1564b055b9e6aa49e56a8a032a6197.png" alt=""><br><img src="images/86e1274341453adc6beb68c9c74d177b.png" alt=""></p>
+                
+        </div>
+        <div class="footer">
+            <p>DANBAOLAI 使用手册</p>
+        </div>
+    </div>
+</div>
+
+    <script>
+        let searchData = [];
+        let searchIndex = 0;
+        
+        async function loadSearchData() {
+            try {
+                const response = await fetch('search_index.json');
+                searchData = await response.json();
+            } catch (e) {
+                console.log('搜索数据加载失败');
+            }
+        }
+        
+        loadSearchData();
+        
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            } else if (event.key === 'Escape') {
+                hideResults();
+            }
+        }
+        
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!query) {
+                hideResults();
+                return;
+            }
+            
+            const results = [];
+            
+            for (let item of searchData) {
+                const titleMatch = item.title.toLowerCase().includes(query);
+                const contentMatch = item.content.toLowerCase().includes(query);
+                
+                if (titleMatch || contentMatch) {
+                    let snippet = '';
+                    if (contentMatch) {
+                        const idx = item.content.toLowerCase().indexOf(query);
+                        const start = Math.max(0, idx - 30);
+                        const end = Math.min(item.content.length, idx + query.length + 50);
+                        snippet = (start > 0 ? '...' : '') + 
+                                  item.content.substring(start, end) + 
+                                  (end < item.content.length ? '...' : '');
+                    } else {
+                        snippet = item.content.substring(0, 80) + '...';
+                    }
+                    
+                    const highlighted = snippet.replace(
+                        new RegExp(query, 'gi'),
+                        match => '<mark>' + match + '</mark>'
+                    );
+                    
+                    results.push({
+                        title: item.title,
+                        url: item.url,
+                        snippet: highlighted
+                    });
+                    
+                    if (results.length >= 20) break;
+                }
+            }
+            
+            if (results.length > 0) {
+                resultsDiv.innerHTML = results.map(r => 
+                    '<div class="search-item" onclick="goToResult(\'' + r.url + '\')">' +
+                    '<div class="search-item-title">' + r.title + '</div>' +
+                    '<div class="search-item-content">' + r.snippet + '</div>' +
+                    '</div>'
+                ).join('');
+            } else {
+                resultsDiv.innerHTML = '<div class="no-results">未找到相关内容</div>';
+            }
+            
+            resultsDiv.classList.add('show');
+        }
+        
+        function goToResult(url) {
+            window.location.href = url;
+        }
+        
+        function hideResults() {
+            document.getElementById('searchResults').classList.remove('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-box')) {
+                hideResults();
+            }
+        });
+    </script>
+</body>
+</html>
