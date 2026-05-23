@@ -5,18 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>会员电商系统客户群运营 - DANBAOLAI文档</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.8;
-        }
-        
+
         .sidebar {
             position: fixed;
             left: 0;
@@ -71,18 +60,8 @@
             color: black;
             text-decoration: underline;
         }
-        .nav-link.active-old {
-            background: rgba(79, 195, 247, 0.2);
-            color: #4fc3f7;
-            border-left: 3px solid #4fc3f7;
-        }
         .main-content {
             margin-left: 240px;
-        }
-        .container {
-            max-width: 100%;
-            margin: 0;
-            padding: 30px 40px;
         }
         @media (max-width: 768px) {
             .sidebar {
@@ -93,19 +72,6 @@
             }
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        .header {
-            background: white;
-            color: #191919;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-        }
-        
         .search-box {
             position: relative;
             margin-bottom: 15px;
@@ -181,83 +147,25 @@
             color: #999;
         }
 
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #191919;
-        }
-        .back-link {
-            display: inline-block;
-            color: #4fc3f7;
-            text-decoration: none;
-            margin-bottom: 15px;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        .content {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .content h3 {
-            color: #1a1a2e;
-            font-size: 20px;
-            margin: 25px 0 15px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4fc3f7;
-        }
-        .content h4 {
-            color: #333;
-            font-size: 16px;
-            margin: 20px 0 10px 0;
-        }
-        .content p {
-            margin: 10px 0;
-            color: #555;
-        }
-        .content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin: 15px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .content ul, .content ol {
-            margin: 10px 0 10px 25px;
-        }
-        .content li {
-            margin: 5px 0;
-        }
-        .content strong {
-            color: #1a1a2e;
-        }
-        .content code {
-            background: #f0f0f0;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: Consolas, monospace;
-        }
-        .content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        .content th, .content td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        .content th {
-            background: #f5f7fa;
-        }
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #999;
-            font-size: 12px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #333; line-height: 1.8; }
+        .container { max-width: 100%; margin: 0; padding: 30px 40px; }
+        .header { background: white; color: #191919; padding: 20px; margin-bottom: 30px; border-radius: 10px; }
+        .header h1 { font-size: 24px; margin-bottom: 10px; color: #191919; }
+        .back-link { display: inline-block; color: #191919; text-decoration: none; margin-bottom: 15px; }
+        .content { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .content h3 { color: #1a1a2e; font-size: 20px; margin: 25px 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #4fc3f7; }
+        .content h4 { color: #333; font-size: 16px; margin: 20px 0 10px 0; }
+        .content p { margin: 10px 0; color: #555; }
+        .content img { max-width: 100%; height: auto; border-radius: 5px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .content ul, .content ol { margin: 10px 0 10px 25px; }
+        .content li { margin: 5px 0; }
+        .content strong { color: #1a1a2e; }
+        .content code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: Consolas, monospace; }
+        .content table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .content th, .content td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .content th { background: #f5f7fa; }
+        .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -278,12 +186,15 @@
                     <a href="page_34499.html" class="nav-link">商品单位</a>
                     <a href="page_34501.html" class="nav-link">商品参数</a>
                     <a href="page_34502.html" class="nav-link">保障服务</a>
+                    <a href="page_34503.html" class="nav-link">商品标签</a>
+                    <a href="page_34504.html" class="nav-link">商品推荐</a>
                 </div>
                 <div class="nav-section">
                     <div class="nav-title">👥 用户管理</div>
                     <a href="page_34520.html" class="nav-link">用户管理</a>
                     <a href="page_34521.html" class="nav-link">用户运营</a>
                     <a href="page_34522.html" class="nav-link">优惠券</a>
+                    <a href="page_34524.html" class="nav-link">账号注销</a>
                 </div>
                 <div class="nav-section">
                     <div class="nav-title">📋 订单管理</div>
@@ -310,6 +221,10 @@
                     <a href="page_34541.html" class="nav-link">优惠套餐</a>
                     <a href="page_34542.html" class="nav-link">余额充值</a>
                     <a href="page_34543.html" class="nav-link">优惠活动</a>
+                    <a href="page_34544.html" class="nav-link">活动背景图</a>
+                    <a href="page_34545.html" class="nav-link">活动边框</a>
+                    <a href="page_34546.html" class="nav-link">好友送礼</a>
+                    <a href="page_34547.html" class="nav-link">自动化运营</a>
                 </div>
                 <div class="nav-section">
                     <div class="nav-title">📝 内容管理</div>
@@ -320,6 +235,7 @@
                     <div class="nav-title">📺 直播管理</div>
                     <a href="page_34550.html" class="nav-link">直播前准备</a>
                     <a href="page_34551.html" class="nav-link">直播功能</a>
+                    <a href="page_34552.html" class="nav-link">小程序直播</a>
                 </div>
                 <div class="nav-section">
                     <div class="nav-title">💰 分销管理</div>
@@ -343,24 +259,34 @@
                     <a href="page_34567.html" class="nav-link">商品详情</a>
                     <a href="page_34568.html" class="nav-link">个人中心</a>
                     <a href="page_34569.html" class="nav-link">商品分类</a>
+                    <a href="page_34570.html" class="nav-link">页面配置</a>
                     <a href="page_34571.html" class="nav-link">主题风格</a>
                     <a href="page_34572.html" class="nav-link">PC页面</a>
                     <a href="page_34573.html" class="nav-link">系统表单</a>
+                    <a href="page_34574.html" class="nav-link">悬浮按钮</a>
                 </div>
                 <div class="nav-section">
-                    <div class="nav-title">📱 移动端商家</div>
+                    <div class="nav-title">📱 移动端商家管理</div>
                     <a href="page_34576.html" class="nav-link">商家管理开关</a>
                     <a href="page_34577.html" class="nav-link">工作台模块</a>
                     <a href="page_34578.html" class="nav-link">商品管理</a>
                     <a href="page_34579.html" class="nav-link">订单管理</a>
                     <a href="page_34580.html" class="nav-link">扫码核销</a>
+                    <a href="page_34581.html" class="nav-link">售后维权</a>
+                    <a href="page_34582.html" class="nav-link">用户管理</a>
+                    <a href="page_34583.html" class="nav-link">代客下单</a>
                 </div>
                 <div class="nav-section">
                     <div class="nav-title">⚙️ 商城设置</div>
                     <a href="page_34585.html" class="nav-link">系统设置</a>
                     <a href="page_34586.html" class="nav-link">同城配送</a>
+                    <a href="page_34587.html" class="nav-link">商品设置</a>
+                    <a href="page_34588.html" class="nav-link">商城邮费</a>
                     <a href="page_34589.html" class="nav-link">支付设置</a>
                     <a href="page_34590.html" class="nav-link">交易设置</a>
+                    <a href="page_34591.html" class="nav-link">定时任务</a>
+                    <a href="page_34592.html" class="nav-link">政策协议</a>
+                    <a href="page_34593.html" class="nav-link">单据设置</a>
                 </div>
                 <div class="nav-section">
                     <div class="nav-title">🔌 应用设置</div>
@@ -372,8 +298,11 @@
                 <div class="nav-section">
                     <div class="nav-title">🔗 第三方接口</div>
                     <a href="page_34600.html" class="nav-link">一号通配置</a>
-                    <a href="page_34601.html" class="nav-link">小票打印</a>
+                    <a href="page_34601.html" class="nav-link">小票打印配置</a>
+                    <a href="page_34602.html" class="nav-link">采集商品配置</a>
                     <a href="page_34603.html" class="nav-link">物流查询</a>
+                    <a href="page_34604.html" class="nav-link">电子面单</a>
+                    <a href="page_34605.html" class="nav-link">地图配置</a>
                     <a href="page_34606.html" class="nav-link">短信</a>
                 </div>
                 <div class="nav-section">
@@ -387,7 +316,24 @@
                     <a href="page_34612.html" class="nav-link">供应商申请</a>
                     <a href="page_34613.html" class="nav-link">供应商管理</a>
                     <a href="page_34614.html" class="nav-link">供应商财务</a>
+                    <a href="page_34615.html" class="nav-link">供应商菜单设置</a>
                     <a href="page_34616.html" class="nav-link">供应商后台</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🛒 采购商</div>
+                    <a href="page_34617.html" class="active" class="nav-link">采购商说明</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🖥️ 商城硬件</div>
+                    <a href="page_34618.html" class="nav-link">商城硬件</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">📱 移动端UI鉴赏</div>
+                    <a href="page_34619.html" class="nav-link">移动端UI鉴赏</a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">🤖 商城AI</div>
+                    <a href="page_34620.html" class="nav-link">功能介绍</a>
                 </div>
                 <div class="nav-section">
                     <div class="nav-title">📦 库存管理</div>
@@ -395,10 +341,10 @@
                     <a href="page_34627.html" class="nav-link">出库管理</a>
                     <a href="page_34628.html" class="nav-link">库存查询</a>
                     <a href="page_34629.html" class="nav-link">库存盘点</a>
+                    <a href="page_34630.html" class="nav-link">出入库记录</a>
                 </div>
             </div>
         </div>
-    <div class="main-content">
     <div class="container">
         <div class="header">
             <div class="search-box">
@@ -406,17 +352,16 @@
                 <button onclick="performSearch()">🔍</button>
                 <div id="searchResults" class="search-results"></div>
             </div>
-            <a href="../index.html" class="back-link" style="color: #191919;">← 返回目录</a>
+            <a href="../index.html" class="back-link">← 返回目录</a>
             <h1>会员电商系统客户群运营 - DANBAOLAI文档</h1>
         </div>
         <div class="content">
-            <p>内容加载中...</p>
+            <p>采购商说明内容暂无</p>
         </div>
         <div class="footer">
             <p>DANBAOLAI 使用手册</p>
         </div>
     </div>
-</div>
 
     <script>
         let searchData = [];

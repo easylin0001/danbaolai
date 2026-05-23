@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+<title>会员电商系统Pro v4.0商品管理 - CRMEB文档</title>
+<meta
+  name="keywords"
+  content="会员电商系统Pro v4.0高性能、高并发、高可用的集SCRM会员管理、营销、分销、供应商、采购商为一体的高性能私域电商系统；以私域客户运营管理为核心，深入挖掘用户价值 会员电商系统Pro v4.0文档"
+/>
+<meta
+  name="description"
+  content="会员电商系统Pro v4.0商品管理,高性能、高并发、高可用的集SCRM会员管理、营销、分销、供应商、采购商为一体的高性能私域电商系统；以私域客户运营管理为核心，深入挖掘用户价值"
+/>
+<meta
+  property="og:description"
+  content="高性能、高并发、高可用的集SCRM会员管理、营销、分销、供应商、采购商为一体的高性能私域电商系统；以私域客户运营管理为核心，深入挖掘用户价值"
+/>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="会员电商系统Pro v4.0商品管理 - CRMEB文档" />
+
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <script crossorigin="anonymous" integrity="sha512-mIKH3M2bRlIyhG4tBEbJ8dn8t8JFlNJU2NXlJePgpQ72CK4jAYsZyCGFcASRGtPBbcAQhz67KTkA1Jw6Kizk9g==" src="//lib.baomitu.com/layui/2.7.6/layui.js"></script>
+    <script crossorigin="anonymous" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" src="https://lib.baomitu.com/jquery/3.6.0/jquery.js"></script>
+    <link crossorigin="anonymous" integrity="sha512-SSF+OBDODWTSIqOivYBOyOKQ93PBDevipJEUEWtkUbTt4v34rmgPcCXcBMolxZIJcuobcdqmYJlonjUBEbOzNw==" href="//lib.baomitu.com/layui/2.7.6/css/layui.css" rel="stylesheet">
+    <script src="/static/common/js/axios.js?version=23"></script>
+    <script src="/static/admin/js/help.js"></script>
+    <script src="/static/admin/js/request.js"></script>
+    <!--<script type="text/javascript" charset="UTF-8" src="https://cdn.wwads.cn/js/makemoney.js" async></script>-->
+
+
+
+<link
+  rel="stylesheet"
+  href="/static/admin/editor.md-master/css/editormd.css?version=23"
+/>
+<link
+  rel="stylesheet"
+  href="/static/admin/editor.md-master/css/editormd.logo.css?version=23"
+/>
+<link
+  rel="stylesheet"
+  href="/static/admin/editor.md-master/css/editormd.preview.css?version=23?1=88.6"
+/>
+<link rel="stylesheet" href="/static/common/element-ui.css?version=23" />
+<link rel="stylesheet" href="/static/index/css.css?version=23?1=88.4" />
+<link rel="stylesheet" href="/static/index/iconfont/iconfont.css?version=23" />
+<style>
+  .box .content .list .wholerow {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    user-select: none;
+    height: 30px;
+  }
+
+  .headerlist li {
+    min-width: 0;
+  }
+  .m-t-22 {
+    margin-top: 22px;
+  }
+</style>
+
+</head>
+
+<body>
+  <div class="box" id="details" v-cloak>
+    <div class="header">
+      <div class="left">
+        <a href="https://www.crmeb.com/" target="_blank"><img class="img" src="/static/dark_logo.png" /></a>
+        <div class="dividingLine"></div>
+        <a href="https://doc.crmeb.com/" target="_blank"><div class="helpDoc">帮助文档</div></a>
+      </div>
+
+      <!-- 移动端展示 -->
+      <div class="mobile-left" >
+         <button
+          class="layui-btn listbtn"
+          id="demo1"
+          style=""
+        >
+          会员电商系统Pro v4.0          <i class="layui-icon layui-icon-down layui-font-12"></i>
+        </button>
+
+          <div id="search">
+        <el-input
+          v-model="where.search"
+          @change="search"
+          size="small"
+          prefix-icon="el-icon-search"
+          placeholder="请输入你要搜索的内容"
+        ></el-input>
+      </div>
+
+      </div>
+
+      <div class="sign-right">
+        <div class="ayui-tab layui-tab-brief">
+          <ul class="layui-tab-title headerlist">
+            <li data-href="https://doc.crmeb.com">
+              <a href="https://doc.crmeb.com" target="_blank">首页</a>
+            </li>
+            <li v-for="(item,index) in menusList">
+              <el-dropdown trigger="hover" :key="index">
+                <span class="el-dropdown-link">
+                  <a style="display: unset;" :href="item.url" target="_blank">
+                    {{item.title}}
+                  </a>
+                  <i
+                    v-if="item.children"
+                    class="el-icon-arrow-down el-icon--right"
+                  ></i>
+                </span>
+                <el-dropdown-menu slot="dropdown" v-if="item.children">
+                  <el-dropdown-item v-for="el in item.children" :key="el.id || el.title">
+                    <a :href="el.url" target="_blank">{{el.title}}</a>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </li>
+          </ul>
+        </div>
+        <div class="signIn" v-if="!userInfo.uid" @click="loginFn()">登录</div>
+        <el-dropdown trigger="click" placement="" v-else>
+          <span class="el-dropdown-link">
+            <div class="user">
+              <img :src="userInfo.avatar" alt="" class="user-img" />
+              <div class="user-name">{{userInfo.nickname}}</div>
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </div>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="goUser">用户设置</el-dropdown-item>
+            <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+    </div>
+
+    <div class="header-menu">
+      <div style="display: flex;">
+          <button
+          class="layui-btn listbtn"
+          id="demo2"
+          style=""
+        >
+          会员电商系统Pro v4.0          <i class="layui-icon layui-icon-down layui-font-12"></i>
+        </button>
+
+        <div id="lists" onclick="shows()">
+          <i class="iconfont iconic_zhankai"></i>
+        </div>
+        <div id="lists2" onclick="shows2()">
+          <i class="iconfont iconic_shouqi"></i>
+        </div>
+
+        <div
+          class="fenge"
+          style=""
+        ></div>
+        <!-- 一级菜单 -->
+        <ul class="nav-container">
+          <li
+            v-for="(item,index) in wikiMenus"
+            :key="index"
+            class="nav-li"
+            :class="item.id==activeId?'active':''"
+            @click="clickOnTheMenu(item)"
+          >
+            {{item.name}}
+          </li>
+        </ul>
+      </div>
+      <div id="search">
+        <el-input
+          v-model="where.search"
+          @change="search"
+          size="small"
+         suffix-icon="el-icon-search"
+          placeholder="请输入你要搜索的内容"
+        ></el-input>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="menu-mask" onclick="shows()"></div>
+      <div class="content_left" id="contentLeft">
+        <div class="list" style="height: 100%;">
+          <div class="layui-panel">
+            <!-- <div class="el-menu-scroll mt26"> -->
+              <el-menu
+                :default-openeds="openedMenus"
+                :unique-opened="false"
+                :default-active="activeIndex"
+                class="el-menu-vertical-demo"
+                @open="openMenu"
+                @select="handleSelect"
+              >
+                <template v-for="menuItem in leftMenus">
+                  <template v-if="menuItem.children">
+                    <el-submenu
+                      :index="String(menuItem.id)"
+                      :key="menuItem.id"
+                      class="children"
+                      style="padding-left: 12px;"
+                    >
+                      <template slot="title">{{ menuItem.name }}</template>
+                      <menu-item
+                        :menu-item="subItem"
+                        v-for="subItem in menuItem.children"
+                        :key="subItem.id"
+                        :index="String(subItem.id)"
+                      />
+                    </el-submenu>
+                  </template>
+                  <template v-else>
+                    <el-menu-item
+                      :index="menuItem.index"
+                      style="padding-left: 40px;"
+                    >
+                      {{ menuItem.name }}
+                    </el-menu-item>
+                  </template>
+                </template>
+              </el-menu>
+            <!-- </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="content_right" id="contentRight">
+    
+        <!--<div style="width:100%"><a href='https://www.crmeb.com/user/goods_seckill/' target="_blank"><img style="width:100%;height:100%" src='/static/tp.jpg'></a></div>-->
+        <!--<div id="fenxiang"><i class="layui-icon">&#xe641;</i></div>-->
+
+        <template v-if="!isSearch">
+          <div class="box-content" id="contentContainer">
+          
+            <div class="box-content-count">
+              <div class="go-top" v-if="topShow" id="scrollTopBtn" @click="goTopFn">
+                <span class="iconfont iconic_top"></span>
+              </div>
+              <div class="title-flex">
+                <div class="title" v-if="cate_id"><img src="/static/iconImage/mulu.png" alt=""><h1>{{wikiTitle}}</h1></div>
+                <div class="title" v-else><img src="/static/iconImage/mulu.png" alt=""><h1>商品管理 </h1></div>
+                <!--复制链接，编辑文档-->
+                <div class="box-handle">
+                  <div class="handle-item" @click.stop="copyPageUrl()">
+                    <span class="iconfont iconicon_Link"></span>
+                    <span>复制链接</span>
+                  </div>
+                  <div class="handle-item item-line item-edit" v-if="isEdit" @click.stop="editPage()">
+                    <span class="iconfont iconic_edit"></span>
+                    <span>编辑文档</span>
+                  </div>
+                </div>
+              </div>
+              
+
+              <template v-if="cate_id && pid">
+                <div
+                  class="muludiv"
+                  v-show="(!wikiContentHtml || !wikiContent) &&  parentList.length"
+                >
+                  <ul class="mulu">
+                    <li v-for="item in parentList" >
+                      <a :href="'/pro_s/prov40/'+item.id">
+                        <h2 style="font-size: 16px;">{{item.name}}</h2>
+                        <i></i>
+                        <span class="time">{{item.update_time}}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div
+                  ref="editormd"
+                  class="markdown-body editormd-html-preview markdown-body-html"
+                  v-show="wikiContentHtml"
+                  v-html="wikiContentHtml"
+                ></div>
+                <div
+                  id="editormd"
+                  ref="editormd"
+                  v-show="wikiContent && !wikiContentHtml"
+                >
+                  <textarea
+                    ref="content"
+                    v-model="wikiContent"
+                    style="display: none;"
+                    name="test-editormd-markdown-doc"
+                  ></textarea>
+                </div>
+              </template>
+              <div id="editormd" ref="editormd" v-else>
+                                <div class="muludiv">
+                  <ul class="mulu">
+                                        <li>
+                      <a href="/pro_s/prov40/34495">
+                        <h2 style="font-size: 16px;">商品添加</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34496">
+                        <h2 style="font-size: 16px;">商品采集</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34493">
+                        <h2 style="font-size: 16px;">商品分类</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34494">
+                        <h2 style="font-size: 16px;">商品规格</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34497">
+                        <h2 style="font-size: 16px;">商品评价</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34564">
+                        <h2 style="font-size: 16px;">商品品牌</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34599">
+                        <h2 style="font-size: 16px;">商品单位</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34611">
+                        <h2 style="font-size: 16px;">商品参数</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34612">
+                        <h2 style="font-size: 16px;">保障服务</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34613">
+                        <h2 style="font-size: 16px;">商品标签</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:09</span>
+                      </a>
+                    </li>
+                                        <li>
+                      <a href="/pro_s/prov40/34830">
+                        <h2 style="font-size: 16px;">商品推荐</h2>
+                        <i></i>
+                        <span class="time">2026-02-26 17:46:10</span>
+                      </a>
+                    </li>
+                                      </ul>
+                </div>
+                               </div>
+              <!-- 点赞 -->
+              <div class="isSupport" v-if="isVue">
+                <img
+                  v-if="cateWiki.like"
+                  @click="like(cate_id,0)"
+                  src="/static/iconImage/isSupported.png"
+                  alt=""
+                  class="img"
+                />
+                <img
+                  v-else
+                  @click="like(cate_id,0)"
+                  src="/static/iconImage/isSupport.png"
+                  alt=""
+                  class="img"
+                />
+                {{cateWiki.like_num}}人点赞
+              </div>
+              <div class="isSupport" v-else>
+                <img
+                  v-if="cateWiki.like"
+                  @click="like(cate_id,0)"
+                  src="/static/iconImage/isSupported.png"
+                  alt=""
+                  class="img"
+                />
+                <img
+                  v-else
+                  @click="like(cate_id,0)"
+                  src="/static/iconImage/isSupport.png"
+                  alt=""
+                  class="img"
+                />
+                0人点赞
+              </div>
+              <!-- 评论 -->
+              <div class="comment-box">
+                <template>
+                  <div class="comment-title" v-if="isVue">
+                    <span class="left">
+                      评论({{cateWiki.comment_num}})
+                      <span class="sort-text" :class="{'active' : !commentWhere.order}" @click="orderCommentList">
+                        <!-- {{commentWhere.order ? '评论从旧到新':'评论从新到旧'}} -->
+                        最新
+                      </span>
+                      <span class="sort-text" :class="{'active' : commentWhere.order}" @click="orderCommentList">
+                        <!-- {{commentWhere.order ? '评论从旧到新':'评论从新到旧'}} -->
+                        最早
+                      </span>
+                    </span>
+                    <span class="right">
+                      <img src="/static/iconImage/icon_eyes.png" alt="" class="eye" />
+                      {{cateWiki.page_view_num}}人看过该文档
+                    </span>
+                  </div>
+                  <div class="comment-title" v-else>
+                    <span class="left">
+                      评论(0)
+                      <span class="sort-text" :class="{'active' : !commentWhere.order}" @click="orderCommentList">
+                        最新
+                      </span>
+                      <span class="sort-text" :class="{'active' : commentWhere.order}" @click="orderCommentList">
+                        最早
+                      </span>
+                      <!-- <span class="sort-text" @click="orderCommentList">
+                        {{commentWhere.order ? '评论从旧到新':'评论从新到旧'}}
+                      </span> -->
+                    </span>
+                    <span class="right">
+                      <img src="/static/iconImage/icon_eyes.png" alt="" class="eye" />
+                      32494人看过
+                    </span>
+                  </div>
+                </template>
+                <!--未登录-->
+                <div v-if="!userInfo.uid" class="comment-login flex flex-center">
+                  <span class="login-btn" @click="loginFn()">登录/注册</span>
+                  <span>即可发表评论</span>
+                </div>
+                <!--登录后才显示-->
+                <template>
+                  <div class="comment-input" v-if="userInfo.uid">
+                    <img
+                      v-if="userInfo.uid"
+                      :src="userInfo.avatar"
+                      alt=""
+                      class="avatar"
+                    />
+                    <img
+                      v-else
+                      src="/static/index/images/no_portrait.png"
+                      alt=""
+                      class="avatar"
+                    />
+                    <div class="reply_count" style="width: 100%;">
+                      <div class="new_reply">
+                        <el-input
+                          v-paste="handleParse"
+                          v-model="commentContent"
+                          show-word-limit
+                          type="textarea"
+                          autocomplete="off"
+                          resize="none"
+                          maxlength="1000"
+                          placeholder="快来说两句吧..."
+                          style="height: 105px;"
+                        ></el-input>
+                        <div class="flex reply_pic" v-if="replyPicList.length">
+                          <div
+                            class="reply_picture"
+                            v-for="(item,index) in replyPicList"
+                            :key="index"
+                          >
+                            <i class="del el-icon-close" @click="picdDel(index)"></i>
+                            <img :src="item" class="w-60 h-60 reply-img" alt="" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="new_reply_btn">
+                        <div>
+                          <el-upload
+                            accept=".jpeg,.png,.jpg,.bmp,.gif"
+                            :action="imageUrl"
+                            :on-success="handleSuccess"
+                            :before-upload="beforeUpload"
+                            :headers="myHeaders"
+                            :show-file-list="false"
+                          >
+                            <span class="iconfont iconic_picture"></span>
+                          </el-upload>
+                        </div>
+                        <el-button
+                          :loading="isComment"
+                          size="small"
+                          style="width: 72px;"
+                          type="primary"
+                          @click="saveComment"
+                          :disabled="!commentContent.length"
+                        >
+                          评论
+                        </el-button>
+                      </div> 
+                    </div>
+                  </div>
+
+                  <div class="line"></div>
+                  <div class="comment-list">
+                    <!-- 一级评论 -->
+                    <div
+                      class="comment-item m-t-22"
+                      v-for="(item ,index) in list"
+                      :key="index"
+                    >
+                      <div class="left">
+                        <img
+                          :src="item.user ? item.user.avatar : '/static/index/images/no_portrait.png'"
+                          alt=""
+                          class="avatar"
+                        />
+                      </div>
+                      <div class="right">
+                        <div class="felx-between">
+                          <span class="name">
+                            {{item.user ? item.user.nickname : ''}}
+                            <span
+                              class="num"
+                              v-if="item.user && item.user.uid == userInfo.uid"
+                            >
+                              （自评）
+                            </span>
+                          </span>
+                        </div>
+                        <div class="right-content">{{item.content}}</div>
+                        <div
+                          class="flex flex-wrap m-t-8 m-b-2"
+                          v-if="item.images.length"
+                        >
+                          <el-image
+                            class="w-100 h-100 d-block m-r-10 reply-image"
+                            fit="cover"
+                            v-for="(img,indexb) in item.images"
+                            :key="indexb"
+                            :src="img"
+                            :preview-src-list="item.images"
+                          ></el-image>
+                        </div>
+                        <div class="m-t-8 p-r-16">
+                          <div class="reply-time">
+                            <div class="time">
+                              {{item.create_time}}
+                              
+                            </div>
+                            <div class="flex">
+                              <span class="reply ml20">
+                                <span 
+                                  v-if="!item.likeUser"
+                                  @click="like(item.id,1,item)"
+                                  class="icon iconfont iconic_Like">
+                                </span>  
+                                <span 
+                                  v-else
+                                  @click="like(item.id,1,item)"
+                                  class="icon iconfont iconicon_Like_2">
+                                </span>
+                                {{item.like ? item.like.like_num : 0}}
+                              </span>
+                              <span
+                                class="reply ml20"
+                                :class="{'reply-blue' : replyIndex == index}"
+                                @click="replyFn(index,item,1,item.id)"
+                              >
+                                <span class="icon iconfont iconic_pinglun"></span>
+                                {{replyIndex == index ? '取消回复' : '回复'}}
+                              </span>
+                            </div>
+                            <span
+                                @click="delComment(item)"
+                                v-if="item.user && item.user.uid == userInfo.uid"
+                                class="delete-reply ml20"
+                              >
+                                删除
+                              </span>
+                          </div>
+
+                          <!-- 一级回复 -->
+                          <div class="mt14 mb24 reply_level" v-if="replyIndex == index">
+                            <div class="new_reply">
+                              <el-input
+                                v-paste="handleParse"
+                                v-model="commentChildContent"
+                                show-word-limit
+                                type="textarea"
+                                autocomplete="off"
+                                maxlength="1000"
+                                resize="none"
+                                autosize 
+                                placeholder="快来说两句吧..."
+                                style="min-height: 30px;"
+                              ></el-input>
+                              <div
+                                class="flex reply_pic"
+                                v-if="replyChildPicList.length"
+                              >
+                                <div
+                                  class="reply_picture"
+                                  v-for="(item,index) in replyChildPicList"
+                                  :key="index"
+                                >
+                                  <i
+                                    class="del el-icon-close"
+                                    @click="picChildDel(index)"
+                                  ></i>
+                                  <img :src="item" class="reply-img" alt="" />
+                                </div>
+                              </div>
+                            </div>
+                            <div class="new_reply_btn">
+                              <div>
+                                <el-upload
+                                  accept=".jpeg,.png,.jpg,.bmp,.gif"
+                                  :action="imageUrl"
+                                  :on-success="handleChildSuccess"
+                                  :before-upload="beforeUpload"
+                                  :headers="myHeaders"
+                                  :show-file-list="false"
+                                >
+                                  <span class="iconfont iconic_picture"></span>
+                                </el-upload>
+                              </div>
+                              <el-button
+                                :loading="isChildComment"
+                                size="small"
+                                style="width: 72px;"
+                                type="primary"
+                                @click="saveChildComment"
+                                :disabled="!commentChildContent"
+                              >
+                                回复
+                              </el-button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- 二级评论 -->
+                        <div
+                          class="reply-level"
+                          v-if="item.children && item.children.length>0"
+                        >
+                          <div
+                            class="comment-item"
+                            v-for="(items,indexJ) in item.children"
+                            :key="indexJ"
+                          >
+                            <div class="left">
+                              <img
+                                :src="items.user ? items.user.avatar : '/static/index/images/no_portrait.png'"
+                                alt=""
+                                class="avatar avatar-level"
+                              />
+                            </div>
+                            <div class="right">
+                              <div class="comment-nickname">
+                                {{items.user ? items.user.nickname : '暂无昵称'}}
+                                <template v-if="items.user && items.user.uid !== userInfo.uid">
+                                  <span class="user-reply">回复</span>
+                                  {{item.user ? item.user.nickname : '暂无昵称'}}
+                                </template>
+                                
+                                <span
+                                  class="num"
+                                  v-if="items.user && items.user.uid == userInfo.uid"
+                                >
+                                  （自评）
+                                </span>
+                              </div>
+                              <div class="right-content">{{items.content}}</div>
+                              <div
+                                class="flex flex-wrap m-t-8 m-b-2"
+                                v-if="items.images.length"
+                              >
+                                <el-image
+                                  class="w-100 h-100 d-block m-r-10"
+                                  fit="cover"
+                                  v-for="(img,indexb) in items.images"
+                                  :key="indexb"
+                                  :src="img"
+                                  :preview-src-list="items.images"
+                                ></el-image>
+                              </div>
+                              <div class="m-t-9 p-r-16">
+                                <div class="reply-time">
+                                  <div class="time">
+                                    {{items.create_time}}
+                                  </div>
+                                  <div class="flex">
+                                    <span class="reply ml20">
+                                      <span 
+                                        v-if="!items.likeUser"
+                                        @click="like(items.id,1,items)" 
+                                        class="icon iconfont iconic_Like">
+                                      </span>  
+                                      <span 
+                                        v-else 
+                                        @click="like(items.id,1,items)"
+                                        class="icon iconfont iconicon_Like_2">
+                                      </span>                              
+                                        
+                                      {{items.like ? items.like.like_num : 0}}
+                                    </span>
+                                    <span
+                                      class="reply ml20"
+                                      :class="{'reply-blue' : replyIndex == index}"
+                                      @click="replyFn(index+'|'+indexJ,items,2,item.id)"
+                                    >
+                                      <span class="icon iconfont iconic_pinglun"></span>
+                                      {{replyIndexJ == (index+'|'+indexJ) ? '取消回复' :
+                                      '回复'}}
+                                    </span>
+                                  </div>
+                                  <span
+                                    @click="delComment(items)"
+                                    v-if="items.user && items.user.uid == userInfo.uid"
+                                    class="delete-reply ml20"
+                                  >
+                                    删除
+                                  </span>
+                                </div>
+                              </div>
+                              <!-- 二级回复 -->
+                              <div
+                                class="mt14 reply_level"
+                                v-if="replyIndexJ == (index+'|'+indexJ)"
+                              >
+                                <div class="new_reply new_reply1">
+                                  <el-input
+                                    v-paste="handleParse"
+                                    v-model="commentChildContent"
+                                    show-word-limit
+                                    type="textarea"
+                                    autocomplete="off"
+                                    maxlength="1000"
+                                    resize="none"
+                                    autosize 
+                                    placeholder="快来说两句吧..."
+                              
+                                  ></el-input>
+                                  <div
+                                    class="flex reply_pic"
+
+                                  >
+    
+                                  <div
+                                    class="flex reply_pic"
+                                    v-if="replyChildPicList.length"
+                                  >
+                                    <div
+                                      class="reply_picture"
+                                      v-for="(item,index) in replyChildPicList"
+                                      :key="index"
+                                    >
+                                      <i
+                                        class="del el-icon-close"
+                                        @click="picChildDel(index)"
+                                      ></i>
+                                      <img :src="item" class="reply-img" alt="" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="new_reply_btn">
+                                  <div>
+                                    <el-upload
+                                      accept=".jpeg,.png,.jpg,.bmp,.gif"
+                                      :action="imageUrl"
+                                      :on-success="handleChildSuccess"
+                                      :before-upload="beforeUpload"
+                                      :headers="myHeaders"
+                                      :show-file-list="false"
+                                    >
+                                      <img
+                                        src="/static/iconImage/icon_picture.png"
+                                        alt=""
+                                        class="img"
+                                      />
+                                    </el-upload>
+                                  </div>
+                                  <el-button
+                                    :loading="isChildComment"
+                                    type="primary"
+                                    size="small"
+                                    style="width: 72px;"
+                                    @click="saveChildComment"
+                                    :disabled="!commentChildContent"
+                                  >
+                                    回复
+                                  </el-button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <div
+                          v-if=" item.children && item.children.length>0"
+                          style="width: 100%; height: 24px;"
+                          class="mb22"
+                        ></div> -->
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                
+              </div>
+            </div>
+          </div>
+          <div v-if="!showmenu" class="mulu-toggle">
+            <span class="iconfont iconic_zhankai" @click="showmenu = true"></span>
+          </div>
+          <div v-if="!isSearch && showmenu" class="right_mulu">
+            <!-- <div class="rightmulu" v-show="h3TagsList.length"> -->
+            <div class="rightmulu">
+              <div class="rightmulu-title">
+                <span class="titles">大纲</span>
+                <span class="iconfont iconic_shouqi" @click="showmenu = false"></span>
+              </div>
+              <div class="nav-container">
+                <ul class="smallnav">
+                  <!-- 递归渲染多级标题 -->
+                  <template v-for="(heading, index) in headingTree">
+                    <!-- 一级标题：如果有H2则显示H2，否则显示H3 -->
+                    <li 
+                      :key="heading.id"
+                      class="heading-item"
+                      :class="{ active: heading.id === currentActiveId }"
+                    >
+                      <div class="item-row">
+                        <span 
+                          v-if="heading.children && heading.children.length" 
+                          class="expand-icon"
+                          :class="{ expanded: expandedItems[heading.id] }"
+                          @click.stop="toggleExpand(heading.id)"
+                        >▶</span>
+                        <span v-else class="expand-icon placeholder"></span>
+                        <a :href="'#' + heading.id" @click.prevent.stop="scrollToHeading(heading, index)" class="level-a1">
+                          {{ heading.text }}
+                        </a>
+                      </div>
+                    
+                      <!-- 二级标题：如果有H2，则为H3；如果没有H2，则为H4 -->
+                      <ul v-if="heading.children && heading.children.length && expandedItems[heading.id]" class="sub-nav">
+                        <li 
+                          v-for="child in heading.children"
+                          :key="child.id"
+                          class="heading-sub-item"
+                          :class="{ active: child.id === currentActiveId }"
+                        >
+                          <div class="item-row">
+                            <span 
+                              v-if="child.children && child.children.length" 
+                              class="expand-icon"
+                              :class="{ expanded: expandedItems[child.id] }"
+                              @click.stop="toggleExpand(child.id)"
+                            >▶</span>
+                            <span v-else class="expand-icon placeholder"></span>
+                            <a :href="'#' + child.id" @click.prevent.stop="scrollToSubHeading(child)" class="level-a2">
+                              {{ child.text }}
+                            </a>
+                          </div>
+                          
+                          <!-- 三级标题：如果有H2，则为H4；如果没有H2，则为H5 -->
+                          <ul v-if="child.children && child.children.length && expandedItems[child.id]" class="sub-nav-3">
+                            <li 
+                              v-for="grandChild in child.children"
+                              :key="grandChild.id"
+                              class="heading-sub-item-3"
+                              :class="{ active: grandChild.id === currentActiveId }"
+                            >
+                              <a :href="'#' + grandChild.id" @click.prevent.stop="scrollToSubHeading(grandChild)" class="level-a3">
+                                {{ grandChild.text }}
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </template>
+                </ul>
+                 </div>
+            </div>
+            <div class="zidingyi">
+                                    <div class="advertisement" style="margin-top: 10px;">
+                    <a target="_blank" href="https://www.crmeb.com/theme">
+                      <img style="width: 100%;" src="https://doc.crmeb.com//uploads/20260424/d178fdadbf656ba108e409a7e77049f7.jpg" alt="CRMEB活动" />
+                    </a>
+                  </div>
+                                    <div class="advertisement" style="margin-top: 10px;">
+                    <a target="_blank" href="https://www.tuoluojiang.com/">
+                      <img style="width: 100%;" src="https://doc.crmeb.com//uploads/20251117/fb8012367dd2525ad8a00811c6255aae.jpg" alt="CRMEB活动" />
+                    </a>
+                  </div>
+                                  </div>
+                <!--<div class="wwads-cn wwads-horizontal" style="overflow: visible !important;width:740px;height:120px;" data-id="157"></div>-->
+             
+          </div>
+        </template>
+        <template v-if="isSearch">
+          <div class="box-content">
+            <div class="search">
+              <div>
+                <span class="search-text1">搜索结果</span>
+                <span class="search-text2">为您找到{{wikiCount}}条结果</span>
+
+                <div class="list" v-for="item in wikiSearchList">
+                  <a
+                    target="_blank"
+                    :href="'/'+productName+'/'+jpath+'/'+item.cate_id"
+                    class="search-title"
+                    v-html="item.catalogue ? item.catalogue.name : ''"
+                  ></a>
+
+                  <div class="flex">
+                    <!-- <el-image  v-if="item.images.length>0" :preview-src-list="[item.images[0]]" :src="item.images[0]" alt="" class="img" ></el-image> -->
+                    <div style="flex: 1;">
+                      <a
+                        v-html="item.content"
+                        class="search-content over-text3"
+                        target="_blank"
+                        :href="'/'+productName+'/'+jpath+'/'+item.cate_id"
+                      ></a>
+
+                      <div class="felx-between">
+                        <div class="search-route">
+                          位置：
+                          <span
+                            v-for="(path,i) in (item.catalogue !== null ? item.catalogue.path_data : [])"
+                          >
+                            <a
+                              :href="'/'+productName+'/'+jpath+'/'+path.id"
+                              target="_blank"
+                            >
+                              {{path.name}}
+                            </a>
+                            {{(i+1) == item.catalogue.path_data.length ? '':'/'}}
+                          </span>
+                        </div>
+                        <div class="icon-box">
+                          <span class="icon-box">
+                            <img
+                              src="/static/iconImage/icon_eyes1.png"
+                              alt=""
+                              class="img-icon"
+                            />
+                            {{item.page_view_num}}
+                          </span>
+                          <span class="icon-box mlr20">
+                            <img
+                              src="/static/iconImage/icon_support1.png"
+                              alt=""
+                              class="img-icon"
+                            />
+                            {{item.like ? item.like.like_num : 0}}
+                          </span>
+                          <span class="icon-box">
+                            <img
+                              src="/static/iconImage/icon_comment1.png"
+                              alt=""
+                              class="img-icon"
+                            />
+                            {{item.comment ? item.comment.comment_num : 0}}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt24 flex-center mb24">
+                  <el-pagination
+                    @current-change="currentChange"
+                    :page-size="where.limit"
+                    background
+                    layout="prev, pager, next"
+                    :total="wikiCount"
+                  ></el-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right_mulu" style="width: 308px;"></div>
+        </template>
+      </div>
+      
+      
+      
+    </div>
+
+    <div
+      tabindex="-1"
+      class="el-image-viewer__wrapper"
+      style="z-index: 2064;"
+      v-if="dialogVisible"
+    >
+      <div class="el-image-viewer__mask"></div>
+      <span class="el-image-viewer__btn el-image-viewer__close">
+        <i class="el-icon-close" @click="closeImagePreview"></i>
+      </span>
+      <span
+        class="el-image-viewer__btn el-image-viewer__prev"
+        @click="changeImage('prev')"
+      >
+        <i class="el-icon-arrow-left"></i>
+      </span>
+      <span
+        class="el-image-viewer__btn el-image-viewer__next"
+        @click="changeImage('next')"
+      >
+        <i class="el-icon-arrow-right"></i>
+      </span>
+      <div class="el-image-viewer__btn el-image-viewer__actions">
+        <div class="el-image-viewer__actions__inner">
+          <i class="el-icon-zoom-out" @click="changeImage('out')"></i>
+          <i class="el-icon-zoom-in" @click="changeImage('in')"></i>
+          <i class="el-image-viewer__actions__divider"></i>
+          <i
+            :class="styleHW ? 'el-icon-c-scale-to-original':'el-icon-full-screen'"
+            @click="changeImage('screen')"
+          ></i>
+          <i class="el-image-viewer__actions__divider"></i>
+          <i class="el-icon-refresh-left" @click="changeImage('left')"></i>
+          <i class="el-icon-refresh-right" @click="changeImage('right')"></i>
+        </div>
+      </div>
+      <div class="el-image-viewer__canvas">
+        <img
+          :src="imageUrl"
+          class="el-image-viewer__img"
+          :style="'transform: '+styleTransform+'; margin-left: 0px; margin-top: 0px; '+styleHW"
+        />
+      </div>
+    </div>
+  </div>
+  <script src="/static/common/vue.js?version=23"></script>
+  <script src="/static/admin/editor.md-master/lib/marked.min.js?version=23"></script>
+  <script src="/static/admin/editor.md-master/lib/prettify.min.js?version=23"></script>
+  <script src="/static/admin/editor.md-master/lib/flowchart.min.js?version=23"></script>
+  <script src="/static/admin/editor.md-master/lib/underscore.min.js?version=23"></script>
+  <script src="/static/admin/editor.md-master/lib/raphael.min.js?version=23"></script>
+  <script src="/static/admin/editor.md-master/lib/sequence-diagram.min.js?version=23"></script>
+  <script src="/static/admin/editor.md-master/lib/jquery.flowchart.min.js?version=23"></script>
+  <script src="/static/admin/editor.md-master/editormd.js?version=23"></script>
+  <script src="/static/common/element-ui.js?version=23"></script>
+  <script src="/static/admin/js/api/system.js?version=23"></script>
+  <script src="/static/common/request.js?version=23"></script>
+  <script src="/static/admin/js/clipboard.js"></script>
+  <script src="/static/common/request.js?version=23"></script>
+  <script type="application/javascript">
+
+
+    Vue.component('menu-item', {
+        props: ['menuItem'],
+        template: `<div>
+                <template v-if="menuItem.children">
+                    <el-submenu :index="menuItem.index" class="children">
+                        <template slot="title">{{ menuItem.name }}</template>
+                        <menu-item :menu-item="subItem" v-for="subItem in menuItem.children" :key="subItem.index" />
+                    </el-submenu>
+                </template>
+                <template v-else>
+                    <el-menu-item :index="menuItem.index">{{ menuItem.name }}</el-menu-item>
+                </template>
+            </div>`
+    });
+
+    const vm = new Vue({
+        el: '#details',
+        data() {
+            return {
+                styleHW:'max-height: 100%; max-width: 100%;',
+                styleTransform:'scale(1) rotate(0deg)',
+                scale:1,
+                rotation:0,
+                imageIndex:0,
+                imagesList:[],
+                dialogVisible:false,
+                isComment:false,
+                activeIndex:'34492',
+                searchContent: "",
+                isSearch: false,
+                replyIndex: null,
+                replyIndexJ: null,
+                productId:parseInt('8'),
+                myHeaders: {'Code': getCookie('gitee_code')},
+                imageUrl: '/api/upload',
+                userInfo: {},
+                replyPid:0,
+                commentContent:'',
+                replyPicList: [],
+                isChildReply: false,
+                replyChildPicList: [],
+                commentChildContent:'',
+                isChildComment:false,
+                objId: parseInt(95),
+                where: {
+                    page: 1,
+                    limit: 15,
+                    search: '',
+                    name:'pro_s',
+                    jpath:'prov40',
+                },
+                commentWhere:{
+                    page: 1,
+                    limit: 15,
+                    order:0
+                },
+                h3TagsList:[],
+                detailLike:false,
+                menus_html:'',
+                loading: false,
+                list: [],
+                count:0,
+                listLoding:false,
+                listLodend:false,
+                wikiSearchList:[],
+                wikiCount:0,
+                pid:0,
+                cate_id:parseInt('34492'),
+                parentList:[],
+                wikiTitle:'',
+                wikiContent:'',
+                wikiContentHtml:'',
+                cateWiki:{},
+                isVue:false,
+                topShow:false,
+                menusList:[{"url":"https:\/\/www.crmeb.com\/","title":"\u5b98\u7f51","id":580,"pid":0},{"url":"https:\/\/www.crmeb.com\/ask\/thread\/list\/155","title":"\u6280\u672f\u793e\u533a","id":581,"pid":0},{"url":"https:\/\/s.apifox.cn\/0854ff12-a018-47dc-a334-4f6ae0b60d78","title":"\u63a5\u53e3\u6587\u6863","id":582,"pid":0},{"url":"https:\/\/gitee.com\/ZhongBangKeJi","title":"\u5f00\u6e90\u9879\u76ee","id":583,"pid":0}] || [],
+                wikiMenus:[{"label":"\ud83e\udd81\ufe0f \u7cfb\u7edf\u7b80\u4ecb","name":"\ud83e\udd81\ufe0f \u7cfb\u7edf\u7b80\u4ecb","pid":0,"id":34424,"value":34424,"path":[],"children":[{"label":"\u5e8f\u8a00","name":"\u5e8f\u8a00","pid":34424,"id":34423,"value":34423,"path":[34424],"index":"34423"},{"label":"\u4ea7\u54c1\u8bf4\u660e","name":"\u4ea7\u54c1\u8bf4\u660e","pid":34424,"id":40033,"value":40033,"path":[34424],"index":"40033"},{"label":"\u529f\u80fd\u76ee\u5f55","name":"\u529f\u80fd\u76ee\u5f55","pid":34424,"id":40023,"value":40023,"path":[34424],"index":"40023"},{"label":"\u529f\u80fd\u6e05\u5355","name":"\u529f\u80fd\u6e05\u5355","pid":34424,"id":34807,"value":34807,"path":[34424],"index":"34807"},{"label":"\u529f\u80fd\u7ed3\u6784\u56fe","name":"\u529f\u80fd\u7ed3\u6784\u56fe","pid":34424,"id":34808,"value":34808,"path":[34424],"index":"34808"}],"index":""},{"label":"\ud83e\udded \u5b89\u88c5\u6307\u5357","name":"\ud83e\udded \u5b89\u88c5\u6307\u5357","pid":0,"id":34425,"value":34425,"path":[],"children":[{"label":"\u8d26\u53f7\u53ca\u786c\u4ef6\uff08\u5b89\u88c5\u524d\u5fc5\u8bfb\uff09","name":"\u8d26\u53f7\u53ca\u786c\u4ef6\uff08\u5b89\u88c5\u524d\u5fc5\u8bfb\uff09","pid":34425,"id":34771,"value":34771,"path":[34425],"index":"34771"},{"label":"\u670d\u52a1\u5668\u53ca\u57df\u540d","name":"\u670d\u52a1\u5668\u53ca\u57df\u540d","pid":34425,"id":34428,"value":34428,"path":[34425],"children":[{"label":"\u670d\u52a1\u5668","name":"\u670d\u52a1\u5668","pid":34428,"id":34429,"value":34429,"path":[34425,34428],"index":"34428-34429"},{"label":"\u670d\u52a1\u5668\u7aef\u53e3","name":"\u670d\u52a1\u5668\u7aef\u53e3","pid":34428,"id":34430,"value":34430,"path":[34425,34428],"index":"34428-34430"},{"label":"\u57df\u540d\u8d2d\u4e70","name":"\u57df\u540d\u8d2d\u4e70","pid":34428,"id":34431,"value":34431,"path":[34425,34428],"index":"34428-34431"},{"label":"\u57df\u540d\u89e3\u6790","name":"\u57df\u540d\u89e3\u6790","pid":34428,"id":34432,"value":34432,"path":[34425,34428],"index":"34428-34432"},{"label":"SSL\u8bc1\u4e66\u7533\u8bf7","name":"SSL\u8bc1\u4e66\u7533\u8bf7","pid":34428,"id":34433,"value":34433,"path":[34425,34428],"children":[{"label":"\u8bc1\u4e66\u7533\u8bf7\u6ce8\u610f\u4e8b\u9879","name":"\u8bc1\u4e66\u7533\u8bf7\u6ce8\u610f\u4e8b\u9879","pid":34433,"id":34434,"value":34434,"path":[34425,34428,34433],"index":"34428-34433-34434"},{"label":"\u5b9d\u5854\u7533\u8bf7SSL","name":"\u5b9d\u5854\u7533\u8bf7SSL","pid":34433,"id":34435,"value":34435,"path":[34425,34428,34433],"index":"34428-34433-34435"},{"label":"\u963f\u91cc\u4e91\u7533\u8bf7SSL","name":"\u963f\u91cc\u4e91\u7533\u8bf7SSL","pid":34433,"id":34436,"value":34436,"path":[34425,34428,34433],"index":"34428-34433-34436"},{"label":"\u817e\u8baf\u4e91\u7533\u8bf7SSL","name":"\u817e\u8baf\u4e91\u7533\u8bf7SSL","pid":34433,"id":34437,"value":34437,"path":[34425,34428,34433],"index":"34428-34433-34437"},{"label":"https\u57df\u540d\u914d\u7f6e","name":"https\u57df\u540d\u914d\u7f6e","pid":34433,"id":34438,"value":34438,"path":[34425,34428,34433],"index":"34428-34433-34438"}],"index":"34428-34433"}],"index":"34428"},{"label":"\u5b9d\u5854\u5b89\u88c5\u6559\u7a0b-\u65b0\u624b\u63a8\u8350","name":"\u5b9d\u5854\u5b89\u88c5\u6559\u7a0b-\u65b0\u624b\u63a8\u8350","pid":34425,"id":34439,"value":34439,"path":[34425],"children":[{"label":"1.\u670d\u52a1\u5668\u914d\u7f6e","name":"1.\u670d\u52a1\u5668\u914d\u7f6e","pid":34439,"id":34440,"value":34440,"path":[34425,34439],"children":[{"label":"\u963f\u91cc\u4e91","name":"\u963f\u91cc\u4e91","pid":34440,"id":34441,"value":34441,"path":[34425,34439,34440],"index":"34439-34440-34441"},{"label":"\u817e\u8baf\u4e91","name":"\u817e\u8baf\u4e91","pid":34440,"id":34442,"value":34442,"path":[34425,34439,34440],"index":"34439-34440-34442"},{"label":"\u4eac\u4e1c\u4e91","name":"\u4eac\u4e1c\u4e91","pid":34440,"id":34669,"value":34669,"path":[34425,34439,34440],"index":"34439-34440-34669"}],"index":"34439-34440"},{"label":"2.\u8f6f\u4ef6\u5b89\u88c5","name":"2.\u8f6f\u4ef6\u5b89\u88c5","pid":34439,"id":34443,"value":34443,"path":[34425,34439],"index":"34439-34443"},{"label":"3.\u6e90\u7801\u4e0a\u4f20","name":"3.\u6e90\u7801\u4e0a\u4f20","pid":34439,"id":34445,"value":34445,"path":[34425,34439],"index":"34439-34445"},{"label":"4.PHP\u8bbe\u7f6e","name":"4.PHP\u8bbe\u7f6e","pid":34439,"id":34444,"value":34444,"path":[34425,34439],"index":"34439-34444"},{"label":"5.\u7ad9\u70b9\u914d\u7f6e","name":"5.\u7ad9\u70b9\u914d\u7f6e","pid":34439,"id":34446,"value":34446,"path":[34425,34439],"index":"34439-34446"},{"label":"6.\u53cd\u5411\u4ee3\u7406","name":"6.\u53cd\u5411\u4ee3\u7406","pid":34439,"id":34447,"value":34447,"path":[34425,34439],"index":"34439-34447"},{"label":"7.\u6dfb\u52a0\u5b88\u62a4\u8fdb\u7a0b","name":"7.\u6dfb\u52a0\u5b88\u62a4\u8fdb\u7a0b","pid":34439,"id":34449,"value":34449,"path":[34425,34439],"index":"34439-34449"},{"label":"8.\u7a0b\u5e8f\u4e00\u952e\u5b89\u88c5","name":"8.\u7a0b\u5e8f\u4e00\u952e\u5b89\u88c5","pid":34439,"id":34450,"value":34450,"path":[34425,34439],"index":"34439-34450"},{"label":"9.\u5b89\u88c5\u5b8c\u6210\u91cd\u542f\u5b88\u62a4\u8fdb\u7a0b","name":"9.\u5b89\u88c5\u5b8c\u6210\u91cd\u542f\u5b88\u62a4\u8fdb\u7a0b","pid":34439,"id":34451,"value":34451,"path":[34425,34439],"index":"34439-34451"}],"index":"34439"},{"label":"\u7cfb\u7edf\u914d\u7f6e","name":"\u7cfb\u7edf\u914d\u7f6e","pid":34425,"id":34455,"value":34455,"path":[34425],"children":[{"label":"\u8d26\u53f7\u76f8\u5173\u4ecb\u7ecd","name":"\u8d26\u53f7\u76f8\u5173\u4ecb\u7ecd","pid":34455,"id":34456,"value":34456,"path":[34425,34455],"index":"34455-34456"},{"label":"\u5e94\u7528\u914d\u7f6e","name":"\u5e94\u7528\u914d\u7f6e","pid":34455,"id":34457,"value":34457,"path":[34425,34455],"children":[{"label":"\u670d\u52a1\u53f7\u914d\u7f6e","name":"\u670d\u52a1\u53f7\u914d\u7f6e","pid":34457,"id":34458,"value":34458,"path":[34425,34455,34457],"children":[{"label":"1.\u670d\u52a1\u53f7\u914d\u7f6e","name":"1.\u670d\u52a1\u53f7\u914d\u7f6e","pid":34458,"id":34459,"value":34459,"path":[34425,34455,34457,34458],"index":"34455-34457-34458-34459"},{"label":"2.\u670d\u52a1\u53f7\u5f00\u53d1\u914d\u7f6e","name":"2.\u670d\u52a1\u53f7\u5f00\u53d1\u914d\u7f6e","pid":34458,"id":34460,"value":34460,"path":[34425,34455,34457,34458],"index":"34455-34457-34458-34460"}],"index":"34455-34457-34458"},{"label":"\u5c0f\u7a0b\u5e8f\u914d\u7f6e","name":"\u5c0f\u7a0b\u5e8f\u914d\u7f6e","pid":34457,"id":34461,"value":34461,"path":[34425,34455,34457],"children":[{"label":"\u5c0f\u7a0b\u5e8f\u76f4\u64ad\u914d\u7f6e","name":"\u5c0f\u7a0b\u5e8f\u76f4\u64ad\u914d\u7f6e","pid":34461,"id":34462,"value":34462,"path":[34425,34455,34457,34461],"index":"34455-34457-34461-34462"},{"label":"1.\u5c0f\u7a0b\u5e8f\u5e73\u53f0\u914d\u7f6e","name":"1.\u5c0f\u7a0b\u5e8f\u5e73\u53f0\u914d\u7f6e","pid":34461,"id":34463,"value":34463,"path":[34425,34455,34457,34461],"index":"34455-34457-34461-34463"},{"label":"2.\u7ba1\u7406\u540e\u53f0\u914d\u7f6e","name":"2.\u7ba1\u7406\u540e\u53f0\u914d\u7f6e","pid":34461,"id":34464,"value":34464,"path":[34425,34455,34457,34461],"index":"34455-34457-34461-34464"},{"label":"3\u3001\u6253\u5305\u4e0a\u4f20","name":"3\u3001\u6253\u5305\u4e0a\u4f20","pid":34461,"id":34538,"value":34538,"path":[34425,34455,34457,34461],"children":[{"label":"\u524d\u7aef\u63d0\u4ea4\u5ba1\u6838\uff082.1\u53ca\u4e4b\u540e\u7248\u672c\uff09","name":"\u524d\u7aef\u63d0\u4ea4\u5ba1\u6838\uff082.1\u53ca\u4e4b\u540e\u7248\u672c\uff09","pid":34538,"id":34539,"value":34539,"path":[34425,34455,34457,34461,34538],"index":"34455-34457-34461-34538-34539"},{"label":"\u524d\u7aef\u63d0\u4ea4\u5ba1\u6838\uff082.1\u4e4b\u524d\u7248\u672c\uff09","name":"\u524d\u7aef\u63d0\u4ea4\u5ba1\u6838\uff082.1\u4e4b\u524d\u7248\u672c\uff09","pid":34538,"id":34540,"value":34540,"path":[34425,34455,34457,34461,34538],"index":"34455-34457-34461-34538-34540"}],"index":"34455-34457-34461-34538"},{"label":"4.\u786e\u8ba4\u53d1\u5e03","name":"4.\u786e\u8ba4\u53d1\u5e03","pid":34461,"id":34465,"value":34465,"path":[34425,34455,34457,34461],"index":"34455-34457-34461-34465"},{"label":"\u5c0f\u7a0b\u5e8f\u53d1\u8d27\u4fe1\u606f\u7ba1\u7406","name":"\u5c0f\u7a0b\u5e8f\u53d1\u8d27\u4fe1\u606f\u7ba1\u7406","pid":34461,"id":34716,"value":34716,"path":[34425,34455,34457,34461],"index":"34455-34457-34461-34716"},{"label":"\u8ba2\u5355\u4e2d\u5fc3\u548c\u9690\u79c1\u534f\u8bae","name":"\u8ba2\u5355\u4e2d\u5fc3\u548c\u9690\u79c1\u534f\u8bae","pid":34461,"id":34726,"value":34726,"path":[34425,34455,34457,34461],"index":"34455-34457-34461-34726"},{"label":"\u8ba2\u5355\u7ba1\u7406\u5c0f\u7a0b\u5e8f\u5546\u54c1\u8ba2\u5355\u8be6\u60c5path (\u5f85\u63a5\u5165\u8ba2\u5355\u7ba1\u7406-\u8ba2\u5355\u4fe1\u606f\u5f55\u5165)","name":"\u8ba2\u5355\u7ba1\u7406\u5c0f\u7a0b\u5e8f\u5546\u54c1\u8ba2\u5355\u8be6\u60c5path (\u5f85\u63a5\u5165\u8ba2\u5355\u7ba1\u7406-\u8ba2\u5355\u4fe1\u606f\u5f55\u5165)","pid":34461,"id":34775,"value":34775,"path":[34425,34455,34457,34461],"index":"34455-34457-34461-34775"}],"index":"34455-34457-34461"},{"label":"PC\u4ecb\u7ecd","name":"PC\u4ecb\u7ecd","pid":34457,"id":34466,"value":34466,"path":[34425,34455,34457],"children":[{"label":"PC SEO\u5b89\u88c5","name":"PC SEO\u5b89\u88c5","pid":34466,"id":34467,"value":34467,"path":[34425,34455,34457,34466],"index":"34455-34457-34466-34467"},{"label":"PC\u8bbe\u7f6e","name":"PC\u8bbe\u7f6e","pid":34466,"id":34468,"value":34468,"path":[34425,34455,34457,34466],"index":"34455-34457-34466-34468"},{"label":"PC \u5feb\u901f\u5b89\u88c5","name":"PC \u5feb\u901f\u5b89\u88c5","pid":34466,"id":34777,"value":34777,"path":[34425,34455,34457,34466],"index":"34455-34457-34466-34777"}],"index":"34455-34457-34466"},{"label":"APP\u7aef","name":"APP\u7aef","pid":34457,"id":34469,"value":34469,"path":[34425,34455,34457],"index":"34455-34457-34469"}],"index":"34455-34457"},{"label":"\u652f\u4ed8\u914d\u7f6e","name":"\u652f\u4ed8\u914d\u7f6e","pid":34455,"id":34470,"value":34470,"path":[34425,34455],"children":[{"label":"\u5fae\u4fe1\u652f\u4ed8v2\u63a5\u53e3","name":"\u5fae\u4fe1\u652f\u4ed8v2\u63a5\u53e3","pid":34470,"id":34471,"value":34471,"path":[34425,34455,34470],"index":"34455-34470-34471"},{"label":"\u5fae\u4fe1\u652f\u4ed8v3\u63a5\u53e3","name":"\u5fae\u4fe1\u652f\u4ed8v3\u63a5\u53e3","pid":34470,"id":34668,"value":34668,"path":[34425,34455,34470],"index":"34455-34470-34668"},{"label":"\u652f\u4ed8\u5b9d\u652f\u4ed8","name":"\u652f\u4ed8\u5b9d\u652f\u4ed8","pid":34470,"id":34472,"value":34472,"path":[34425,34455,34470],"index":"34455-34470-34472"}],"index":"34455-34470"},{"label":"\u4e00\u53f7\u901a","name":"\u4e00\u53f7\u901a","pid":34455,"id":34473,"value":34473,"path":[34425,34455],"children":[{"label":"\u4e00\u53f7\u901a\u8d26\u6237","name":"\u4e00\u53f7\u901a\u8d26\u6237","pid":34473,"id":34474,"value":34474,"path":[34425,34455,34473],"index":"34455-34473-34474"},{"label":"\u77ed\u4fe1","name":"\u77ed\u4fe1","pid":34473,"id":34475,"value":34475,"path":[34425,34455,34473],"index":"34455-34473-34475"},{"label":"\u5546\u54c1\u91c7\u96c6","name":"\u5546\u54c1\u91c7\u96c6","pid":34473,"id":34476,"value":34476,"path":[34425,34455,34473],"index":"34455-34473-34476"},{"label":"\u7269\u6d41\u67e5\u8be2","name":"\u7269\u6d41\u67e5\u8be2","pid":34473,"id":34477,"value":34477,"path":[34425,34455,34473],"index":"34455-34473-34477"},{"label":"\u7535\u5b50\u9762\u5355","name":"\u7535\u5b50\u9762\u5355","pid":34473,"id":34478,"value":34478,"path":[34425,34455,34473],"index":"34455-34473-34478"}],"index":"34455-34473"},{"label":"\u4e91\u5b58\u50a8","name":"\u4e91\u5b58\u50a8","pid":34455,"id":34479,"value":34479,"path":[34425,34455],"children":[{"label":"\u5b58\u50a8\u8bf4\u660e","name":"\u5b58\u50a8\u8bf4\u660e","pid":34479,"id":34480,"value":34480,"path":[34425,34455,34479],"index":"34455-34479-34480"},{"label":"\u963f\u91cc\u4e91OSS","name":"\u963f\u91cc\u4e91OSS","pid":34479,"id":34481,"value":34481,"path":[34425,34455,34479],"index":"34455-34479-34481"},{"label":"\u817e\u8baf\u4e91COS","name":"\u817e\u8baf\u4e91COS","pid":34479,"id":34482,"value":34482,"path":[34425,34455,34479],"index":"34455-34479-34482"},{"label":"\u4e03\u725b\u4e91\u5b58\u50a8","name":"\u4e03\u725b\u4e91\u5b58\u50a8","pid":34479,"id":34483,"value":34483,"path":[34425,34455,34479],"index":"34455-34479-34483"}],"index":"34455-34479"},{"label":"\u5176\u4ed6\u914d\u7f6e","name":"\u5176\u4ed6\u914d\u7f6e","pid":34455,"id":34484,"value":34484,"path":[34425,34455],"children":[{"label":"\u670d\u52a1\u53f7\u6a21\u677f\u6d88\u606f","name":"\u670d\u52a1\u53f7\u6a21\u677f\u6d88\u606f","pid":34484,"id":34485,"value":34485,"path":[34425,34455,34484],"index":"34455-34484-34485"},{"label":"\u5c0f\u7a0b\u5e8f\u8ba2\u9605\u6d88\u606f","name":"\u5c0f\u7a0b\u5e8f\u8ba2\u9605\u6d88\u606f","pid":34484,"id":34486,"value":34486,"path":[34425,34455,34484],"index":"34455-34484-34486"},{"label":"\u5c0f\u7968\u6253\u5370\u673a\u914d\u7f6e","name":"\u5c0f\u7968\u6253\u5370\u673a\u914d\u7f6e","pid":34484,"id":34487,"value":34487,"path":[34425,34455,34484],"index":"34455-34484-34487"},{"label":"\u5730\u56fe\u914d\u7f6e","name":"\u5730\u56fe\u914d\u7f6e","pid":34484,"id":34670,"value":34670,"path":[34425,34455,34484],"index":"34455-34484-34670"}],"index":"34455-34484"},{"label":"\u591a\u7cfb\u7edf\u914d\u7f6e","name":"\u591a\u7cfb\u7edf\u914d\u7f6e","pid":34455,"id":34488,"value":34488,"path":[34425,34455],"index":"34455-34488"},{"label":"\u4f01\u4e1a\u5fae\u4fe1\u914d\u7f6e","name":"\u4f01\u4e1a\u5fae\u4fe1\u914d\u7f6e","pid":34455,"id":34630,"value":34630,"path":[34425,34455],"children":[{"label":"\u901a\u8baf\u5f55\u914d\u7f6e","name":"\u901a\u8baf\u5f55\u914d\u7f6e","pid":34630,"id":34654,"value":34654,"path":[34425,34455,34630],"index":"34455-34630-34654"},{"label":"\u5ba2\u6237\u914d\u7f6e","name":"\u5ba2\u6237\u914d\u7f6e","pid":34630,"id":34655,"value":34655,"path":[34425,34455,34630],"index":"34455-34630-34655"},{"label":"\u81ea\u5efa\u5e94\u7528\u914d\u7f6e","name":"\u81ea\u5efa\u5e94\u7528\u914d\u7f6e","pid":34630,"id":34656,"value":34656,"path":[34425,34455,34630],"index":"34455-34630-34656"}],"index":"34455-34630"},{"label":"\u540c\u57ce\u914d\u9001","name":"\u540c\u57ce\u914d\u9001","pid":34455,"id":34717,"value":34717,"path":[34425,34455],"children":[{"label":"UU\u914d\u9001","name":"UU\u914d\u9001","pid":34717,"id":34718,"value":34718,"path":[34425,34455,34717],"index":"34455-34717-34718"},{"label":"\u8fbe\u8fbe\u914d\u9001","name":"\u8fbe\u8fbe\u914d\u9001","pid":34717,"id":34719,"value":34719,"path":[34425,34455,34717],"index":"34455-34717-34719"}],"index":"34455-34717"},{"label":"\u5c0f\u7968\u6253\u5370\u673a\u914d\u7f6e","name":"\u5c0f\u7968\u6253\u5370\u673a\u914d\u7f6e","pid":34455,"id":34720,"value":34720,"path":[34425,34455],"children":[{"label":"\u6613\u8054\u4e91\u914d\u7f6e","name":"\u6613\u8054\u4e91\u914d\u7f6e","pid":34720,"id":34721,"value":34721,"path":[34425,34455,34720],"index":"34455-34720-34721"},{"label":"\u98de\u9e45\u4e91\u914d\u7f6e","name":"\u98de\u9e45\u4e91\u914d\u7f6e","pid":34720,"id":34722,"value":34722,"path":[34425,34455,34720],"index":"34455-34720-34722"}],"index":"34455-34720"},{"label":"\u76f4\u64ad\u914d\u7f6e","name":"\u76f4\u64ad\u914d\u7f6e","pid":34455,"id":35604,"value":35604,"path":[34425,34455],"children":[{"label":"\u540e\u53f0\u76f4\u63a5\u914d\u7f6e","name":"\u540e\u53f0\u76f4\u63a5\u914d\u7f6e","pid":35604,"id":35606,"value":35606,"path":[34425,34455,35604],"index":"34455-35604-35606"}],"index":"34455-35604"}],"index":"34455"},{"label":"\u5b89\u88c5\u8bf4\u660e","name":"\u5b89\u88c5\u8bf4\u660e","pid":34425,"id":34426,"value":34426,"path":[34425],"children":[{"label":"\u5b9d\u5854\u5b89\u88c5\u89c6\u9891","name":"\u5b9d\u5854\u5b89\u88c5\u89c6\u9891","pid":34426,"id":34746,"value":34746,"path":[34425,34426],"index":"34426-34746"},{"label":"\u624b\u52a8\u5b89\u88c5\u3001\u91cd\u88c5\u3001\u591a\u7ad9\u70b9\u5b89\u88c5","name":"\u624b\u52a8\u5b89\u88c5\u3001\u91cd\u88c5\u3001\u591a\u7ad9\u70b9\u5b89\u88c5","pid":34426,"id":34453,"value":34453,"path":[34425,34426],"index":"34426-34453"},{"label":"\u5b89\u88c5\u5b8c\u68c0\u6d4b","name":"\u5b89\u88c5\u5b8c\u68c0\u6d4b","pid":34426,"id":34454,"value":34454,"path":[34425,34426],"index":"34426-34454"},{"label":"Linux\u5b89\u88c5\u6559\u7a0b","name":"Linux\u5b89\u88c5\u6559\u7a0b","pid":34426,"id":34452,"value":34452,"path":[34425,34426],"index":"34426-34452"},{"label":"\u96c6\u7fa4\u90e8\u7f72","name":"\u96c6\u7fa4\u90e8\u7f72","pid":34426,"id":34658,"value":34658,"path":[34425,34426],"children":[{"label":"\u963f\u91cc\u4e91COS\u9759\u6001\u6587\u4ef6\u90e8\u7f72","name":"\u963f\u91cc\u4e91COS\u9759\u6001\u6587\u4ef6\u90e8\u7f72","pid":34658,"id":34659,"value":34659,"path":[34425,34426,34658],"index":"34426-34658-34659"},{"label":"\u817e\u8baf\u4e91\u955c\u50cf\u4f7f\u7528","name":"\u817e\u8baf\u4e91\u955c\u50cf\u4f7f\u7528","pid":34658,"id":34660,"value":34660,"path":[34425,34426,34658],"index":"34426-34658-34660"},{"label":"\u817e\u8baf\u4e91\u5bb9\u5668\u670d\u52a1\u96c6\u7fa4","name":"\u817e\u8baf\u4e91\u5bb9\u5668\u670d\u52a1\u96c6\u7fa4","pid":34658,"id":34661,"value":34661,"path":[34425,34426,34658],"index":"34426-34658-34661"},{"label":"\u817e\u8baf\u4e91\u96c6\u7fa4\u670d\u52a1\u65e5\u5fd7\u6258\u7ba1","name":"\u817e\u8baf\u4e91\u96c6\u7fa4\u670d\u52a1\u65e5\u5fd7\u6258\u7ba1","pid":34658,"id":34662,"value":34662,"path":[34425,34426,34658],"index":"34426-34658-34662"}],"index":"34426-34658"}],"index":"34426"},{"label":"\u5347\u7ea7\u8bf4\u660e","name":"\u5347\u7ea7\u8bf4\u660e","pid":34425,"id":34489,"value":34489,"path":[34425],"children":[{"label":"v3\u5347\u7ea7\u6307\u5357","name":"v3\u5347\u7ea7\u6307\u5357","pid":34489,"id":34809,"value":34809,"path":[34425,34489],"index":"34489-34809"},{"label":"2.1.01\u5347\u7ea72.1.1","name":"2.1.01\u5347\u7ea72.1.1","pid":34489,"id":34603,"value":34603,"path":[34425,34489],"index":"34489-34603"},{"label":"2.1.0\u5347\u7ea72.1.01","name":"2.1.0\u5347\u7ea72.1.01","pid":34489,"id":34575,"value":34575,"path":[34425,34489],"index":"34489-34575"},{"label":"2.1.0 beta\u5347\u7ea72.1.0","name":"2.1.0 beta\u5347\u7ea72.1.0","pid":34489,"id":34565,"value":34565,"path":[34425,34489],"index":"34489-34565"},{"label":"2.0\u5347\u7ea72.1.0","name":"2.0\u5347\u7ea72.1.0","pid":34489,"id":34537,"value":34537,"path":[34425,34489],"index":"34489-34537"},{"label":"2.0\u5347\u7ea7\u5e2e\u52a9","name":"2.0\u5347\u7ea7\u5e2e\u52a9","pid":34489,"id":34490,"value":34490,"path":[34425,34489],"index":"34489-34490"}],"index":"34489"}],"index":""},{"label":"\ud83d\udcd6 \u4f7f\u7528\u624b\u518c","name":"\ud83d\udcd6 \u4f7f\u7528\u624b\u518c","pid":0,"id":34491,"value":34491,"path":[],"children":[{"label":"\u5546\u54c1\u7ba1\u7406","name":"\u5546\u54c1\u7ba1\u7406","pid":34491,"id":34492,"value":34492,"path":[34491],"children":[{"label":"\u5546\u54c1\u6dfb\u52a0","name":"\u5546\u54c1\u6dfb\u52a0","pid":34492,"id":34495,"value":34495,"path":[34491,34492],"index":"34492-34495"},{"label":"\u5546\u54c1\u91c7\u96c6","name":"\u5546\u54c1\u91c7\u96c6","pid":34492,"id":34496,"value":34496,"path":[34491,34492],"index":"34492-34496"},{"label":"\u5546\u54c1\u5206\u7c7b","name":"\u5546\u54c1\u5206\u7c7b","pid":34492,"id":34493,"value":34493,"path":[34491,34492],"index":"34492-34493"},{"label":"\u5546\u54c1\u89c4\u683c","name":"\u5546\u54c1\u89c4\u683c","pid":34492,"id":34494,"value":34494,"path":[34491,34492],"index":"34492-34494"},{"label":"\u5546\u54c1\u8bc4\u4ef7","name":"\u5546\u54c1\u8bc4\u4ef7","pid":34492,"id":34497,"value":34497,"path":[34491,34492],"index":"34492-34497"},{"label":"\u5546\u54c1\u54c1\u724c","name":"\u5546\u54c1\u54c1\u724c","pid":34492,"id":34564,"value":34564,"path":[34491,34492],"index":"34492-34564"},{"label":"\u5546\u54c1\u5355\u4f4d","name":"\u5546\u54c1\u5355\u4f4d","pid":34492,"id":34599,"value":34599,"path":[34491,34492],"index":"34492-34599"},{"label":"\u5546\u54c1\u53c2\u6570","name":"\u5546\u54c1\u53c2\u6570","pid":34492,"id":34611,"value":34611,"path":[34491,34492],"index":"34492-34611"},{"label":"\u4fdd\u969c\u670d\u52a1","name":"\u4fdd\u969c\u670d\u52a1","pid":34492,"id":34612,"value":34612,"path":[34491,34492],"index":"34492-34612"},{"label":"\u5546\u54c1\u6807\u7b7e","name":"\u5546\u54c1\u6807\u7b7e","pid":34492,"id":34613,"value":34613,"path":[34491,34492],"index":"34492-34613"},{"label":"\u5546\u54c1\u63a8\u8350","name":"\u5546\u54c1\u63a8\u8350","pid":34492,"id":34830,"value":34830,"path":[34491,34492],"index":"34492-34830"}],"index":"34492"},{"label":"\u7528\u6237\u7ba1\u7406","name":"\u7528\u6237\u7ba1\u7406","pid":34491,"id":34503,"value":34503,"path":[34491],"children":[{"label":"\u7528\u6237\u7ba1\u7406","name":"\u7528\u6237\u7ba1\u7406","pid":34503,"id":34649,"value":34649,"path":[34491,34503],"children":[{"label":"\u7528\u6237\u5217\u8868","name":"\u7528\u6237\u5217\u8868","pid":34649,"id":34815,"value":34815,"path":[34491,34503,34649],"index":"34503-34649-34815"},{"label":"\u7528\u6237\u5206\u7ec4","name":"\u7528\u6237\u5206\u7ec4","pid":34649,"id":34817,"value":34817,"path":[34491,34503,34649],"index":"34503-34649-34817"},{"label":"\u7528\u6237\u6807\u7b7e","name":"\u7528\u6237\u6807\u7b7e","pid":34649,"id":34814,"value":34814,"path":[34491,34503,34649],"index":"34503-34649-34814"},{"label":"\u7528\u6237\u8bbe\u7f6e","name":"\u7528\u6237\u8bbe\u7f6e","pid":34649,"id":34816,"value":34816,"path":[34491,34503,34649],"index":"34503-34649-34816"}],"index":"34503-34649"},{"label":"\u7528\u6237\u8fd0\u8425","name":"\u7528\u6237\u8fd0\u8425","pid":34503,"id":34818,"value":34818,"path":[34491,34503],"children":[{"label":"\u7528\u6237\u7b49\u7ea7","name":"\u7528\u6237\u7b49\u7ea7","pid":34818,"id":34504,"value":34504,"path":[34491,34503,34818],"index":"34503-34818-34504"},{"label":"\u65b0\u4eba\u793c\u5305","name":"\u65b0\u4eba\u793c\u5305","pid":34818,"id":34819,"value":34819,"path":[34491,34503,34818],"index":"34503-34818-34819"},{"label":"\u6fc0\u6d3b\u6709\u793c","name":"\u6fc0\u6d3b\u6709\u793c","pid":34818,"id":34820,"value":34820,"path":[34491,34503,34818],"index":"34503-34818-34820"}],"index":"34503-34818"},{"label":"\u4f18\u60e0\u5238","name":"\u4f18\u60e0\u5238","pid":34503,"id":34671,"value":34671,"path":[34491,34503],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34671,"id":34672,"value":34672,"path":[34491,34503,34671],"index":"34503-34671-34672"},{"label":"\u4f18\u60e0\u5238\u6d3b\u52a8","name":"\u4f18\u60e0\u5238\u6d3b\u52a8","pid":34671,"id":34679,"value":34679,"path":[34491,34503,34671],"index":"34503-34671-34679"}],"index":"34503-34671"},{"label":"\u8d26\u53f7\u6ce8\u9500","name":"\u8d26\u53f7\u6ce8\u9500","pid":34503,"id":34628,"value":34628,"path":[34491,34503],"index":"34503-34628"}],"index":"34503"},{"label":"\u8ba2\u5355\u7ba1\u7406","name":"\u8ba2\u5355\u7ba1\u7406","pid":34491,"id":34498,"value":34498,"path":[34491],"children":[{"label":"\u8ba2\u5355\u53d1\u8d27","name":"\u8ba2\u5355\u53d1\u8d27","pid":34498,"id":34499,"value":34499,"path":[34491,34498],"index":"34498-34499"},{"label":"\u8ba2\u5355\u9000\u6b3e","name":"\u8ba2\u5355\u9000\u6b3e","pid":34498,"id":34500,"value":34500,"path":[34491,34498],"index":"34498-34500"},{"label":"\u8ba2\u5355\u6253\u5370","name":"\u8ba2\u5355\u6253\u5370","pid":34498,"id":34501,"value":34501,"path":[34491,34498],"index":"34498-34501"},{"label":"\u8ba2\u5355\u63d0\u9192","name":"\u8ba2\u5355\u63d0\u9192","pid":34498,"id":34502,"value":34502,"path":[34491,34498],"index":"34498-34502"}],"index":"34498"},{"label":"\u5ba2\u670d\u7ba1\u7406","name":"\u5ba2\u670d\u7ba1\u7406","pid":34491,"id":34506,"value":34506,"path":[34491],"children":[{"label":"\u5ba2\u670d\u529f\u80fd","name":"\u5ba2\u670d\u529f\u80fd","pid":34506,"id":34507,"value":34507,"path":[34491,34506],"index":"34506-34507"},{"label":"\u5ba2\u670d\u63a5\u5f85","name":"\u5ba2\u670d\u63a5\u5f85","pid":34506,"id":34508,"value":34508,"path":[34491,34506],"index":"34506-34508"}],"index":"34506"},{"label":"\u8425\u9500\u7ba1\u7406","name":"\u8425\u9500\u7ba1\u7406","pid":34491,"id":34509,"value":34509,"path":[34491],"children":[{"label":"\u62bd\u5956","name":"\u62bd\u5956","pid":34509,"id":34677,"value":34677,"path":[34491,34509],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34677,"id":34678,"value":34678,"path":[34491,34509,34677],"index":"34509-34677-34678"},{"label":"\u62bd\u5956\u6d3b\u52a8","name":"\u62bd\u5956\u6d3b\u52a8","pid":34677,"id":34682,"value":34682,"path":[34491,34509,34677],"index":"34509-34677-34682"}],"index":"34509-34677"},{"label":"\u793c\u54c1\u5361","name":"\u793c\u54c1\u5361","pid":34509,"id":34780,"value":34780,"path":[34491,34509],"children":[{"label":"\u529f\u80fd\u8bf4\u660e","name":"\u529f\u80fd\u8bf4\u660e","pid":34780,"id":34781,"value":34781,"path":[34491,34509,34780],"index":"34509-34780-34781"}],"index":"34509-34780"},{"label":"\u62fc\u56e2","name":"\u62fc\u56e2","pid":34509,"id":34510,"value":34510,"path":[34491,34509],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34510,"id":34673,"value":34673,"path":[34491,34509,34510],"index":"34509-34510-34673"},{"label":"\u62fc\u56e2\u6d3b\u52a8","name":"\u62fc\u56e2\u6d3b\u52a8","pid":34510,"id":34685,"value":34685,"path":[34491,34509,34510],"index":"34509-34510-34685"}],"index":"34509-34510"},{"label":"\u79d2\u6740","name":"\u79d2\u6740","pid":34509,"id":34511,"value":34511,"path":[34491,34509],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34511,"id":34674,"value":34674,"path":[34491,34509,34511],"index":"34509-34511-34674"},{"label":"\u79d2\u6740\u6d3b\u52a8","name":"\u79d2\u6740\u6d3b\u52a8","pid":34511,"id":34686,"value":34686,"path":[34491,34509,34511],"index":"34509-34511-34686"}],"index":"34509-34511"},{"label":"\u780d\u4ef7","name":"\u780d\u4ef7","pid":34509,"id":34512,"value":34512,"path":[34491,34509],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34512,"id":34675,"value":34675,"path":[34491,34509,34512],"index":"34509-34512-34675"},{"label":"\u780d\u4ef7\u6d3b\u52a8","name":"\u780d\u4ef7\u6d3b\u52a8","pid":34512,"id":34687,"value":34687,"path":[34491,34509,34512],"index":"34509-34512-34687"}],"index":"34509-34512"},{"label":"\u79ef\u5206","name":"\u79ef\u5206","pid":34509,"id":34513,"value":34513,"path":[34491,34509],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34513,"id":34676,"value":34676,"path":[34491,34509,34513],"index":"34509-34513-34676"},{"label":"\u79ef\u5206\u5546\u57ce","name":"\u79ef\u5206\u5546\u57ce","pid":34513,"id":34516,"value":34516,"path":[34491,34509,34513],"index":"34509-34513-34516"},{"label":"\u79ef\u5206\u4ecb\u7ecd","name":"\u79ef\u5206\u4ecb\u7ecd","pid":34513,"id":34514,"value":34514,"path":[34491,34509,34513],"index":"34509-34513-34514"},{"label":"\u79ef\u5206\u914d\u7f6e","name":"\u79ef\u5206\u914d\u7f6e","pid":34513,"id":34515,"value":34515,"path":[34491,34509,34513],"index":"34509-34513-34515"}],"index":"34509-34513"},{"label":"\u6bcf\u65e5\u7b7e\u5230","name":"\u6bcf\u65e5\u7b7e\u5230","pid":34509,"id":34681,"value":34681,"path":[34491,34509],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34681,"id":34683,"value":34683,"path":[34491,34509,34681],"index":"34509-34681-34683"},{"label":"\u7b7e\u5230\u6d3b\u52a8","name":"\u7b7e\u5230\u6d3b\u52a8","pid":34681,"id":34689,"value":34689,"path":[34491,34509,34681],"index":"34509-34681-34689"}],"index":"34509-34681"},{"label":"\u4ed8\u8d39\u4f1a\u5458","name":"\u4ed8\u8d39\u4f1a\u5458","pid":34509,"id":34505,"value":34505,"path":[34491,34509],"index":"34509-34505"},{"label":"\u4f18\u60e0\u5957\u9910","name":"\u4f18\u60e0\u5957\u9910","pid":34509,"id":34517,"value":34517,"path":[34491,34509],"index":"34509-34517"},{"label":"\u4f59\u989d\u5145\u503c","name":"\u4f59\u989d\u5145\u503c","pid":34509,"id":34594,"value":34594,"path":[34491,34509],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34594,"id":34684,"value":34684,"path":[34491,34509,34594],"index":"34509-34594-34684"},{"label":"\u4f59\u989d\u5145\u503c","name":"\u4f59\u989d\u5145\u503c","pid":34594,"id":34688,"value":34688,"path":[34491,34509,34594],"index":"34509-34594-34688"}],"index":"34509-34594"},{"label":"\u4f18\u60e0\u6d3b\u52a8","name":"\u4f18\u60e0\u6d3b\u52a8","pid":34509,"id":34606,"value":34606,"path":[34491,34509],"children":[{"label":"\u6d3b\u52a8\u8bf4\u660e","name":"\u6d3b\u52a8\u8bf4\u660e","pid":34606,"id":34680,"value":34680,"path":[34491,34509,34606],"index":"34509-34606-34680"},{"label":"\u9650\u65f6\u6298\u6263","name":"\u9650\u65f6\u6298\u6263","pid":34606,"id":34607,"value":34607,"path":[34491,34509,34606],"index":"34509-34606-34607"},{"label":"\u6ee1\u51cf\u6ee1\u6298","name":"\u6ee1\u51cf\u6ee1\u6298","pid":34606,"id":34608,"value":34608,"path":[34491,34509,34606],"index":"34509-34606-34608"},{"label":"\u6ee1\u9001\u6d3b\u52a8","name":"\u6ee1\u9001\u6d3b\u52a8","pid":34606,"id":34609,"value":34609,"path":[34491,34509,34606],"index":"34509-34606-34609"},{"label":"\u7b2cN\u4ef6N\u6298","name":"\u7b2cN\u4ef6N\u6298","pid":34606,"id":34610,"value":34610,"path":[34491,34509,34606],"index":"34509-34606-34610"},{"label":"\u6d3b\u52a8\u89c4\u5219","name":"\u6d3b\u52a8\u89c4\u5219","pid":34606,"id":34627,"value":34627,"path":[34491,34509,34606],"index":"34509-34606-34627"}],"index":"34509-34606"},{"label":"\u6d3b\u52a8\u80cc\u666f\u56fe","name":"\u6d3b\u52a8\u80cc\u666f\u56fe","pid":34509,"id":34664,"value":34664,"path":[34491,34509],"index":"34509-34664"},{"label":"\u6d3b\u52a8\u8fb9\u6846","name":"\u6d3b\u52a8\u8fb9\u6846","pid":34509,"id":34665,"value":34665,"path":[34491,34509],"index":"34509-34665"},{"label":"\u597d\u53cb\u9001\u793c","name":"\u597d\u53cb\u9001\u793c","pid":34509,"id":34784,"value":34784,"path":[34491,34509],"children":[{"label":"\u529f\u80fd\u8bf4\u660e","name":"\u529f\u80fd\u8bf4\u660e","pid":34784,"id":34785,"value":34785,"path":[34491,34509,34784],"index":"34509-34784-34785"},{"label":"\u6536\u9001\u793c\u54c1","name":"\u6536\u9001\u793c\u54c1","pid":34784,"id":34786,"value":34786,"path":[34491,34509,34784],"index":"34509-34784-34786"}],"index":"34509-34784"},{"label":"\u81ea\u52a8\u5316\u8fd0\u8425","name":"\u81ea\u52a8\u5316\u8fd0\u8425","pid":34509,"id":34810,"value":34810,"path":[34491,34509],"children":[{"label":"\u529f\u80fd\u8bf4\u660e","name":"\u529f\u80fd\u8bf4\u660e","pid":34810,"id":34812,"value":34812,"path":[34491,34509,34810],"index":"34509-34810-34812"},{"label":"\u667a\u80fd\u63a8\u9001","name":"\u667a\u80fd\u63a8\u9001","pid":34810,"id":34811,"value":34811,"path":[34491,34509,34810],"index":"34509-34810-34811"},{"label":"\u751f\u65e5\u6709\u793c","name":"\u751f\u65e5\u6709\u793c","pid":34810,"id":34813,"value":34813,"path":[34491,34509,34810],"index":"34509-34810-34813"}],"index":"34509-34810"}],"index":"34509"},{"label":"\u5185\u5bb9\u7ba1\u7406","name":"\u5185\u5bb9\u7ba1\u7406","pid":34491,"id":34728,"value":34728,"path":[34491],"children":[{"label":"\u793e\u533a","name":"\u793e\u533a","pid":34728,"id":34729,"value":34729,"path":[34491,34728],"children":[{"label":"\u793e\u533a\u8bdd\u9898","name":"\u793e\u533a\u8bdd\u9898","pid":34729,"id":34730,"value":34730,"path":[34491,34728,34729],"index":"34728-34729-34730"},{"label":"\u793e\u533a\u5185\u5bb9","name":"\u793e\u533a\u5185\u5bb9","pid":34729,"id":34731,"value":34731,"path":[34491,34728,34729],"index":"34728-34729-34731"},{"label":"\u793e\u533a\u8bc4\u8bba","name":"\u793e\u533a\u8bc4\u8bba","pid":34729,"id":34732,"value":34732,"path":[34491,34728,34729],"index":"34728-34729-34732"},{"label":"\u793e\u533a\u8bbe\u7f6e","name":"\u793e\u533a\u8bbe\u7f6e","pid":34729,"id":34733,"value":34733,"path":[34491,34728,34729],"index":"34728-34729-34733"}],"index":"34728-34729"},{"label":"\u6587\u7ae0","name":"\u6587\u7ae0","pid":34728,"id":34650,"value":34650,"path":[34491,34728],"children":[{"label":"\u6587\u7ae0\u7ba1\u7406","name":"\u6587\u7ae0\u7ba1\u7406","pid":34650,"id":34651,"value":34651,"path":[34491,34728,34650],"index":"34728-34650-34651"},{"label":"\u6587\u7ae0\u5206\u7c7b","name":"\u6587\u7ae0\u5206\u7c7b","pid":34650,"id":34652,"value":34652,"path":[34491,34728,34650],"index":"34728-34650-34652"}],"index":"34728-34650"}],"index":"34728"},{"label":"\u76f4\u64ad\u7ba1\u7406","name":"\u76f4\u64ad\u7ba1\u7406","pid":34491,"id":34864,"value":34864,"path":[34491],"children":[{"label":"\u76f4\u64ad\u524d\u51c6\u5907","name":"\u76f4\u64ad\u524d\u51c6\u5907","pid":34864,"id":34865,"value":34865,"path":[34491,34864],"children":[{"label":"\u963f\u91cc\u4e91\u76f4\u64ad\u914d\u7f6e","name":"\u963f\u91cc\u4e91\u76f4\u64ad\u914d\u7f6e","pid":34865,"id":34866,"value":34866,"path":[34491,34864,34865],"index":"34864-34865-34866"},{"label":"\u963f\u91cc\u4e91\u8d44\u8d39\u8bf4\u660e","name":"\u963f\u91cc\u4e91\u8d44\u8d39\u8bf4\u660e","pid":34865,"id":35613,"value":35613,"path":[34491,34864,34865],"index":"34864-34865-35613"},{"label":"OBS","name":"OBS","pid":34865,"id":34867,"value":34867,"path":[34491,34864,34865],"index":"34864-34865-34867"}],"index":"34864-34865"},{"label":"\u76f4\u64ad\u529f\u80fd","name":"\u76f4\u64ad\u529f\u80fd","pid":34864,"id":34868,"value":34868,"path":[34491,34864],"children":[{"label":"\u76f4\u64ad\u5217\u8868","name":"\u76f4\u64ad\u5217\u8868","pid":34868,"id":35608,"value":35608,"path":[34491,34864,34868],"index":"34864-34868-35608"},{"label":"\u4e2d\u63a7\u53f0","name":"\u4e2d\u63a7\u53f0","pid":34868,"id":35610,"value":35610,"path":[34491,34864,34868],"index":"34864-34868-35610"},{"label":"\u89c2\u4f17\u5217\u8868","name":"\u89c2\u4f17\u5217\u8868","pid":34868,"id":35611,"value":35611,"path":[34491,34864,34868],"index":"34864-34868-35611"},{"label":"\u76f4\u64ad\u7edf\u8ba1","name":"\u76f4\u64ad\u7edf\u8ba1","pid":34868,"id":35612,"value":35612,"path":[34491,34864,34868],"index":"34864-34868-35612"},{"label":"\u76f4\u64ad\u8bbe\u7f6e","name":"\u76f4\u64ad\u8bbe\u7f6e","pid":34868,"id":35609,"value":35609,"path":[34491,34864,34868],"index":"34864-34868-35609"}],"index":"34864-34868"},{"label":"\u5c0f\u7a0b\u5e8f\u76f4\u64ad","name":"\u5c0f\u7a0b\u5e8f\u76f4\u64ad","pid":34864,"id":35614,"value":35614,"path":[34491,34864],"children":[{"label":"\u76f4\u64ad\u95f4\u7ba1\u7406","name":"\u76f4\u64ad\u95f4\u7ba1\u7406","pid":35614,"id":34696,"value":34696,"path":[34491,34864,35614],"index":"34864-35614-34696"},{"label":"\u76f4\u64ad\u5546\u54c1\u7ba1\u7406","name":"\u76f4\u64ad\u5546\u54c1\u7ba1\u7406","pid":35614,"id":34697,"value":34697,"path":[34491,34864,35614],"index":"34864-35614-34697"},{"label":"\u4e3b\u64ad\u7ba1\u7406","name":"\u4e3b\u64ad\u7ba1\u7406","pid":35614,"id":34698,"value":34698,"path":[34491,34864,35614],"index":"34864-35614-34698"}],"index":"34864-35614"}],"index":"34864"},{"label":"\u5206\u9500\u7ba1\u7406","name":"\u5206\u9500\u7ba1\u7406","pid":34491,"id":34518,"value":34518,"path":[34491],"children":[{"label":"\u5206\u9500\u5458\u7533\u8bf7","name":"\u5206\u9500\u5458\u7533\u8bf7","pid":34518,"id":34741,"value":34741,"path":[34491,34518],"index":"34518-34741"},{"label":"\u5206\u9500\u4ecb\u7ecd","name":"\u5206\u9500\u4ecb\u7ecd","pid":34518,"id":34519,"value":34519,"path":[34491,34518],"index":"34518-34519"},{"label":"\u5206\u9500\u914d\u7f6e","name":"\u5206\u9500\u914d\u7f6e","pid":34518,"id":34520,"value":34520,"path":[34491,34518],"index":"34518-34520"},{"label":"\u5206\u9500\u7b49\u7ea7","name":"\u5206\u9500\u7b49\u7ea7","pid":34518,"id":34521,"value":34521,"path":[34491,34518],"index":"34518-34521"},{"label":"\u5206\u9500\u5458\u7ba1\u7406","name":"\u5206\u9500\u5458\u7ba1\u7406","pid":34518,"id":34522,"value":34522,"path":[34491,34518],"index":"34518-34522"},{"label":"\u4f63\u91d1\u63d0\u73b0","name":"\u4f63\u91d1\u63d0\u73b0","pid":34518,"id":34523,"value":34523,"path":[34491,34518],"index":"34518-34523"},{"label":"\u56e2\u961f\u7ba1\u7406","name":"\u56e2\u961f\u7ba1\u7406","pid":34518,"id":34734,"value":34734,"path":[34491,34518],"children":[{"label":"\u56e2\u961f\u5217\u8868","name":"\u56e2\u961f\u5217\u8868","pid":34734,"id":34735,"value":34735,"path":[34491,34518,34734],"index":"34518-34734-34735"},{"label":"\u4ee3\u7406\u5546\u5217\u8868","name":"\u4ee3\u7406\u5546\u5217\u8868","pid":34734,"id":34736,"value":34736,"path":[34491,34518,34734],"index":"34518-34734-34736"},{"label":"\u4ee3\u7406\u5546\u7533\u8bf7","name":"\u4ee3\u7406\u5546\u7533\u8bf7","pid":34734,"id":34737,"value":34737,"path":[34491,34518,34734],"index":"34518-34734-34737"},{"label":"\u56e2\u961f\u914d\u7f6e","name":"\u56e2\u961f\u914d\u7f6e","pid":34734,"id":34738,"value":34738,"path":[34491,34518,34734],"index":"34518-34734-34738"},{"label":"\u56e2\u961f\u7edf\u8ba1","name":"\u56e2\u961f\u7edf\u8ba1","pid":34734,"id":34739,"value":34739,"path":[34491,34518,34734],"index":"34518-34734-34739"},{"label":"\u56e2\u961f\u8ba2\u5355","name":"\u56e2\u961f\u8ba2\u5355","pid":34734,"id":34740,"value":34740,"path":[34491,34518,34734],"index":"34518-34734-34740"},{"label":"\u8fd4\u4f63\u8bf4\u660e","name":"\u8fd4\u4f63\u8bf4\u660e","pid":34734,"id":34748,"value":34748,"path":[34491,34518,34734],"index":"34518-34734-34748"}],"index":"34518-34734"}],"index":"34518"},{"label":"\u8d22\u52a1\u7ba1\u7406","name":"\u8d22\u52a1\u7ba1\u7406","pid":34491,"id":34595,"value":34595,"path":[34491],"children":[{"label":"\u8d22\u52a1\u64cd\u4f5c","name":"\u8d22\u52a1\u64cd\u4f5c","pid":34595,"id":34596,"value":34596,"path":[34491,34595],"index":"34595-34596"},{"label":"\u8d22\u52a1\u8bb0\u5f55","name":"\u8d22\u52a1\u8bb0\u5f55","pid":34595,"id":34597,"value":34597,"path":[34491,34595],"index":"34595-34597"},{"label":"\u4f63\u91d1\u8bb0\u5f55","name":"\u4f63\u91d1\u8bb0\u5f55","pid":34595,"id":34598,"value":34598,"path":[34491,34595],"index":"34595-34598"}],"index":"34595"},{"label":"\u5546\u57ce\u88c5\u4fee","name":"\u5546\u57ce\u88c5\u4fee","pid":34491,"id":34524,"value":34524,"path":[34491],"children":[{"label":"\u4e3b\u9875\u88c5\u4fee","name":"\u4e3b\u9875\u88c5\u4fee","pid":34524,"id":34525,"value":34525,"path":[34491,34524],"index":"34524-34525"},{"label":"\u5546\u54c1\u8be6\u60c5","name":"\u5546\u54c1\u8be6\u60c5","pid":34524,"id":34711,"value":34711,"path":[34491,34524],"index":"34524-34711"},{"label":"\u4e2a\u4eba\u4e2d\u5fc3","name":"\u4e2a\u4eba\u4e2d\u5fc3","pid":34524,"id":34709,"value":34709,"path":[34491,34524],"index":"34524-34709"},{"label":"\u5546\u54c1\u5206\u7c7b","name":"\u5546\u54c1\u5206\u7c7b","pid":34524,"id":34710,"value":34710,"path":[34491,34524],"index":"34524-34710"},{"label":"\u9875\u9762\u914d\u7f6e","name":"\u9875\u9762\u914d\u7f6e","pid":34524,"id":34526,"value":34526,"path":[34491,34524],"index":"34524-34526"},{"label":"\u4e3b\u9898\u98ce\u683c","name":"\u4e3b\u9898\u98ce\u683c","pid":34524,"id":34527,"value":34527,"path":[34491,34524],"index":"34524-34527"},{"label":"PC\u9875\u9762","name":"PC\u9875\u9762","pid":34524,"id":34528,"value":34528,"path":[34491,34524],"index":"34524-34528"},{"label":"\u7cfb\u7edf\u8868\u5355","name":"\u7cfb\u7edf\u8868\u5355","pid":34524,"id":34699,"value":34699,"path":[34491,34524],"index":"34524-34699"},{"label":"\u60ac\u6d6e\u6309\u94ae","name":"\u60ac\u6d6e\u6309\u94ae","pid":34524,"id":34742,"value":34742,"path":[34491,34524],"index":"34524-34742"}],"index":"34524"},{"label":"\u79fb\u52a8\u7aef\u5546\u5bb6\u7ba1\u7406","name":"\u79fb\u52a8\u7aef\u5546\u5bb6\u7ba1\u7406","pid":34491,"id":34701,"value":34701,"path":[34491],"children":[{"label":"\u5546\u5bb6\u7ba1\u7406\u5f00\u5173","name":"\u5546\u5bb6\u7ba1\u7406\u5f00\u5173","pid":34701,"id":34715,"value":34715,"path":[34491,34701],"index":"34701-34715"},{"label":"\u5de5\u4f5c\u53f0\u6a21\u5757","name":"\u5de5\u4f5c\u53f0\u6a21\u5757","pid":34701,"id":34702,"value":34702,"path":[34491,34701],"index":"34701-34702"},{"label":"\u5546\u54c1\u7ba1\u7406","name":"\u5546\u54c1\u7ba1\u7406","pid":34701,"id":34703,"value":34703,"path":[34491,34701],"index":"34701-34703"},{"label":"\u8ba2\u5355\u7ba1\u7406","name":"\u8ba2\u5355\u7ba1\u7406","pid":34701,"id":34704,"value":34704,"path":[34491,34701],"index":"34701-34704"},{"label":"\u626b\u7801\u6838\u9500","name":"\u626b\u7801\u6838\u9500","pid":34701,"id":34705,"value":34705,"path":[34491,34701],"index":"34701-34705"},{"label":"\u552e\u540e\u7ef4\u6743","name":"\u552e\u540e\u7ef4\u6743","pid":34701,"id":34706,"value":34706,"path":[34491,34701],"index":"34701-34706"},{"label":"\u7528\u6237\u7ba1\u7406","name":"\u7528\u6237\u7ba1\u7406","pid":34701,"id":34707,"value":34707,"path":[34491,34701],"index":"34701-34707"},{"label":"\u4ee3\u5ba2\u4e0b\u5355","name":"\u4ee3\u5ba2\u4e0b\u5355","pid":34701,"id":34708,"value":34708,"path":[34491,34701],"index":"34701-34708"}],"index":"34701"},{"label":"\u5546\u57ce\u8bbe\u7f6e","name":"\u5546\u57ce\u8bbe\u7f6e","pid":34491,"id":34576,"value":34576,"path":[34491],"children":[{"label":"\u7cfb\u7edf\u8bbe\u7f6e","name":"\u7cfb\u7edf\u8bbe\u7f6e","pid":34576,"id":34745,"value":34745,"path":[34491,34576],"index":"34576-34745"},{"label":"\u540c\u57ce\u914d\u9001","name":"\u540c\u57ce\u914d\u9001","pid":34576,"id":34744,"value":34744,"path":[34491,34576],"index":"34576-34744"},{"label":"\u5546\u54c1\u8bbe\u7f6e","name":"\u5546\u54c1\u8bbe\u7f6e","pid":34576,"id":34690,"value":34690,"path":[34491,34576],"index":"34576-34690"},{"label":"\u5546\u57ce\u90ae\u8d39","name":"\u5546\u57ce\u90ae\u8d39","pid":34576,"id":34529,"value":34529,"path":[34491,34576],"children":[{"label":"\u90ae\u8d39\u7ed3\u6784","name":"\u90ae\u8d39\u7ed3\u6784","pid":34529,"id":34530,"value":34530,"path":[34491,34576,34529],"index":"34576-34529-34530"},{"label":"\u53d1\u8d27\u8bbe\u7f6e","name":"\u53d1\u8d27\u8bbe\u7f6e","pid":34529,"id":34531,"value":34531,"path":[34491,34576,34529],"index":"34576-34529-34531"},{"label":"\u8fd0\u8d39\u6a21\u677f","name":"\u8fd0\u8d39\u6a21\u677f","pid":34529,"id":34532,"value":34532,"path":[34491,34576,34529],"index":"34576-34529-34532"},{"label":"\u7269\u6d41\u516c\u53f8","name":"\u7269\u6d41\u516c\u53f8","pid":34529,"id":34581,"value":34581,"path":[34491,34576,34529],"index":"34576-34529-34581"},{"label":"\u57ce\u5e02\u6570\u636e","name":"\u57ce\u5e02\u6570\u636e","pid":34529,"id":34582,"value":34582,"path":[34491,34576,34529],"index":"34576-34529-34582"},{"label":"\u914d\u9001\u5458\u7ba1\u7406","name":"\u914d\u9001\u5458\u7ba1\u7406","pid":34529,"id":34583,"value":34583,"path":[34491,34576,34529],"index":"34576-34529-34583"}],"index":"34576-34529"},{"label":"\u652f\u4ed8\u8bbe\u7f6e","name":"\u652f\u4ed8\u8bbe\u7f6e","pid":34576,"id":34578,"value":34578,"path":[34491,34576],"index":"34576-34578"},{"label":"\u4ea4\u6613\u8bbe\u7f6e","name":"\u4ea4\u6613\u8bbe\u7f6e","pid":34576,"id":34577,"value":34577,"path":[34491,34576],"index":"34576-34577"},{"label":"\u5b9a\u65f6\u4efb\u52a1","name":"\u5b9a\u65f6\u4efb\u52a1","pid":34576,"id":34663,"value":34663,"path":[34491,34576],"index":"34576-34663"},{"label":"\u653f\u7b56\u534f\u8bae","name":"\u653f\u7b56\u534f\u8bae","pid":34576,"id":34691,"value":34691,"path":[34491,34576],"index":"34576-34691"},{"label":"\u5355\u636e\u8bbe\u7f6e","name":"\u5355\u636e\u8bbe\u7f6e","pid":34576,"id":34743,"value":34743,"path":[34491,34576],"index":"34576-34743"}],"index":"34576"},{"label":"\u5e94\u7528\u8bbe\u7f6e","name":"\u5e94\u7528\u8bbe\u7f6e","pid":34491,"id":34579,"value":34579,"path":[34491],"children":[{"label":"\u670d\u52a1\u53f7","name":"\u670d\u52a1\u53f7","pid":34579,"id":34580,"value":34580,"path":[34491,34579],"index":"34579-34580"},{"label":"\u5c0f\u7a0b\u5e8f","name":"\u5c0f\u7a0b\u5e8f","pid":34579,"id":34584,"value":34584,"path":[34491,34579],"index":"34579-34584"},{"label":"PC","name":"PC","pid":34579,"id":34585,"value":34585,"path":[34491,34579],"index":"34579-34585"},{"label":"APP","name":"APP","pid":34579,"id":34586,"value":34586,"path":[34491,34579],"index":"34579-34586"}],"index":"34579"},{"label":"\u7b2c\u4e09\u65b9\u63a5\u53e3","name":"\u7b2c\u4e09\u65b9\u63a5\u53e3","pid":34491,"id":34587,"value":34587,"path":[34491],"children":[{"label":"\u4e00\u53f7\u901a\u914d\u7f6e","name":"\u4e00\u53f7\u901a\u914d\u7f6e","pid":34587,"id":34727,"value":34727,"path":[34491,34587],"index":"34587-34727"},{"label":"\u5c0f\u7968\u6253\u5370\u914d\u7f6e","name":"\u5c0f\u7968\u6253\u5370\u914d\u7f6e","pid":34587,"id":34588,"value":34588,"path":[34491,34587],"index":"34587-34588"},{"label":"\u91c7\u96c6\u5546\u54c1\u914d\u7f6e","name":"\u91c7\u96c6\u5546\u54c1\u914d\u7f6e","pid":34587,"id":34589,"value":34589,"path":[34491,34587],"index":"34587-34589"},{"label":"\u7269\u6d41\u67e5\u8be2","name":"\u7269\u6d41\u67e5\u8be2","pid":34587,"id":34590,"value":34590,"path":[34491,34587],"index":"34587-34590"},{"label":"\u7535\u5b50\u9762\u5355","name":"\u7535\u5b50\u9762\u5355","pid":34587,"id":34591,"value":34591,"path":[34491,34587],"index":"34587-34591"},{"label":"\u5730\u56fe\u914d\u7f6e","name":"\u5730\u56fe\u914d\u7f6e","pid":34587,"id":34592,"value":34592,"path":[34491,34587],"index":"34587-34592"},{"label":"\u77ed\u4fe1","name":"\u77ed\u4fe1","pid":34587,"id":34593,"value":34593,"path":[34491,34587],"index":"34587-34593"}],"index":"34587"},{"label":"\u4f01\u4e1a\u5fae\u4fe1","name":"\u4f01\u4e1a\u5fae\u4fe1","pid":34491,"id":34615,"value":34615,"path":[34491],"children":[{"label":"\u5ba2\u6237\u7ba1\u7406","name":"\u5ba2\u6237\u7ba1\u7406","pid":34615,"id":34616,"value":34616,"path":[34491,34615],"children":[{"label":"\u4f01\u4e1a\u6e20\u9053\u7801","name":"\u4f01\u4e1a\u6e20\u9053\u7801","pid":34616,"id":34619,"value":34619,"path":[34491,34615,34616],"index":"34615-34616-34619"},{"label":"\u6b22\u8fce\u8bed","name":"\u6b22\u8fce\u8bed","pid":34616,"id":34620,"value":34620,"path":[34491,34615,34616],"index":"34615-34616-34620"},{"label":"\u5458\u5de5\u5217\u8868","name":"\u5458\u5de5\u5217\u8868","pid":34616,"id":34695,"value":34695,"path":[34491,34615,34616],"index":"34615-34616-34695"},{"label":"\u5ba2\u6237\u5217\u8868","name":"\u5ba2\u6237\u5217\u8868","pid":34616,"id":34621,"value":34621,"path":[34491,34615,34616],"index":"34615-34616-34621"},{"label":"\u5ba2\u6237\u7fa4\u53d1","name":"\u5ba2\u6237\u7fa4\u53d1","pid":34616,"id":34622,"value":34622,"path":[34491,34615,34616],"index":"34615-34616-34622"},{"label":"\u670b\u53cb\u5708\u5217\u8868","name":"\u670b\u53cb\u5708\u5217\u8868","pid":34616,"id":34623,"value":34623,"path":[34491,34615,34616],"index":"34615-34616-34623"}],"index":"34615-34616"},{"label":"\u5ba2\u6237\u7fa4\u8fd0\u8425","name":"\u5ba2\u6237\u7fa4\u8fd0\u8425","pid":34615,"id":34617,"value":34617,"path":[34491,34615],"children":[{"label":"\u5ba2\u6237\u7fa4\u5217\u8868","name":"\u5ba2\u6237\u7fa4\u5217\u8868","pid":34617,"id":34624,"value":34624,"path":[34491,34615,34617],"index":"34615-34617-34624"},{"label":"\u81ea\u52a8\u62c9\u7fa4","name":"\u81ea\u52a8\u62c9\u7fa4","pid":34617,"id":34625,"value":34625,"path":[34491,34615,34617],"index":"34615-34617-34625"},{"label":"\u5ba2\u6237\u7fa4\u7fa4\u53d1","name":"\u5ba2\u6237\u7fa4\u7fa4\u53d1","pid":34617,"id":34626,"value":34626,"path":[34491,34615,34617],"index":"34615-34617-34626"}],"index":"34615-34617"},{"label":"\u4f01\u4e1a\u5fae\u4fe1\u8bbe\u7f6e","name":"\u4f01\u4e1a\u5fae\u4fe1\u8bbe\u7f6e","pid":34615,"id":34618,"value":34618,"path":[34491,34615],"index":"34615-34618"}],"index":"34615"},{"label":"\u4f9b\u5e94\u5546","name":"\u4f9b\u5e94\u5546","pid":34491,"id":34642,"value":34642,"path":[34491],"children":[{"label":"\u4f9b\u5e94\u5546\u7533\u8bf7","name":"\u4f9b\u5e94\u5546\u7533\u8bf7","pid":34642,"id":34692,"value":34692,"path":[34491,34642],"index":"34642-34692"},{"label":"\u4f9b\u5e94\u5546\u7ba1\u7406","name":"\u4f9b\u5e94\u5546\u7ba1\u7406","pid":34642,"id":34643,"value":34643,"path":[34491,34642],"index":"34642-34643"},{"label":"\u4f9b\u5e94\u5546\u8d22\u52a1","name":"\u4f9b\u5e94\u5546\u8d22\u52a1","pid":34642,"id":34644,"value":34644,"path":[34491,34642],"index":"34642-34644"},{"label":"\u4f9b\u5e94\u5546\u83dc\u5355\u8bbe\u7f6e","name":"\u4f9b\u5e94\u5546\u83dc\u5355\u8bbe\u7f6e","pid":34642,"id":34723,"value":34723,"path":[34491,34642],"index":"34642-34723"},{"label":"\u4f9b\u5e94\u5546\u540e\u53f0","name":"\u4f9b\u5e94\u5546\u540e\u53f0","pid":34642,"id":34645,"value":34645,"path":[34491,34642],"children":[{"label":"\u4f9b\u5e94\u5546\u5546\u54c1","name":"\u4f9b\u5e94\u5546\u5546\u54c1","pid":34645,"id":34693,"value":34693,"path":[34491,34642,34645],"index":"34642-34645-34693"},{"label":"\u4f9b\u5e94\u5546\u8ba2\u5355","name":"\u4f9b\u5e94\u5546\u8ba2\u5355","pid":34645,"id":34646,"value":34646,"path":[34491,34642,34645],"index":"34642-34645-34646"},{"label":"\u8d22\u52a1\u4fe1\u606f","name":"\u8d22\u52a1\u4fe1\u606f","pid":34645,"id":34694,"value":34694,"path":[34491,34642,34645],"index":"34642-34645-34694"},{"label":"\u4f9b\u5e94\u5546\u8bbe\u7f6e","name":"\u4f9b\u5e94\u5546\u8bbe\u7f6e","pid":34645,"id":34647,"value":34647,"path":[34491,34642,34645],"index":"34642-34645-34647"},{"label":"\u4f9b\u5e94\u5546\u786c\u4ef6\u914d\u7f6e","name":"\u4f9b\u5e94\u5546\u786c\u4ef6\u914d\u7f6e","pid":34645,"id":34648,"value":34648,"path":[34491,34642,34645],"index":"34642-34645-34648"}],"index":"34642-34645"}],"index":"34642"},{"label":"\u91c7\u8d2d\u5546","name":"\u91c7\u8d2d\u5546","pid":34491,"id":34782,"value":34782,"path":[34491],"children":[{"label":"\u91c7\u8d2d\u5546\u8bf4\u660e","name":"\u91c7\u8d2d\u5546\u8bf4\u660e","pid":34782,"id":34783,"value":34783,"path":[34491,34782],"index":"34782-34783"}],"index":"34782"},{"label":"\u5546\u57ce\u786c\u4ef6","name":"\u5546\u57ce\u786c\u4ef6","pid":34491,"id":34571,"value":34571,"path":[34491],"index":"34571"},{"label":"\u79fb\u52a8\u7aefUI\u9274\u8d4f","name":"\u79fb\u52a8\u7aefUI\u9274\u8d4f","pid":34491,"id":34712,"value":34712,"path":[34491],"index":"34712"},{"label":"\u5546\u57ceAI","name":"\u5546\u57ceAI","pid":34491,"id":34821,"value":34821,"path":[34491],"children":[{"label":"\u529f\u80fd\u4ecb\u7ecd","name":"\u529f\u80fd\u4ecb\u7ecd","pid":34821,"id":34822,"value":34822,"path":[34491,34821],"index":"34821-34822"}],"index":"34821"},{"label":"\u5e93\u5b58\u7ba1\u7406","name":"\u5e93\u5b58\u7ba1\u7406","pid":34491,"id":34831,"value":34831,"path":[34491],"children":[{"label":"\u5165\u5e93\u7ba1\u7406","name":"\u5165\u5e93\u7ba1\u7406","pid":34831,"id":34832,"value":34832,"path":[34491,34831],"index":"34831-34832"},{"label":"\u51fa\u5e93\u7ba1\u7406","name":"\u51fa\u5e93\u7ba1\u7406","pid":34831,"id":34833,"value":34833,"path":[34491,34831],"index":"34831-34833"},{"label":"\u5e93\u5b58\u67e5\u8be2","name":"\u5e93\u5b58\u67e5\u8be2","pid":34831,"id":34834,"value":34834,"path":[34491,34831],"index":"34831-34834"},{"label":"\u5e93\u5b58\u76d8\u70b9","name":"\u5e93\u5b58\u76d8\u70b9","pid":34831,"id":34835,"value":34835,"path":[34491,34831],"index":"34831-34835"},{"label":"\u51fa\u5165\u5e93\u8bb0\u5f55","name":"\u51fa\u5165\u5e93\u8bb0\u5f55","pid":34831,"id":34836,"value":34836,"path":[34491,34831],"index":"34831-34836"}],"index":"34831"}],"index":""},{"label":"\ud83d\udd27 \u5f00\u53d1\u624b\u518c","name":"\ud83d\udd27 \u5f00\u53d1\u624b\u518c","pid":0,"id":34533,"value":34533,"path":[],"children":[{"label":"\u4e8c\u5f00\u6587\u6863","name":"\u4e8c\u5f00\u6587\u6863","pid":34533,"id":34847,"value":34847,"path":[34533],"children":[{"label":"\u76ee\u5f55\u7ed3\u6784\u8bf4\u660e","name":"\u76ee\u5f55\u7ed3\u6784\u8bf4\u660e","pid":34847,"id":34848,"value":34848,"path":[34533,34847],"index":"34847-34848"},{"label":"\u6570\u636e\u5e93\u7ed3\u6784\u8bf4\u660e","name":"\u6570\u636e\u5e93\u7ed3\u6784\u8bf4\u660e","pid":34847,"id":34849,"value":34849,"path":[34533,34847],"index":"34847-34849"},{"label":"\u4e8b\u4ef6\u8bf4\u660e","name":"\u4e8b\u4ef6\u8bf4\u660e","pid":34847,"id":34850,"value":34850,"path":[34533,34847],"index":"34847-34850"},{"label":"\u914d\u7f6e\u8bf4\u660e","name":"\u914d\u7f6e\u8bf4\u660e","pid":34847,"id":34851,"value":34851,"path":[34533,34847],"index":"34847-34851"},{"label":"\u8ba2\u5355\u6d41\u7a0b\u8bf4\u660e","name":"\u8ba2\u5355\u6d41\u7a0b\u8bf4\u660e","pid":34847,"id":34852,"value":34852,"path":[34533,34847],"index":"34847-34852"},{"label":"\u5546\u54c1\u6d41\u7a0b\u76f8\u5173\u8bf4\u660e","name":"\u5546\u54c1\u6d41\u7a0b\u76f8\u5173\u8bf4\u660e","pid":34847,"id":34853,"value":34853,"path":[34533,34847],"index":"34847-34853"},{"label":"\u524d\u53f0\u540e\u7aef\u6dfb\u52a0\u8def\u7531\u8bf4\u660e","name":"\u524d\u53f0\u540e\u7aef\u6dfb\u52a0\u8def\u7531\u8bf4\u660e","pid":34847,"id":34854,"value":34854,"path":[34533,34847],"index":"34847-34854"},{"label":"\u6dfb\u52a0\u9875\u9762\u8bf4\u660e","name":"\u6dfb\u52a0\u9875\u9762\u8bf4\u660e","pid":34847,"id":34855,"value":34855,"path":[34533,34847],"index":"34847-34855"},{"label":"\u6dfb\u52a0\u9274\u6743\u8bf4\u660e","name":"\u6dfb\u52a0\u9274\u6743\u8bf4\u660e","pid":34847,"id":34856,"value":34856,"path":[34533,34847],"index":"34847-34856"},{"label":"\u9879\u76ee\u8fd0\u884c\u8bf4\u660e","name":"\u9879\u76ee\u8fd0\u884c\u8bf4\u660e","pid":34847,"id":34857,"value":34857,"path":[34533,34847],"index":"34847-34857"},{"label":"\u79fb\u52a8\u7aef\u6dfb\u52a0\u9875\u9762\u8bf4\u660e","name":"\u79fb\u52a8\u7aef\u6dfb\u52a0\u9875\u9762\u8bf4\u660e","pid":34847,"id":34858,"value":34858,"path":[34533,34847],"index":"34847-34858"},{"label":"\u6dfb\u52a0\u7ec4\u4ef6\u8bf4\u660e","name":"\u6dfb\u52a0\u7ec4\u4ef6\u8bf4\u660e","pid":34847,"id":34859,"value":34859,"path":[34533,34847],"index":"34847-34859"},{"label":"\u6838\u5fc3\u4f9d\u8d56\u5e93crmeb\u76ee\u5f55\u8bf4\u660e","name":"\u6838\u5fc3\u4f9d\u8d56\u5e93crmeb\u76ee\u5f55\u8bf4\u660e","pid":34847,"id":34860,"value":34860,"path":[34533,34847],"index":"34847-34860"},{"label":"\u652f\u4ed8\u6d41\u7a0b\u5168\u91cf\u8bf4\u660e","name":"\u652f\u4ed8\u6d41\u7a0b\u5168\u91cf\u8bf4\u660e","pid":34847,"id":34861,"value":34861,"path":[34533,34847],"index":"34847-34861"},{"label":"\u4e2d\u95f4\u4ef6\u4f7f\u7528\u8bf4\u660e","name":"\u4e2d\u95f4\u4ef6\u4f7f\u7528\u8bf4\u660e","pid":34847,"id":34862,"value":34862,"path":[34533,34847],"index":"34847-34862"},{"label":"\u524d\u7aef\u72b6\u6001\u7ba1\u7406\u8bf4\u660e","name":"\u524d\u7aef\u72b6\u6001\u7ba1\u7406\u8bf4\u660e","pid":34847,"id":34863,"value":34863,"path":[34533,34847],"index":"34847-34863"}],"index":"34847"},{"label":"\u524d\u7aef\u73af\u5883","name":"\u524d\u7aef\u73af\u5883","pid":34533,"id":34713,"value":34713,"path":[34533],"index":"34713"},{"label":"\u540e\u7aef\u73af\u5883","name":"\u540e\u7aef\u73af\u5883","pid":34533,"id":34427,"value":34427,"path":[34533],"index":"34427"},{"label":"\u6253\u5305\u6559\u7a0b","name":"\u6253\u5305\u6559\u7a0b","pid":34533,"id":34632,"value":34632,"path":[34533],"children":[{"label":"APP\u6253\u5305","name":"APP\u6253\u5305","pid":34632,"id":34566,"value":34566,"path":[34533,34632],"children":[{"label":"1.\u57fa\u7840\u914d\u7f6e","name":"1.\u57fa\u7840\u914d\u7f6e","pid":34566,"id":34567,"value":34567,"path":[34533,34632,34566],"index":"34632-34566-34567"},{"label":"2.\u5f00\u53d1\u8c03\u8bd5","name":"2.\u5f00\u53d1\u8c03\u8bd5","pid":34566,"id":34568,"value":34568,"path":[34533,34632,34566],"index":"34632-34566-34568"},{"label":"3.\u6253\u5305\u4e0a\u7ebf","name":"3.\u6253\u5305\u4e0a\u7ebf","pid":34566,"id":34569,"value":34569,"path":[34533,34632,34566],"index":"34632-34566-34569"},{"label":"4.APP\u6253\u5305","name":"4.APP\u6253\u5305","pid":34566,"id":34570,"value":34570,"path":[34533,34632,34566],"index":"34632-34566-34570"}],"index":"34632-34566"},{"label":"\u79fb\u52a8\u7aef\uff08uni-app\uff09\u6253\u5305","name":"\u79fb\u52a8\u7aef\uff08uni-app\uff09\u6253\u5305","pid":34632,"id":34633,"value":34633,"path":[34533,34632],"children":[{"label":"\u8bf4\u660e","name":"\u8bf4\u660e","pid":34633,"id":34634,"value":34634,"path":[34533,34632,34633],"index":"34632-34633-34634"},{"label":"H5\u3001\u516c\u4f17\u53f7\u7f16\u8bd1\u6253\u5305","name":"H5\u3001\u516c\u4f17\u53f7\u7f16\u8bd1\u6253\u5305","pid":34633,"id":34635,"value":34635,"path":[34533,34632,34633],"index":"34632-34633-34635"},{"label":"\u7f16\u8bd1\u6253\u5305uniapp\u4e3a\u5c0f\u7a0b\u5e8f","name":"\u7f16\u8bd1\u6253\u5305uniapp\u4e3a\u5c0f\u7a0b\u5e8f","pid":34633,"id":34636,"value":34636,"path":[34533,34632,34633],"index":"34632-34633-34636"},{"label":"\u5c0f\u7a0b\u5e8f\u4e0a\u4f20\u5ba1\u6838\u4e0a\u67b6","name":"\u5c0f\u7a0b\u5e8f\u4e0a\u4f20\u5ba1\u6838\u4e0a\u67b6","pid":34633,"id":34764,"value":34764,"path":[34533,34632,34633],"index":"34632-34633-34764"},{"label":"\u5c0f\u7a0b\u5e8f\u5f00\u53d1\u5de5\u5177\u4e0b\u8f7d","name":"\u5c0f\u7a0b\u5e8f\u5f00\u53d1\u5de5\u5177\u4e0b\u8f7d","pid":34633,"id":34765,"value":34765,"path":[34533,34632,34633],"index":"34632-34633-34765"}],"index":"34632-34633"},{"label":"\u5e73\u53f0\u540e\u53f0\uff08admin\uff09\u6253\u5305","name":"\u5e73\u53f0\u540e\u53f0\uff08admin\uff09\u6253\u5305","pid":34632,"id":34637,"value":34637,"path":[34533,34632],"index":"34632-34637"},{"label":"PC\u6253\u5305","name":"PC\u6253\u5305","pid":34632,"id":34638,"value":34638,"path":[34533,34632],"index":"34632-34638"},{"label":"PC SEO\u6253\u5305","name":"PC SEO\u6253\u5305","pid":34632,"id":34714,"value":34714,"path":[34533,34632],"index":"34632-34714"}],"index":"34632"},{"label":"\u4e3b\u9898\u4e00\u952e\u6362\u8272","name":"\u4e3b\u9898\u4e00\u952e\u6362\u8272","pid":34533,"id":34639,"value":34639,"path":[34533],"index":"34639"},{"label":"\u5f00\u53d1\u89c4\u8303","name":"\u5f00\u53d1\u89c4\u8303","pid":34533,"id":34534,"value":34534,"path":[34533],"index":"34534"},{"label":"\u76ee\u5f55\u7ed3\u6784","name":"\u76ee\u5f55\u7ed3\u6784","pid":34533,"id":34535,"value":34535,"path":[34533],"index":"34535"},{"label":"\u6570\u636e\u5b57\u5178","name":"\u6570\u636e\u5b57\u5178","pid":34533,"id":34536,"value":34536,"path":[34533],"index":"34536"},{"label":"\u5f00\u53d1\u6559\u7a0b\u89c6\u9891","name":"\u5f00\u53d1\u6559\u7a0b\u89c6\u9891","pid":34533,"id":34541,"value":34541,"path":[34533],"index":"34541"},{"label":"\u79fb\u52a8\u7aef\u8def\u7531","name":"\u79fb\u52a8\u7aef\u8def\u7531","pid":34533,"id":34542,"value":34542,"path":[34533],"index":"34542"},{"label":"\u4e8b\u4ef6","name":"\u4e8b\u4ef6","pid":34533,"id":34543,"value":34543,"path":[34533],"index":"34543"},{"label":"\u7cfb\u7edf\u914d\u7f6e","name":"\u7cfb\u7edf\u914d\u7f6e","pid":34533,"id":34544,"value":34544,"path":[34533],"index":"34544"},{"label":"\u540e\u53f0\u8868\u5355\u8bf4\u660e","name":"\u540e\u53f0\u8868\u5355\u8bf4\u660e","pid":34533,"id":34545,"value":34545,"path":[34533],"index":"34545"},{"label":"\u540e\u7aef\u8def\u7531","name":"\u540e\u7aef\u8def\u7531","pid":34533,"id":34546,"value":34546,"path":[34533],"index":"34546"},{"label":"\u5bf9\u5916\u63a5\u53e3\u8def\u7531","name":"\u5bf9\u5916\u63a5\u53e3\u8def\u7531","pid":34533,"id":34547,"value":34547,"path":[34533],"index":"34547"},{"label":"\u4ed8\u8d39\u91c7\u96c6","name":"\u4ed8\u8d39\u91c7\u96c6","pid":34533,"id":34548,"value":34548,"path":[34533],"index":"34548"},{"label":"\u540e\u53f0\u524d\u7aef\u8bf4\u660e","name":"\u540e\u53f0\u524d\u7aef\u8bf4\u660e","pid":34533,"id":34549,"value":34549,"path":[34533],"children":[{"label":"\u540e\u53f0\u524d\u7aef\u5f00\u53d1","name":"\u540e\u53f0\u524d\u7aef\u5f00\u53d1","pid":34549,"id":34550,"value":34550,"path":[34533,34549],"index":"34549-34550"},{"label":"\u524d\u7aef\u914d\u7f6e\u8bf4\u660e","name":"\u524d\u7aef\u914d\u7f6e\u8bf4\u660e","pid":34549,"id":34551,"value":34551,"path":[34533,34549],"index":"34549-34551"},{"label":"\u524d\u7aef\u6dfb\u52a0\u9875\u9762","name":"\u524d\u7aef\u6dfb\u52a0\u9875\u9762","pid":34549,"id":34552,"value":34552,"path":[34533,34549],"index":"34549-34552"},{"label":"\u524d\u7aef\u5f15\u7528\u7ec4\u4ef6","name":"\u524d\u7aef\u5f15\u7528\u7ec4\u4ef6","pid":34549,"id":34553,"value":34553,"path":[34533,34549],"index":"34549-34553"},{"label":"\u524d\u7aef\u6784\u5efa\u548c\u53d1\u5e03","name":"\u524d\u7aef\u6784\u5efa\u548c\u53d1\u5e03","pid":34549,"id":34554,"value":34554,"path":[34533,34549],"index":"34549-34554"},{"label":"\u540e\u53f0\u9875\u9762\u6253\u5305","name":"\u540e\u53f0\u9875\u9762\u6253\u5305","pid":34549,"id":34555,"value":34555,"path":[34533,34549],"index":"34549-34555"}],"index":"34549"},{"label":"\u5bf9\u5916\u63a5\u53e3\u8bbf\u95eetoken\u83b7\u53d6\u548c\u4f7f\u7528","name":"\u5bf9\u5916\u63a5\u53e3\u8bbf\u95eetoken\u83b7\u53d6\u548c\u4f7f\u7528","pid":34533,"id":34600,"value":34600,"path":[34533],"index":"34600"},{"label":"Docker\u8fd0\u884c","name":"Docker\u8fd0\u884c","pid":34533,"id":34657,"value":34657,"path":[34533],"index":"34657"},{"label":"\u8fdc\u7a0b\u767b\u5f55","name":"\u8fdc\u7a0b\u767b\u5f55","pid":34533,"id":34806,"value":34806,"path":[34533],"index":"34806"}],"index":""},{"label":"\u2753\u5e38\u89c1\u95ee\u9898","name":"\u2753\u5e38\u89c1\u95ee\u9898","pid":0,"id":34556,"value":34556,"path":[],"children":[{"label":"\u914d\u7f6e\u95ee\u9898","name":"\u914d\u7f6e\u95ee\u9898","pid":34556,"id":34749,"value":34749,"path":[34556],"children":[{"label":"\u4f01\u4e1a\u5fae\u4fe1\u6b22\u8fce\u8bed","name":"\u4f01\u4e1a\u5fae\u4fe1\u6b22\u8fce\u8bed","pid":34749,"id":34667,"value":34667,"path":[34556,34749],"index":"34749-34667"},{"label":"Apache\u53cd\u5411\u4ee3\u7406\u914d\u7f6e","name":"Apache\u53cd\u5411\u4ee3\u7406\u914d\u7f6e","pid":34749,"id":34448,"value":34448,"path":[34556,34749],"index":"34749-34448"},{"label":"\u652f\u4ed8\u6210\u529f\u8ba2\u5355\u72b6\u6001\u6ca1\u6539","name":"\u652f\u4ed8\u6210\u529f\u8ba2\u5355\u72b6\u6001\u6ca1\u6539","pid":34749,"id":34561,"value":34561,"path":[34556,34749],"index":"34749-34561"},{"label":"\u5c0f\u7a0b\u5e8f\u4e0d\u53d1\u8ba2\u9605\u6d88\u606f\u6392\u67e5","name":"\u5c0f\u7a0b\u5e8f\u4e0d\u53d1\u8ba2\u9605\u6d88\u606f\u6392\u67e5","pid":34749,"id":34601,"value":34601,"path":[34556,34749],"index":"34749-34601"},{"label":"\u4f01\u4e1a\u5fae\u4fe1\u5ba2\u670d\u600e\u4e48\u8bbe\u7f6e\u4f7f\u7528","name":"\u4f01\u4e1a\u5fae\u4fe1\u5ba2\u670d\u600e\u4e48\u8bbe\u7f6e\u4f7f\u7528","pid":34749,"id":34725,"value":34725,"path":[34556,34749],"index":"34749-34725"},{"label":"\u5fae\u4fe1\u5f00\u653e\u5e73\u53f0\u5e94\u7528\u7b7e\u540d\u6b63\u786e\u83b7\u53d6\u65b9\u5f0f","name":"\u5fae\u4fe1\u5f00\u653e\u5e73\u53f0\u5e94\u7528\u7b7e\u540d\u6b63\u786e\u83b7\u53d6\u65b9\u5f0f","pid":34749,"id":34768,"value":34768,"path":[34556,34749],"index":"34749-34768"},{"label":"\u9274\u6743\u5931\u8d25\uff0c\u8bf7\u4f20\u5165\u6b63\u786e\u7684key","name":"\u9274\u6743\u5931\u8d25\uff0c\u8bf7\u4f20\u5165\u6b63\u786e\u7684key","pid":34749,"id":34799,"value":34799,"path":[34556,34749],"index":"34749-34799"},{"label":"\u670d\u52a1\u4fdd\u969c\/\u4fdd\u969c\u670d\u52a1\u8bbe\u7f6e","name":"\u670d\u52a1\u4fdd\u969c\/\u4fdd\u969c\u670d\u52a1\u8bbe\u7f6e","pid":34749,"id":34803,"value":34803,"path":[34556,34749],"index":"34749-34803"},{"label":"\u4f01\u4e1a\u5fae\u4fe1\u673a\u5668\u4eba\u94fe\u63a5","name":"\u4f01\u4e1a\u5fae\u4fe1\u673a\u5668\u4eba\u94fe\u63a5","pid":34749,"id":34827,"value":34827,"path":[34556,34749],"index":"34749-34827"},{"label":"\u7531\u4e8e\u5c0f\u7a0b\u5e8f\u8fdd\u89c4\uff0c\u652f\u4ed8\u529f\u80fd\u6682\u65f6\u65e0\u6cd5\u4f7f\u7528","name":"\u7531\u4e8e\u5c0f\u7a0b\u5e8f\u8fdd\u89c4\uff0c\u652f\u4ed8\u529f\u80fd\u6682\u65f6\u65e0\u6cd5\u4f7f\u7528","pid":34749,"id":34841,"value":34841,"path":[34556,34749],"index":"34749-34841"},{"label":"\u963f\u91cc\u4e91\u76f4\u64ad\u914d\u7f6e","name":"\u963f\u91cc\u4e91\u76f4\u64ad\u914d\u7f6e","pid":34749,"id":35605,"value":35605,"path":[34556,34749],"index":"34749-35605"}],"index":"34749"},{"label":"\u5b89\u88c5\u95ee\u9898","name":"\u5b89\u88c5\u95ee\u9898","pid":34556,"id":34750,"value":34750,"path":[34556],"children":[{"label":"\u591a\u9879\u76ee\u90e8\u7f72\u95ee\u9898\u6c47\u603b","name":"\u591a\u9879\u76ee\u90e8\u7f72\u95ee\u9898\u6c47\u603b","pid":34750,"id":34559,"value":34559,"path":[34556,34750],"index":"34750-34559"},{"label":"\u5b89\u88c5\u9996\u9875\u6570\u636e\u5e93\u94fe\u63a5\u5931\u8d25","name":"\u5b89\u88c5\u9996\u9875\u6570\u636e\u5e93\u94fe\u63a5\u5931\u8d25","pid":34750,"id":34562,"value":34562,"path":[34556,34750],"index":"34750-34562"},{"label":"mysql\u4fee\u6539sql_mode","name":"mysql\u4fee\u6539sql_mode","pid":34750,"id":34572,"value":34572,"path":[34556,34750],"index":"34750-34572"},{"label":"\u5b89\u88c5\u5b8c\u6210\u4e4b\u540e\u767b\u5f55\u540e\u53f0\u62a5\u9519","name":"\u5b89\u88c5\u5b8c\u6210\u4e4b\u540e\u767b\u5f55\u540e\u53f0\u62a5\u9519","pid":34750,"id":34573,"value":34573,"path":[34556,34750],"index":"34750-34573"},{"label":"Nginx\u6dfb\u52a0\u53cd\u5411\u4ee3\u7406\u62a5\u9519","name":"Nginx\u6dfb\u52a0\u53cd\u5411\u4ee3\u7406\u62a5\u9519","pid":34750,"id":34605,"value":34605,"path":[34556,34750],"index":"34750-34605"},{"label":"\u6e90\u7801\u4e0b\u8f7d\u8bf4\u660e","name":"\u6e90\u7801\u4e0b\u8f7d\u8bf4\u660e","pid":34750,"id":34778,"value":34778,"path":[34556,34750],"index":"34750-34778"},{"label":"\u4e00\u53f0\u670d\u52a1\u5668\u642d\u5efa\u591a\u5957\u6ce8\u610f\u4e8b\u9879","name":"\u4e00\u53f0\u670d\u52a1\u5668\u642d\u5efa\u591a\u5957\u6ce8\u610f\u4e8b\u9879","pid":34750,"id":34798,"value":34798,"path":[34556,34750],"index":"34750-34798"}],"index":"34750"},{"label":"\u4f7f\u7528\u95ee\u9898","name":"\u4f7f\u7528\u95ee\u9898","pid":34556,"id":34751,"value":34751,"path":[34556],"children":[{"label":"\u540e\u53f0\u5fd8\u8bb0\u5bc6\u7801","name":"\u540e\u53f0\u5fd8\u8bb0\u5bc6\u7801","pid":34751,"id":34560,"value":34560,"path":[34556,34751],"index":"34751-34560"},{"label":"\u540e\u53f0\u5b50\u7ba1\u7406\u5458\u6743\u9650\u95ee\u9898","name":"\u540e\u53f0\u5b50\u7ba1\u7406\u5458\u6743\u9650\u95ee\u9898","pid":34751,"id":34563,"value":34563,"path":[34556,34751],"index":"34751-34563"},{"label":"\u5b88\u62a4\u8fdb\u7a0b\u542f\u52a8\u5931\u8d25\u95ee\u9898\u603b\u7ed3","name":"\u5b88\u62a4\u8fdb\u7a0b\u542f\u52a8\u5931\u8d25\u95ee\u9898\u603b\u7ed3","pid":34751,"id":34574,"value":34574,"path":[34556,34751],"index":"34751-34574"},{"label":"\u540e\u53f0\u88c5\u4fee\u5207\u82b1\u6a21\u7248\u6216\u5176\u4ed6\u64cd\u4f5c\u5f15\u8d77Template not exists\u9519\u8bef","name":"\u540e\u53f0\u88c5\u4fee\u5207\u82b1\u6a21\u7248\u6216\u5176\u4ed6\u64cd\u4f5c\u5f15\u8d77Template not exists\u9519\u8bef","pid":34751,"id":34604,"value":34604,"path":[34556,34751],"index":"34751-34604"},{"label":"\u4e00\u53f7\u901a\u5e38\u89c1\u95ee\u9898\u603b\u7ed3","name":"\u4e00\u53f7\u901a\u5e38\u89c1\u95ee\u9898\u603b\u7ed3","pid":34751,"id":34614,"value":34614,"path":[34556,34751],"index":"34751-34614"},{"label":"\u540e\u53f0\u4e00\u76f4\u767b\u5f55\u4e0d\u4e86\u63d0\u793a\u9a8c\u8bc1\u7801\u9519\u8bef\u5904\u7406","name":"\u540e\u53f0\u4e00\u76f4\u767b\u5f55\u4e0d\u4e86\u63d0\u793a\u9a8c\u8bc1\u7801\u9519\u8bef\u5904\u7406","pid":34751,"id":34629,"value":34629,"path":[34556,34751],"index":"34751-34629"},{"label":"\u5c0f\u7a0b\u5e8f\u8d85\u5305\u4e00\u822c\u5904\u7406\u529e\u6cd5","name":"\u5c0f\u7a0b\u5e8f\u8d85\u5305\u4e00\u822c\u5904\u7406\u529e\u6cd5","pid":34751,"id":34631,"value":34631,"path":[34556,34751],"index":"34751-34631"},{"label":"\u540e\u53f0\u914d\u7f6e\u6210\u529f\u4e0d\u751f\u6548","name":"\u540e\u53f0\u914d\u7f6e\u6210\u529f\u4e0d\u751f\u6548","pid":34751,"id":34640,"value":34640,"path":[34556,34751],"index":"34751-34640"},{"label":"\u5e38\u89c1\u9519\u8bef\u53cd\u9988\u5e2e\u52a9","name":"\u5e38\u89c1\u9519\u8bef\u53cd\u9988\u5e2e\u52a9","pid":34751,"id":34641,"value":34641,"path":[34556,34751],"index":"34751-34641"},{"label":"\u4f01\u4e1a\u5fae\u4fe1\u5e38\u89c1\u95ee\u9898","name":"\u4f01\u4e1a\u5fae\u4fe1\u5e38\u89c1\u95ee\u9898","pid":34751,"id":34653,"value":34653,"path":[34556,34751],"index":"34751-34653"},{"label":"\u66f4\u6362\u57df\u540d\uff0ctest\u6d4b\u8bd5\u57df\u540d\u6388\u6743\u64cd\u4f5c","name":"\u66f4\u6362\u57df\u540d\uff0ctest\u6d4b\u8bd5\u57df\u540d\u6388\u6743\u64cd\u4f5c","pid":34751,"id":34724,"value":34724,"path":[34556,34751],"index":"34751-34724"},{"label":"\u4f9b\u5e94\u5546\u7ba1\u7406\u540e\u53f0\u5730\u5740","name":"\u4f9b\u5e94\u5546\u7ba1\u7406\u540e\u53f0\u5730\u5740","pid":34751,"id":34769,"value":34769,"path":[34556,34751],"index":"34751-34769"},{"label":"\u540e\u53f0\u70b9\u4e0b\u8f7d\u5c0f\u7a0b\u5e8f\u5305\u65e0\u6cd5\u4e0b\u8f7d","name":"\u540e\u53f0\u70b9\u4e0b\u8f7d\u5c0f\u7a0b\u5e8f\u5305\u65e0\u6cd5\u4e0b\u8f7d","pid":34751,"id":34770,"value":34770,"path":[34556,34751],"index":"34751-34770"},{"label":"\u56fe\u7247\u66f4\u6362\u57df\u540d","name":"\u56fe\u7247\u66f4\u6362\u57df\u540d","pid":34751,"id":34773,"value":34773,"path":[34556,34751],"index":"34751-34773"},{"label":"\u4e0b\u5355\u652f\u4ed8\u51fa\u73b0\u201c\u731c\u4f60\u559c\u6b22\u201d\u5546\u54c1\u914d\u7f6e","name":"\u4e0b\u5355\u652f\u4ed8\u51fa\u73b0\u201c\u731c\u4f60\u559c\u6b22\u201d\u5546\u54c1\u914d\u7f6e","pid":34751,"id":34779,"value":34779,"path":[34556,34751],"index":"34751-34779"},{"label":"\u7cfb\u7edf\u5df2\u7ecf\u6388\u6743\u8fd8\u662f\u63d0\u793a\u6388\u6743\u5230\u671f","name":"\u7cfb\u7edf\u5df2\u7ecf\u6388\u6743\u8fd8\u662f\u63d0\u793a\u6388\u6743\u5230\u671f","pid":34751,"id":34829,"value":34829,"path":[34556,34751],"index":"34751-34829"},{"label":"\u8bf7\u7f16\u8f91\u5f00\u542f\u9875\u9762\u72b6\u6001\u540e\uff0c\u518d\u8bbe\u7f6e\u4e3a\u9996\u9875","name":"\u8bf7\u7f16\u8f91\u5f00\u542f\u9875\u9762\u72b6\u6001\u540e\uff0c\u518d\u8bbe\u7f6e\u4e3a\u9996\u9875","pid":34751,"id":34837,"value":34837,"path":[34556,34751],"index":"34751-34837"}],"index":"34751"},{"label":"\u652f\u4ed8\u95ee\u9898","name":"\u652f\u4ed8\u95ee\u9898","pid":34556,"id":34752,"value":34752,"path":[34556],"children":[{"label":"\u652f\u4ed8\u5b9d\u652f\u4ed8\u63d0\u793a\u6ca1\u6709\u6743\u9650","name":"\u652f\u4ed8\u5b9d\u652f\u4ed8\u63d0\u793a\u6ca1\u6709\u6743\u9650","pid":34752,"id":34666,"value":34666,"path":[34556,34752],"index":"34752-34666"},{"label":"\u8ba2\u5355\u5b9e\u9645\u5df2\u652f\u4ed8\uff0c\u4f46\u652f\u4ed8\u5b8c\u663e\u793a\u5f85\u652f\u4ed8","name":"\u8ba2\u5355\u5b9e\u9645\u5df2\u652f\u4ed8\uff0c\u4f46\u652f\u4ed8\u5b8c\u663e\u793a\u5f85\u652f\u4ed8","pid":34752,"id":34766,"value":34766,"path":[34556,34752],"index":"34752-34766"},{"label":"\u8ba2\u5355\u7ba1\u7406\u5c0f\u7a0b\u5e8f\u5546\u54c1\u8ba2\u5355\u8be6\u60c5path (\u5f85\u63a5\u5165\u8ba2\u5355\u7ba1\u7406-\u8ba2\u5355\u4fe1\u606f\u5f55\u5165)","name":"\u8ba2\u5355\u7ba1\u7406\u5c0f\u7a0b\u5e8f\u5546\u54c1\u8ba2\u5355\u8be6\u60c5path (\u5f85\u63a5\u5165\u8ba2\u5355\u7ba1\u7406-\u8ba2\u5355\u4fe1\u606f\u5f55\u5165)","pid":34752,"id":34774,"value":34774,"path":[34556,34752],"index":"34752-34774"},{"label":"\u6b64IP\u5730\u5740\u4e0d\u5141\u8bb8\u8c03\u7528\u63a5\u53e3\uff0c\u8bf7\u6309\u5f00\u53d1\u6307\u5f15\u8bbe\u7f6e","name":"\u6b64IP\u5730\u5740\u4e0d\u5141\u8bb8\u8c03\u7528\u63a5\u53e3\uff0c\u8bf7\u6309\u5f00\u53d1\u6307\u5f15\u8bbe\u7f6e","pid":34752,"id":34796,"value":34796,"path":[34556,34752],"index":"34752-34796"},{"label":"HTTP 404 returned for \"api.mch.weixin.qq.com\u201d","name":"HTTP 404 returned for \"api.mch.weixin.qq.com\u201d","pid":34752,"id":34828,"value":34828,"path":[34556,34752],"index":"34752-34828"}],"index":"34752"},{"label":"\u5206\u9500\u95ee\u9898","name":"\u5206\u9500\u95ee\u9898","pid":34556,"id":34753,"value":34753,"path":[34556],"children":[{"label":"\u5c0f\u7a0b\u5e8f\u65e0\u6cd5\u751f\u6210\u6d77\u62a5\u95ee\u9898","name":"\u5c0f\u7a0b\u5e8f\u65e0\u6cd5\u751f\u6210\u6d77\u62a5\u95ee\u9898","pid":34753,"id":34558,"value":34558,"path":[34556,34753],"index":"34753-34558"}],"index":"34753"},{"label":"\u5176\u4ed6\u95ee\u9898","name":"\u5176\u4ed6\u95ee\u9898","pid":34556,"id":34754,"value":34754,"path":[34556],"children":[{"label":"\u600e\u4e48\u533a\u5206php\u662f\u975e\u7ebf\u7a0b\u5b89\u5168","name":"\u600e\u4e48\u533a\u5206php\u662f\u975e\u7ebf\u7a0b\u5b89\u5168","pid":34754,"id":34602,"value":34602,"path":[34556,34754],"index":"34754-34602"},{"label":"\u5c0f\u7a0b\u5e8f\u5ba1\u6838\u6ce8\u610f\u4e8b\u9879","name":"\u5c0f\u7a0b\u5e8f\u5ba1\u6838\u6ce8\u610f\u4e8b\u9879","pid":34754,"id":34772,"value":34772,"path":[34556,34754],"index":"34754-34772"},{"label":"\u5c0f\u7a0b\u5e8f\u5907\u6848\u6d41\u7a0b","name":"\u5c0f\u7a0b\u5e8f\u5907\u6848\u6d41\u7a0b","pid":34754,"id":34842,"value":34842,"path":[34556,34754],"index":"34754-34842"}],"index":"34754"},{"label":"\u4e8c\u5f00\u95ee\u9898","name":"\u4e8c\u5f00\u95ee\u9898","pid":34556,"id":34755,"value":34755,"path":[34556],"children":[{"label":"\u4fee\u6539\u540e\u53f0\u6807\u9898","name":"\u4fee\u6539\u540e\u53f0\u6807\u9898","pid":34755,"id":34557,"value":34557,"path":[34556,34755],"index":"34755-34557"},{"label":"\u4e00\u6b21\u6700\u591a\u53ea\u80fd\u9009\u62e9\u4e00\u5f20\u56fe\u7247","name":"\u4e00\u6b21\u6700\u591a\u53ea\u80fd\u9009\u62e9\u4e00\u5f20\u56fe\u7247","pid":34755,"id":34757,"value":34757,"path":[34556,34755],"index":"34755-34757"},{"label":"\u5546\u54c1\u5217\u8868\u6837\u5f0f\u5bf9\u9f50\u4fee\u6539","name":"\u5546\u54c1\u5217\u8868\u6837\u5f0f\u5bf9\u9f50\u4fee\u6539","pid":34755,"id":34758,"value":34758,"path":[34556,34755],"index":"34755-34758"},{"label":"\u672c\u5730\u8c03\u8bd5uniapp\u7cfb\u7edf\u9519\u8bef","name":"\u672c\u5730\u8c03\u8bd5uniapp\u7cfb\u7edf\u9519\u8bef","pid":34755,"id":34793,"value":34793,"path":[34556,34755],"index":"34755-34793"},{"label":"\u5f00\u542f sql \u65e5\u5fd7","name":"\u5f00\u542f sql \u65e5\u5fd7","pid":34755,"id":34794,"value":34794,"path":[34556,34755],"index":"34755-34794"},{"label":"\u901b\u901b\u793e\u533a\u4e00\u4e2a\u7528\u6237\u5f53\u5929\u53d1\u56fe\u6216\u8005\u53d1\u89c6\u9891\u8d85\u8fc7100\u4e2a\u63d0\u793a\u975e\u6cd5\u64cd\u4f5c\uff08v3.3.0\uff09","name":"\u901b\u901b\u793e\u533a\u4e00\u4e2a\u7528\u6237\u5f53\u5929\u53d1\u56fe\u6216\u8005\u53d1\u89c6\u9891\u8d85\u8fc7100\u4e2a\u63d0\u793a\u975e\u6cd5\u64cd\u4f5c\uff08v3.3.0\uff09","pid":34755,"id":34795,"value":34795,"path":[34556,34755],"index":"34755-34795"},{"label":"\u5b9a\u65f6\u4efb\u52a1\u6269\u5c55\u5f00\u53d1\u6307\u5357","name":"\u5b9a\u65f6\u4efb\u52a1\u6269\u5c55\u5f00\u53d1\u6307\u5357","pid":34755,"id":34801,"value":34801,"path":[34556,34755],"index":"34755-34801"}],"index":"34755"},{"label":"\u95ee\u9898\u4fee\u590d","name":"\u95ee\u9898\u4fee\u590d","pid":34556,"id":34756,"value":34756,"path":[34556],"children":[{"label":"\u5546\u54c1\u641c\u7d22\u8bb0\u5f55\u4fee\u590d\uff08v3.2\uff09","name":"\u5546\u54c1\u641c\u7d22\u8bb0\u5f55\u4fee\u590d\uff08v3.2\uff09","pid":34756,"id":34759,"value":34759,"path":[34556,34756],"index":"34756-34759"},{"label":"\u4f9b\u5e94\u5546\u8fd0\u8d39\u6a21\u677f\u95ee\u9898\uff08v3.2\uff09","name":"\u4f9b\u5e94\u5546\u8fd0\u8d39\u6a21\u677f\u95ee\u9898\uff08v3.2\uff09","pid":34756,"id":34760,"value":34760,"path":[34556,34756],"index":"34756-34760"},{"label":"\u5546\u54c1\u8be6\u60c5\u9875\u663e\u793a\u7684\u4f63\u91d1\u548c\u540e\u53f0\u8bbe\u7f6e\u7684\u4e0d\u5339\u914d\uff08v3.2\uff09","name":"\u5546\u54c1\u8be6\u60c5\u9875\u663e\u793a\u7684\u4f63\u91d1\u548c\u540e\u53f0\u8bbe\u7f6e\u7684\u4e0d\u5339\u914d\uff08v3.2\uff09","pid":34756,"id":34761,"value":34761,"path":[34556,34756],"index":"34756-34761"},{"label":"\u4f63\u91d1\u63d0\u73b0\u7528\u6237\u91cd\u590d\u70b9\u51fb\u53ef\u80fd\u4f1a\u9020\u6210\u91cd\u590d\u63d0\u73b0\u7684\u4fee\u590d\uff08v3.2\uff09","name":"\u4f63\u91d1\u63d0\u73b0\u7528\u6237\u91cd\u590d\u70b9\u51fb\u53ef\u80fd\u4f1a\u9020\u6210\u91cd\u590d\u63d0\u73b0\u7684\u4fee\u590d\uff08v3.2\uff09","pid":34756,"id":34762,"value":34762,"path":[34556,34756],"index":"34756-34762"},{"label":"\u5546\u54c1\u5217\u8868\u9ed8\u8ba4\u8fdb\u5165\u5217\u8868\u4e3a\u7a7a\u95ee\u9898\u4fee\u590d\uff08v3.2\uff09","name":"\u5546\u54c1\u5217\u8868\u9ed8\u8ba4\u8fdb\u5165\u5217\u8868\u4e3a\u7a7a\u95ee\u9898\u4fee\u590d\uff08v3.2\uff09","pid":34756,"id":34763,"value":34763,"path":[34556,34756],"index":"34756-34763"},{"label":"\u5ba2\u670d\u6539\u4ef7\u4f1a\u53d8\u62100\uff08v3.2\uff09","name":"\u5ba2\u670d\u6539\u4ef7\u4f1a\u53d8\u62100\uff08v3.2\uff09","pid":34756,"id":34767,"value":34767,"path":[34556,34756],"index":"34756-34767"},{"label":"\u8bbe\u7f6e\u7684\u540e\u53f0\u53d1\u653e\u5238\u88ab\u624b\u52a8\u9886\u53d6\u4e86\uff08v3.2.2\uff09","name":"\u8bbe\u7f6e\u7684\u540e\u53f0\u53d1\u653e\u5238\u88ab\u624b\u52a8\u9886\u53d6\u4e86\uff08v3.2.2\uff09","pid":34756,"id":34776,"value":34776,"path":[34556,34756],"index":"34756-34776"},{"label":"\u5546\u54c1\u66f4\u6362\u591a\u89c4\u683c\u663e\u793a\u6ca1\u5e93\u5b58\u5df2\u552e\u7f44\uff08v3.3.0\uff09","name":"\u5546\u54c1\u66f4\u6362\u591a\u89c4\u683c\u663e\u793a\u6ca1\u5e93\u5b58\u5df2\u552e\u7f44\uff08v3.3.0\uff09","pid":34756,"id":34787,"value":34787,"path":[34556,34756],"index":"34756-34787"},{"label":"\u4ee3\u7406\u5217\u8868\u62a5\u9519\uff08v3.3\uff09","name":"\u4ee3\u7406\u5217\u8868\u62a5\u9519\uff08v3.3\uff09","pid":34756,"id":34788,"value":34788,"path":[34556,34756],"index":"34756-34788"},{"label":"Undefined array key \"channeI\u201d \u79fb\u52a8\u7aef\u8fd0\u8425\u7edf\u8ba1\u62a5\u9519","name":"Undefined array key \"channeI\u201d \u79fb\u52a8\u7aef\u8fd0\u8425\u7edf\u8ba1\u62a5\u9519","pid":34756,"id":34789,"value":34789,"path":[34556,34756],"index":"34756-34789"},{"label":"\u4ed8\u8d39\u4f1a\u5458\u53ef\u89c1\u5f00\u5173\u4e0d\u751f\u6548\u95ee\u9898\uff08v3.3\uff09","name":"\u4ed8\u8d39\u4f1a\u5458\u53ef\u89c1\u5f00\u5173\u4e0d\u751f\u6548\u95ee\u9898\uff08v3.3\uff09","pid":34756,"id":34790,"value":34790,"path":[34556,34756],"index":"34756-34790"},{"label":"\u5f00\u4e86\u4ed8\u8d39\u4f1a\u5458\u53ef\u89c1 pc\u7aef\u666e\u901a\u7528\u6237\u8fd8\u80fd\u770b\u5230\uff08v3.3\uff09","name":"\u5f00\u4e86\u4ed8\u8d39\u4f1a\u5458\u53ef\u89c1 pc\u7aef\u666e\u901a\u7528\u6237\u8fd8\u80fd\u770b\u5230\uff08v3.3\uff09","pid":34756,"id":34791,"value":34791,"path":[34556,34756],"index":"34756-34791"},{"label":"\u8ba2\u5355\u72b6\u6001\u662f\u53d1\u8d27\u4e86\u4f46\u8fd8\u662f\u6709\u53d1\u8d27\u6309\u94ae\u548c\u8be6\u60c5\uff08v3.3\uff09","name":"\u8ba2\u5355\u72b6\u6001\u662f\u53d1\u8d27\u4e86\u4f46\u8fd8\u662f\u6709\u53d1\u8d27\u6309\u94ae\u548c\u8be6\u60c5\uff08v3.3\uff09","pid":34756,"id":34792,"value":34792,"path":[34556,34756],"index":"34756-34792"},{"label":"\u5220\u9664\u79d2\u6740\u5546\u54c1\u63d0\u4ea4\u6210\u529f\u4f46\u662f\u91cd\u65b0\u8fdb\u53bb\u8fd8\u663e\u793a\uff0c\u7136\u540e\u5728\u79d2\u6740\u5546\u54c1\u8fd9\u91cc\u70b9\u51fb\u4e0a\u4e0b\u67b6\u4f1a\u663e\u793a\u9519\u8bef\uff08v3.3\uff09","name":"\u5220\u9664\u79d2\u6740\u5546\u54c1\u63d0\u4ea4\u6210\u529f\u4f46\u662f\u91cd\u65b0\u8fdb\u53bb\u8fd8\u663e\u793a\uff0c\u7136\u540e\u5728\u79d2\u6740\u5546\u54c1\u8fd9\u91cc\u70b9\u51fb\u4e0a\u4e0b\u67b6\u4f1a\u663e\u793a\u9519\u8bef\uff08v3.3\uff09","pid":34756,"id":34797,"value":34797,"path":[34556,34756],"index":"34756-34797"},{"label":"\u901a\u8fc7\u4f01\u5fae\u6e20\u9053\u7801\u6dfb\u52a0\u7684\u4eba\uff0c\u4e0d\u81ea\u52a8\u643a\u5e26\u4f01\u4e1a\u5fae\u4fe1\u6e20\u9053\u7801\u7684\u6807\u7b7e\uff08v3.3\uff09","name":"\u901a\u8fc7\u4f01\u5fae\u6e20\u9053\u7801\u6dfb\u52a0\u7684\u4eba\uff0c\u4e0d\u81ea\u52a8\u643a\u5e26\u4f01\u4e1a\u5fae\u4fe1\u6e20\u9053\u7801\u7684\u6807\u7b7e\uff08v3.3\uff09","pid":34756,"id":34800,"value":34800,"path":[34556,34756],"index":"34756-34800"},{"label":"\u7528\u6237\u5907\u6ce8\u6ca1\u6709\u5730\u65b9\u8bbe\u7f6e\u95ee\u9898\uff08v3.3.0\uff09","name":"\u7528\u6237\u5907\u6ce8\u6ca1\u6709\u5730\u65b9\u8bbe\u7f6e\u95ee\u9898\uff08v3.3.0\uff09","pid":34756,"id":34802,"value":34802,"path":[34556,34756],"index":"34756-34802"},{"label":"\u9000\u6b3e\u5931\u8d25:\u8f93\u5165\u6e90\u201c\/body\/xml\/appid\"\u6620\u5c04\u5230\u5b57\u6bb5\u201c\u670d\u52a1\u5546\u7684APPID\"\u591a\u91cd\u6027\u89c4\u5219\u6821\u9a8c\u5931\u8d25\uff0c\u6b64\u5b57\u6bb5\u4e2a\u6570\u4e3a0\u4e2a\uff0c\u4f4e\u4e8e\u6700\u5c0f\u503c1\uff08v3.3.0\uff09","name":"\u9000\u6b3e\u5931\u8d25:\u8f93\u5165\u6e90\u201c\/body\/xml\/appid\"\u6620\u5c04\u5230\u5b57\u6bb5\u201c\u670d\u52a1\u5546\u7684APPID\"\u591a\u91cd\u6027\u89c4\u5219\u6821\u9a8c\u5931\u8d25\uff0c\u6b64\u5b57\u6bb5\u4e2a\u6570\u4e3a0\u4e2a\uff0c\u4f4e\u4e8e\u6700\u5c0f\u503c1\uff08v3.3.0\uff09","pid":34756,"id":34804,"value":34804,"path":[34556,34756],"index":"34756-34804"},{"label":"IOS\u7684APP\u4e0a\u67b6\u6210\u529f\u540e\uff0c\u65e0\u6cd5\u5206\u4eab\u6d77\u62a5\uff0c\u5fae\u4fe1\u652f\u4ed8\u4e00\u76f4\u8f6c\u5708\u5708\uff08v3.3.0\uff09","name":"IOS\u7684APP\u4e0a\u67b6\u6210\u529f\u540e\uff0c\u65e0\u6cd5\u5206\u4eab\u6d77\u62a5\uff0c\u5fae\u4fe1\u652f\u4ed8\u4e00\u76f4\u8f6c\u5708\u5708\uff08v3.3.0\uff09","pid":34756,"id":34805,"value":34805,"path":[34556,34756],"index":"34756-34805"},{"label":"\u670d\u52a1\u53f7\u65e0\u6cd5\u5fae\u4fe1\u6388\u6743\u767b\u5f55\u95ee\u9898\u4fee\u590d\uff08v3.4\uff09","name":"\u670d\u52a1\u53f7\u65e0\u6cd5\u5fae\u4fe1\u6388\u6743\u767b\u5f55\u95ee\u9898\u4fee\u590d\uff08v3.4\uff09","pid":34756,"id":34823,"value":34823,"path":[34556,34756],"index":"34756-34823"},{"label":"\u9690\u85cf\u5546\u54c1\u5206\u7c7b\uff0c\u524d\u7aef\u4f9d\u65e7\u663e\u793a\uff08v3.4\uff09","name":"\u9690\u85cf\u5546\u54c1\u5206\u7c7b\uff0c\u524d\u7aef\u4f9d\u65e7\u663e\u793a\uff08v3.4\uff09","pid":34756,"id":34824,"value":34824,"path":[34556,34756],"index":"34756-34824"},{"label":"\u7528\u6237\u4fe1\u606f\u7f13\u5b58\u95ee\u9898\u4fee\u590d\uff08v3.4\uff09","name":"\u7528\u6237\u4fe1\u606f\u7f13\u5b58\u95ee\u9898\u4fee\u590d\uff08v3.4\uff09","pid":34756,"id":34825,"value":34825,"path":[34556,34756],"index":"34756-34825"},{"label":"\u642d\u914d\u8d2d\u7684\u4ef7\u683c\u7b97\u9519\u8bef\uff0c\u6539\u8fc7\u89c4\u683c\u4e4b\u540e\u4ef7\u683c\u9519\u8bef\u95ee\u9898\uff08v3.4\uff09","name":"\u642d\u914d\u8d2d\u7684\u4ef7\u683c\u7b97\u9519\u8bef\uff0c\u6539\u8fc7\u89c4\u683c\u4e4b\u540e\u4ef7\u683c\u9519\u8bef\u95ee\u9898\uff08v3.4\uff09","pid":34756,"id":34826,"value":34826,"path":[34556,34756],"index":"34756-34826"},{"label":"\u5728\u67d0\u4e9b\u673a\u578b\u70b9\u9009\u79fb\u52a8\u7aef\u9a8c\u8bc1\u7801\u51fa\u73b0\u504f\u79fb\uff08v3.5\u516c\u6d4b\u7248\uff09","name":"\u5728\u67d0\u4e9b\u673a\u578b\u70b9\u9009\u79fb\u52a8\u7aef\u9a8c\u8bc1\u7801\u51fa\u73b0\u504f\u79fb\uff08v3.5\u516c\u6d4b\u7248\uff09","pid":34756,"id":34838,"value":34838,"path":[34556,34756],"index":"34756-34838"},{"label":"\u7f16\u8f91\u5546\u54c1\u4fdd\u5b58\u670d\u52a1\u5668\u5185\u90e8\u9519\u8bef\uff08v3.5\u516c\u6d4b\u7248\uff09","name":"\u7f16\u8f91\u5546\u54c1\u4fdd\u5b58\u670d\u52a1\u5668\u5185\u90e8\u9519\u8bef\uff08v3.5\u516c\u6d4b\u7248\uff09","pid":34756,"id":34839,"value":34839,"path":[34556,34756],"index":"34756-34839"},{"label":"\u4f9b\u5e94\u5546\u7ba1\u7406\u540e\u53f0\u529f\u80fd403\uff08v3.5\uff09","name":"\u4f9b\u5e94\u5546\u7ba1\u7406\u540e\u53f0\u529f\u80fd403\uff08v3.5\uff09","pid":34756,"id":34840,"value":34840,"path":[34556,34756],"index":"34756-34840"},{"label":"\u5bfc\u5165\u5546\u54c1\u670d\u52a1\u5668\u5185\u90e8\u9519\u8bef\u95ee\u9898\u4fee\u590d\uff08v3.5\uff09","name":"\u5bfc\u5165\u5546\u54c1\u670d\u52a1\u5668\u5185\u90e8\u9519\u8bef\u95ee\u9898\u4fee\u590d\uff08v3.5\uff09","pid":34756,"id":34843,"value":34843,"path":[34556,34756],"index":"34756-34843"},{"label":"\u731c\u4f60\u559c\u6b22\u4e0b\u9762\u5546\u54c1\u90fd\u662fundefined\u95ee\u9898\u4fee\u590d\uff08v3.5\uff09","name":"\u731c\u4f60\u559c\u6b22\u4e0b\u9762\u5546\u54c1\u90fd\u662fundefined\u95ee\u9898\u4fee\u590d\uff08v3.5\uff09","pid":34756,"id":34844,"value":34844,"path":[34556,34756],"index":"34756-34844"},{"label":"\u4f9b\u5e94\u5546\u540e\u53f0\u6253\u5370\u914d\u8d27\u5355\u5c31\u9000\u51fa\u767b\u5f55\u95ee\u9898\u4fee\u590d\uff08v3.5\uff09","name":"\u4f9b\u5e94\u5546\u540e\u53f0\u6253\u5370\u914d\u8d27\u5355\u5c31\u9000\u51fa\u767b\u5f55\u95ee\u9898\u4fee\u590d\uff08v3.5\uff09","pid":34756,"id":34845,"value":34845,"path":[34556,34756],"index":"34756-34845"},{"label":"\u6587\u5b57\u9a8c\u8bc1\u66f4\u6539\u6ed1\u52a8\u9a8c\u8bc1\u6559\u7a0b\uff08v3.5.0\uff09","name":"\u6587\u5b57\u9a8c\u8bc1\u66f4\u6539\u6ed1\u52a8\u9a8c\u8bc1\u6559\u7a0b\uff08v3.5.0\uff09","pid":34756,"id":34846,"value":34846,"path":[34556,34756],"index":"34756-34846"}],"index":"34756"}],"index":""}] || [],
+                activeId: parseInt('34491'),
+                leftMenus:[],
+                currentIndex:0,
+                treeActiveIndex: null,
+                currentActiveId: null,
+                hoverId: null,
+                isManualSelection: false, // 手动选择标志
+                productName: "pro_s",
+                jpath:'prov40',
+                headingList: [],  // 扁平标题列表
+                headingTree: [],  // 树形标题列表
+                showmenu: true,
+                expandedItems: {}, // 展开状态 {id: true/false}
+                
+            }
+        },
+        // 指令粘贴指令定义
+        directives: {
+            paste: {
+                bind(el, binding, vnode) {
+                    el.addEventListener('paste', function (event) {
+                        //这里直接监听元素的粘贴事件
+                        binding.value(event);
+                    });
+                },
+            },
+        },
+        //计算属性
+        computed: {
+          isEdit() {
+               if (this.userInfo.admin_id && (
+                       this.userInfo.adminInfo.obj_ids.indexOf(this.objId) !== -1 ||
+                       this.userInfo.adminInfo.level === 0
+               )){
+
+                  return true
+               }else{
+                 return false
+               }
+            },
+          openedMenus() {
+            return this.getAllSubMenuIds(this.leftMenus);
+          }
+        },
+        watch: {
+            isSearch(n) {
+                if (!n) {
+                    this.$nextTick(function () {
+                        this.markdownToHTML()
+                    })
+                }
+            },
+        },
+        mounted() {
+          this.getList()
+          this.getuserInfo()
+          this.$nextTick(function () {
+              this.markdownToHTML()
+          })
+          if (!this.activeId) {
+            this.activeId = this.wikiMenus[0].id
+          }
+          this.getDetails(this.cate_id)
+
+          this.wikiMenus.map((item) => {
+            if (parseInt(item.id) === parseInt(this.activeId)) {
+              this.leftMenus = item.children
+            }
+          })
+
+          const boxContent = document.querySelector('.box-content');
+          boxContent.addEventListener('scroll', this.checkScrollPosition);
+          this.initScrollTracking();
+          this.$nextTick(() => {
+            // 延迟执行，等渲染完成
+            setTimeout(() => {
+              this.calculateCurrentHeading();
+              console.log('初始化高亮索引:', this.currentIndex);
+            }, 500);
+          });
+        },
+        destroyed() {
+            const boxContent = document.querySelector('.box-content');
+            boxContent.removeEventListener('scroll', this.checkScrollPosition);
+        },
+        methods: {
+          toggleExpand(id) {
+            this.$set(this.expandedItems, id, !this.expandedItems[id]);
+          },
+          editPage(){
+            if (!this.isEdit) {
+              this.$message.error('没有权限')
+              return
+            }
+            getRequest('/api/get_edit_url/'+this.productId,{cid:this.cate_id,objId:objId}).then(res=>{
+              help.storage.set('adminInfo', res.data.adminInfo);
+              help.storage.set('token', res.data.token);
+              
+              const targetUrl = res.data.url;
+              const targetName = '__tangent';
+              
+              // 尝试获取已打开的编辑窗口引用
+              const existingWindow = window.__tangentEditorWindow;
+              
+              if (existingWindow && !existingWindow.closed) {
+                // 窗口已存在，使用 postMessage 发送切换目录消息
+                existingWindow.postMessage({
+                  type: 'SWITCH_CATALOGUE',
+                  cateId: this.cate_id,
+                  objId: this.objId
+                }, '*');
+                this.$message.success('已切换到新的菜单编辑');
+              } else {
+                // 窗口未打开，打开新窗口并保存引用
+                window.__tangentEditorWindow = window.open(targetUrl, targetName);
+              }
+            })
+          },
+          // 递归获取所有需要展开的菜单ID（所有包含子菜单的节点）
+          getAllSubMenuIds(menuItems) {
+            let ids = [];
+            menuItems.forEach(item => {
+              // 如果有子节点，当前节点需要展开
+              if (item.children && item.children.length) {
+                ids.push(String(item.id));
+                // 递归获取子节点中需要展开的ID
+                ids = ids.concat(this.getAllSubMenuIds(item.children));
+              }
+            });
+            return ids;
+          },
+          copyPageUrl() {
+            const url = window.location.href;
+            
+            if (navigator.clipboard?.writeText) {
+              navigator.clipboard.writeText(url).catch(() => {
+                window.prompt('复制链接失败，请手动复制:', url);
+              }).then(() => {
+                this.$message.success('复制成功');
+              });
+            } else {
+              window.prompt('复制链接失败，请手动复制:', url);
+            }
+          },
+          // 新增：监听滚动，自动更新当前高亮索引
+          setupScrollListener() {
+            let ticking = false; // 使用 requestAnimationFrame 进行性能优化
+            
+            const handleScroll = () => {
+              if (!ticking) {
+                window.requestAnimationFrame(() => {
+                  this.calculateCurrentHeading();
+                  ticking = false;
+                });
+                ticking = true;
+              }
+            };
+            
+            // 监听容器的滚动事件
+            const contentContainer = window.document.getElementById('contentContainer');
+            if (contentContainer) {
+              contentContainer.addEventListener('scroll', handleScroll);
+            }
+            
+            // 组件销毁时移除监听器（在 Vue 2 的 beforeDestroy 或 Vue 3 的 onUnmounted 中调用）
+            // this.$once('hook:beforeDestroy', () => {
+            //   contentContainer.removeEventListener('scroll', handleScroll);
+            // });
+          },
+          
+          // 核心方法：计算当前应该高亮的标题索引
+          calculateCurrentHeading() {
+            try {
+              const container = document.getElementsByClassName('markdown-body')[0];
+              if (!container) return;
+              
+              // 检查是否有H2标题
+              const h2Elements = container.querySelectorAll('h2');
+              const hasH2 = h2Elements.length > 0;
+              
+              // 根据是否有H2决定使用哪个选择器
+              const headingSelector = hasH2 ? 'h2' : 'h3';
+              let headingElements = container.querySelectorAll(headingSelector);
+              
+              if (headingElements.length === 0) return;
+              
+              const contentContainer = document.getElementById('contentContainer');
+              if (!contentContainer) return;
+              
+              const scrollTop = contentContainer.scrollTop;
+              
+              // 找出当前应该高亮的标题索引
+              let activeIndex = 0;
+              
+              for (let i = 0; i < headingElements.length; i++) {
+                  const heading = headingElements[i];
+                  const headingTop = heading.offsetTop - contentContainer.offsetTop;
+                  
+                  // 如果当前标题的顶部位置小于滚动位置 + 100px，则认为是当前激活的
+                  if (headingTop <= scrollTop + 100) {
+                      activeIndex = i;
+                  } else {
+                      break;  // 后面的标题位置更大，不需要继续遍历
+                  }
+              }
+              
+              // 更新高亮索引（只有用户手动选择时才跳过）
+              if (this.isManualSelection) {
+                  return; // 用户手动选择中，不自动更新
+              }
+              if (this.treeActiveIndex !== activeIndex) {
+                  console.log(`${hasH2 ? 'H2' : 'H3'}高亮切换: ${this.treeActiveIndex} -> ${activeIndex}`);
+                  this.treeActiveIndex = activeIndex;
+              }
+              
+            } catch (e) {
+                console.log('计算当前标题时出错:', e);
+            }
+          },
+          
+          // 初始化方法（在 mounted 钩子中调用）
+          initScrollTracking() {
+            this.setupScrollListener();
+            // 初始计算一次
+            this.calculateCurrentHeading();
+          },
+            changeImage(action){
+                let length = this.imagesList.length
+                switch (action){
+                    case 'prev':
+                        if(this.imageIndex === 0){
+                            this.imageUrl = this.imagesList[length - 1]
+                            this.imageIndex = length
+                        } else {
+                            this.imageIndex--
+                            this.imageUrl = this.imagesList[this.imageIndex]
+                        }
+                        break
+                    case 'next':
+                        if(this.imageIndex === length){
+                            this.imageIndex = 0
+                            this.imageUrl = this.imagesList[0]
+                        }else{
+                            this.imageIndex++
+                            this.imageUrl = this.imagesList[this.imageIndex]
+                        }
+                        break
+                    case 'out':
+                        this.scale -= 0.1
+                        this.styleTransform=this.getTransformStr(this.scale,this.rotation)
+                        break
+                    case 'in':
+                        this.scale += 0.1
+                        this.styleTransform=this.getTransformStr(this.scale,this.rotation)
+                        break
+                    case 'screen':
+                        if (this.styleHW) {
+                            this.styleHW=''
+                        } else {
+                            this.styleHW='max-height: 100%; max-width: 100%;'
+                        }
+                        break
+                    case 'left':
+                        this.rotation += 90;
+                        if( (this.rotation / 90) === 4){
+                            this.rotation = 0
+                        }
+                        this.styleTransform=this.getTransformStr(this.scale,this.rotation)
+                        break
+                    case 'right':
+                        this.rotation -= 90;
+                        if( (this.rotation / 90) === -4){
+                            this.rotation = 0
+                        }
+                        this.styleTransform=this.getTransformStr(this.scale,this.rotation)
+                        break
+                }
+            },
+            getTransformStr(scale, rotation){
+                return 'scale(' + scale + ') rotate('+rotation+'deg)';
+            },
+
+            checkScrollPosition(){
+              const boxContent = document.querySelector('.box-content');
+              // 滚动超过一屏高度时显示回到顶部按钮
+              this.topShow = boxContent.scrollTop >= boxContent.clientHeight;
+              
+            },
+
+            goTopFn() {
+              const contentContainer = document.getElementById('contentContainer');
+              const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+                  contentContainer.scrollTo({
+                      top: 0,
+                      behavior: 'smooth'
+                  });
+
+          },
+                      closeImagePreview(){
+                this.dialogVisible = false
+                this.imageUrl = ''
+                this.imageIndex = 0
+                this.scale = 1
+                this.rotation = 0
+                this.styleTransform = 'scale(1) rotate(0deg)'
+                this.styleHW ='max-height: 100%; max-width: 100%;'
+            },
+            getWikiLike(){
+                getRequest('/api/get_detail_like/'+this.cate_id).then(res=>{
+                    this.cateWiki.like = res.data.like
+                })
+            },
+
+            // 点击一级菜单
+            clickOnTheMenu(item){
+              this.currentIndex = 0
+              // 获取详情
+                this.activeId = item.id
+                
+                if(item.children){
+                  this.cate_id = item.children[0].id
+                  this.pid = item.children[0].pid
+                this.leftMenus = item.children
+                     this.getDetails()
+
+                }else {
+                  
+                    this.leftMenus = []
+                     this.cate_id = item.id
+                  this.pid = 0
+          
+                     this.getDetails()
+                }
+               
+            },
+            delComment(item){
+                postRequest('/api/comment/delete/'+item.id).then(res=>{
+                    this.cateWiki.comment_num = res.data.commentNum
+
+                    this.isComment = false
+                    this.listLodend = false
+                    this.commentWhere.page = 1
+                    this.replyIndex = null
+                    this.replyIndexJ = null
+                    this.commentChildContent = ''
+                    this.isChildComment = false
+                    this.getList()
+                })
+            },
+            saveComment(){
+                // if(!this.commentContent.replace(/\s/g, "")) {
+                //     return this.$message.error('评论内容不能为空')
+                // }
+                if(this.isComment) return
+                this.isComment = true
+                postRequest('/api/comment/save',{
+                    images: this.replyPicList,
+                    content: this.commentContent,
+                    cate_id: this.cate_id,
+                    comment_pid: 0,
+                    url:location.href
+                }).then(res=>{
+                    this.replyPicList = []
+                    this.replyPid = 0
+                    this.commentContent = ''
+                    this.$message.success(res.msg)
+                    this.isComment = false
+                    this.listLodend = false
+                    this.commentWhere.page = 1
+                    this.getList()
+                    this.getCommentNum()
+
+                }).catch(res=>{
+                    this.$message.error(res.msg)
+                    this.isComment = false
+                })
+            },
+            saveChildComment(){
+                // if(!this.commentChildContent.replace(/\s/g, "")) {
+                //     return this.$message.error('评论内容不能为空')
+                // }
+                if(this.isChildComment) return
+                this.isChildComment = true
+                postRequest('/api/comment/save',{
+                    images: this.replyChildPicList,
+                    content: this.commentChildContent,
+                    cate_id: this.cate_id,
+                    comment_pid: this.replyPid,
+                    url:location.href
+                }).then(res=>{
+                    this.replyChildPicList = []
+                    this.replyPid = 0
+                    this.replyIndex = null
+                    this.replyIndexJ = null
+                    this.commentChildContent = ''
+                    this.$message.success(res.msg)
+                    this.isChildComment = false
+                    this.listLodend = false
+                    this.commentWhere.page = 1
+                    this.getList()
+                    this.getCommentNum()
+                }).catch(res=>{
+                    this.$message.error(res.msg)
+                    this.isChildComment = false
+                })
+            },
+            //微信截图上传图片时触发
+            handleParse(e) {
+                let file = null;
+                var data = e.clipboardData || window.clipboardData, that = this;
+                console.log('fun', data);
+                blob = data.items[0].getAsFile();
+                var isImg = (blob && 1) || -1;
+                var reader = new FileReader();
+                if (isImg >= 0) {
+                    //将文件读取为 DataURL
+                    reader.readAsDataURL(blob);
+                }
+                reader.onload = function (event) {
+                    //获取base64流
+                    var base64_str = event.target.result;
+                    //div中的img标签src属性赋值，可以直接展示图片
+                    // console.log('base64_str',base64_str);
+                    var bytes = window.atob(base64_str.split(',')[1]);
+                    var array = [];
+                    for (var i = 0; i < bytes.length; i++) {
+                        array.push(bytes.charCodeAt(i));
+                    }
+                    var blob = new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
+                    var formData = new FormData();
+                    formData.append('file', blob, Date.now() + '.jpg');
+                    formData.append('filename', 'file')
+                    that.update(formData);
+                }
+            },
+            update(formData) {
+                if (this.replyPid) {
+                    if(this.replyChildPicList.length > 10){
+                        return this.$message.error('最多上传10张图片');
+                    }
+                }else{
+                    if(this.replyPicList.length > 10){
+                        return this.$message.error('最多上传10张图片');
+                    }
+                }
+                // 上传
+                fetch('/api/upload', {
+                    method: 'post',
+                    headers: {
+                        Code: getCookie('gitee_code')
+                    },
+                    body: formData
+                }).then(response => response.json()).then(res => {
+                    if (res.status == 50000) {
+                        this.login(res.msg);
+                        return
+                    }
+                    let pic = res.data.url;
+                    if (this.replyPid) {
+                        this.replyChildPicList.push(pic);
+                    } else {
+                        this.replyPicList.push(pic);
+                    }
+                })
+            },
+            login(msg){
+                this.$message.error(msg)
+            },
+            openMenu(index){
+                if(this.isSearch) this.isSearch = false
+                this.where.search = ''
+             
+                let arr = index.split('-');
+                try{
+                    if(arr.length == 1){
+                        this.pid = arr[arr.length-1]
+                    }else{
+                        this.pid = arr[arr.length-2]
+                    }
+                }catch (e) {
+
+                }
+                try{
+                    this.cate_id = arr[arr.length-1]
+                }catch (e) {
+
+                }
+                this.parentList = []
+                this.getDetails()
+            },
+            handleSelect(index) {
+                event.stopPropagation();
+                if(this.isSearch) this.isSearch = false
+                this.where.search = ''
+              
+                let arr = index.split('-');
+                try{
+                    if(arr.length == 1){
+                        this.pid = arr[arr.length-1]
+                    }else{
+                        this.pid = arr[arr.length-2]
+                    }
+                }catch (e) {
+
+                }
+                try{
+                    this.cate_id = arr[arr.length-1]
+                }catch (e) {
+
+                }
+                this.currentIndex = 0
+                this.parentList = []
+                // 重点：获取内容容器并重置滚动位置
+                this.$nextTick(() => {
+                  const contentContainer = document.getElementById('contentContainer');
+                  if (contentContainer) {
+                    contentContainer.scrollTop = 0;  // 滚动到顶部
+                  }
+                });
+                this.getDetails()
+                window.scrollTo({
+                  top: 0,
+                });
+            },
+            getCommentNum(){
+                if(!this.isVue){
+                    this.isVue = true
+                }
+                getRequest('/api/comment_num/'+this.cate_id,{},false).then(res=>{
+                    this.cateWiki.comment_num = res.data.comment_num
+                })
+            },
+            getDetails(cate_id){
+              // 获取详情
+                getRequest('/api/details',{
+                    productId:this.productId,
+                    pid: this.pid,
+                    obj_id:this.objId,
+                    cate_id:cate_id || this.cate_id,
+                },false).then(res=>{
+
+                    this.parentList = res.data.parentList
+                    this.wikiTitle = res.data.title
+                    this.wikiContent = res.data.content
+                    this.wikiContentHtml = res.data.contentHtml
+                    this.cateWiki = res.data.catalogueInfo
+                    this.h3TagsList = []
+                    this.imagesList = []
+              
+                    if(cate_id === undefined){
+                        this.isVue = true
+                        this.getWikiLike()
+                        this.setRoute(this.productName+'/'+this.jpath+'/'+this.cate_id)
+                        this.$nextTick(function (){
+                            if(this.wikiContent && !this.wikiContentHtml){
+                                this.markdownToHTML(this.wikiContent)
+                            } else if(this.wikiContentHtml){
+                                // this.findH3Tags()
+                                this.findAllHeadings()
+                            }
+                        })
+                    }else{
+                        // this.findH3Tags()
+                        this.findAllHeadings()
+                    }
+
+                    this.isComment = false
+                    this.listLodend = false
+                    this.commentWhere.page = 1
+                    this.replyIndex = null
+                    this.replyIndexJ = null
+                    this.commentChildContent = ''
+                    this.isChildComment = false
+                    this.getList()
+
+                }).catch(res=>{
+
+                })
+            },
+            setRoute(url){
+                let stateObj = {page: "/" + url};
+                history.pushState(stateObj, "", '/'+url);
+            },
+            cataloguename(path_data){
+                let path = '';
+                path_data.map((item,index)=>{
+                    if(index === path_data.length){
+                        path += item.name
+                    }else{
+                        path += item.name+' > '
+                    }
+                })
+                return path
+            },
+            // 替换原来的 findH3Tags 方法
+            findAllHeadings() {
+              setTimeout(() => {
+                const container = document.getElementsByClassName('markdown-body')[0];
+                if (!container) return;
+
+                // 清空旧数据
+                this.headingList = [];
+                this.headingTree = [];
+                this.h3TagsList = [];
+
+                // 提取所有标题标签
+                const headingTags = container.querySelectorAll('h2, h3, h4');
+
+                // 使用计数器确保唯一性
+                let counter = 0;
+
+                headingTags.forEach((tag, index) => {
+                  const level = parseInt(tag.tagName[1]);
+                  const text = tag.textContent.trim();
+
+                  // 使用时间戳+计数器+随机数确保唯一性
+                  const timestamp = Date.now();
+                  const random = Math.random().toString(36).substr(2, 5);
+                  counter++;
+
+                  // 设置唯一ID
+                  tag.id = `heading-${timestamp}-${counter}-${random}`;
+
+                  const heading = {
+                    id: tag.id,
+                    level: level,
+                    text: text,
+                    element: tag,
+                    children: []
+                  };
+
+                  this.headingList.push(heading);
+
+                  if (level === 3) {
+                    this.h3TagsList.push(text);
+                  }
+                });
+
+                // 构建标题树
+                this.headingTree = this.buildHeadingTree(this.headingList);
+                
+                // 初始化展开状态（一级展开，二级和三级默认收起）
+                this.expandedItems = {};
+                this.headingTree.forEach(heading => {
+                  if (heading.children && heading.children.length) {
+                    this.$set(this.expandedItems, heading.id, true);
+                    heading.children.forEach(child => {
+                      if (child.children && child.children.length) {
+                        this.$set(this.expandedItems, child.id, false);
+                      }
+                    });
+                  }
+                });
+                
+                // 图片点击处理
+                const that = this;
+                container.querySelectorAll('img').forEach(img => {
+                  if (!this.imagesList.includes(img.src)) {
+                    this.imagesList.push(img.src);
+                  }
+                  img.addEventListener('click', function() {
+                    that.imageUrl = this.src;
+                    that.dialogVisible = true;
+                  });
+                });
+
+                // console.log('标题列表:', this.headingList);
+                // console.log('标题树:', this.headingTree);
+
+              }, 500);
+            },
+
+            // 新增：构建标题树
+            buildHeadingTree(headings) {
+              const tree = [];
+              const stack = [];
+              
+              // 检查是否有H2、H3标题
+              const hasH2 = headings.some(h => h.level === 2);
+              const hasH3 = headings.some(h => h.level === 3);
+              
+              headings.forEach(heading => {
+                  const node = { 
+                      ...heading, 
+                      children: [],
+                      index: '', // 用于存储序号
+                  };
+                  
+                  // 逻辑：
+                  // 1. 如果有H2且有H3：处理H2、H3、H4
+                  // 2. 如果有H2但没有H3：只处理H2（H4不显示）
+                  // 3. 如果没有H2，有H3：处理H3、H4
+                  // 4. 如果没有H2也没有H3，有H4：H4作为一级
+                  
+                  if (hasH2) {
+                      // 有H2的情况
+                      if (node.level === 2) {
+                          // H2作为一级
+                          node.index = (tree.length + 1).toString();
+                          tree.push(node);
+                          stack.length = 0;
+                          stack.push({...node, level: 2});
+                      } else if (hasH3 && node.level === 3) {
+                          // 有H2有H3时，H3作为H2的子级
+                          const parent = tree[tree.length - 1];
+                          if (parent) {
+                              node.index = `${parent.index}.${parent.children.length + 1}`;
+                              parent.children.push(node);
+                              stack.length = 0;
+                              stack.push({...node, level: 3});
+                          }
+                      } else if (hasH3 && node.level === 4) {
+                          // 有H2有H3时，H4作为H3的子级
+                          const parent = stack[stack.length - 1];
+                          if (parent && parent.level === 3) {
+                              node.index = `${parent.index}.${parent.children.length + 1}`;
+                              parent.children.push(node);
+                          }
+                      }
+                      // 没有H3时，H3/H4都不处理
+                  } else if (hasH3) {
+                      // 没有H2，有H3的情况
+                      if (node.level === 3) {
+                          // H3作为一级
+                          node.index = (tree.length + 1).toString();
+                          tree.push(node);
+                          stack.length = 0;
+                          stack.push({...node, level: 3});
+                      } else if (node.level === 4) {
+                          // H4作为H3的子级
+                          const parent = tree[tree.length - 1];
+                          if (parent) {
+                              node.index = `${parent.index}.${parent.children.length + 1}`;
+                              parent.children.push(node);
+                          }
+                      }
+                  } else {
+                      // 没有H2也没有H3，有H4的情况
+                      if (node.level === 4) {
+                          // H4作为一级
+                          node.index = (tree.length + 1).toString();
+                          tree.push(node);
+                      }
+                  }
+              });
+              
+              return tree;
+            },
+
+            // 新增：获取标题索引（用于高亮）
+            getHeadingIndex(heading) {
+             if (!heading || !heading.id) return -1;
+  
+              // 只查找 h3 标题
+              const container = document.getElementsByClassName('markdown-body')[0];
+              if (!container) return -1;
+              
+              const h3Elements = container.querySelectorAll('h3');
+              
+              // 通过元素引用查找索引
+              for (let i = 0; i < h3Elements.length; i++) {
+                if (h3Elements[i].id === heading.id || h3Elements[i] === heading.element) {
+                  return i;
+                }
+              }
+              
+              return -1;
+            },
+            findH3Tags() {
+                setTimeout(()=>{
+                    const container = document.getElementsByClassName('markdown-body')[0];
+                    console.log(container)
+                    if(!container){
+                        return
+                    }
+                    const h3Tags = container.querySelectorAll('h3');
+                    console.log(h3Tags)
+                    if(this.h3TagsList.length <= 0){
+                        h3Tags.forEach(tag => {
+                            // 可以在这里对每个 h3 标签进行操作
+                            this.h3TagsList.push(tag.textContent);
+                        });
+                    }
+
+                    const  that = this
+                    container.querySelectorAll('img').forEach(img=>{
+                        this.imagesList.push(img.src)
+
+                        img.addEventListener('click',function (){
+                            that.imageUrl = this.src
+                            that.dialogVisible = true
+                        })
+                    })
+
+                },1000)
+            },
+            // 滚动到二级/三级目录
+            scrollToSubHeading(heading) {
+              try {
+                // 设置当前激活的标题ID
+                this.currentActiveId = heading.id;
+                this.treeActiveIndex = null; // 清除一级active
+                this.isManualSelection = true;
+                setTimeout(() => { this.isManualSelection = false; }, 2000); // 2秒后恢复自动更新
+                
+                const container = document.getElementsByClassName('markdown-body')[0];
+                if (!container) return;
+                
+                // 通过ID查找对应的元素
+                const targetElement = document.getElementById(heading.id);
+                
+                if (targetElement) {
+                  const contentContainer = document.getElementById('contentContainer');
+                  if (!contentContainer) return;
+                  
+                  // 计算目标位置
+                  const headingTop = targetElement.offsetTop - contentContainer.offsetTop;
+                  const targetPosition = Math.max(0, headingTop + 110); // 留100px边距
+                  
+                  console.log(`滚动到二级/三级标题: ${heading.text}, 位置=${headingTop}px`);
+                  
+                  contentContainer.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                  });
+                  
+                  // 可选：滚动后稍微延迟，让一级目录的高亮更新
+                  // setTimeout(() => {
+                  //   this.calculateCurrentHeading();
+                  // }, 300);
+                } else {
+                  console.warn(`未找到ID为 ${heading.id} 的标题元素`);
+                }
+              } catch (e) {
+                console.log('滚动失败:', e);
+              }
+            },
+            scrollToHeading(heading, index) {
+              if (index === undefined || index === null) {
+                console.error('滚动索引无效:', index);
+                return;
+              }
+              
+              try {
+                const container = document.getElementsByClassName('markdown-body')[0];
+                if (!container) return;
+                
+                const contentContainer = document.getElementById('contentContainer');
+                if (!contentContainer) return;
+                
+                // 直接通过ID查找元素
+                const targetHeading = document.getElementById(heading.id);
+                
+                if (targetHeading) {
+                    // 计算目标位置，留110px边距
+                    const headingTop = targetHeading.offsetTop - contentContainer.offsetTop;
+                    const targetPosition = Math.max(0, headingTop + 110);
+                    
+                    console.log(`滚动到标题: ${heading.text}`);
+                    this.currentActiveId = heading.id;
+                    contentContainer.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    console.error('找不到标题元素:', heading.id);
+                }
+              } catch (e) {
+                  console.log('滚动失败:', e);
+              }
+            },
+            markdownToHTML(newMarkdownContent) {
+                if(newMarkdownContent){
+                    if(this.$refs.editormd){
+                        this.$refs.editormd.innerHTML = ''
+                    }
+                    editormd.markdownToHTML('editormd', {
+                        markdown: newMarkdownContent,
+                        width: "100%",
+                        path: "/static/admin/editor.md-master/lib/",
+                        preview: true,
+                        watch: true,
+                        editor: false,
+                        taskList: true,
+                        tex: true,
+                        tocm: true,
+                        htmlDecode: true,
+                        flowChart: true,
+                        sequenceDiagram: true
+                    });
+
+                    setTimeout( ()=>{
+                        $('#editormd a').on('click', function (e) {
+                            e.preventDefault()
+                            var url = $(this).attr('href');
+                            if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
+                                window.open(url);
+                            } else {
+                                location.href = url;
+                            }
+                        })
+                        // this.findH3Tags()
+                        this.findAllHeadings()
+                    }, 300);
+                    return;
+                }
+                if (this.$refs.content && this.$refs.content.innerText) {
+                    editormd.markdownToHTML('editormd', {
+                        width: "100%",
+                        path: "/static/admin/editor.md-master/lib/",
+                        preview: true,
+                        watch: true,
+                        editor: false,
+                        taskList: true,
+                        tex: true,  // 默认不解析
+                        tocm: true,
+                        htmlDecode: true,  // you can filter tags decode
+                        flowChart: true,  // 默认不解析
+                        sequenceDiagram: true,  // 默认不解析
+                    });
+                    setTimeout( ()=> {
+                        $('#editormd a').on('click', function (e) {
+                            e.preventDefault()
+                            var url = $(this).attr('href');
+                            if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
+                                window.open(url);
+                            } else {
+                                location.href = url;
+                            }
+                        })
+                        // this.findH3Tags()
+                        this.findAllHeadings()
+                    }, 300);
+                } else {
+                    window.onload = function () {
+                        $('#editormd a').on('click', function (e) {
+                            e.preventDefault()
+                            var url = $(this).attr('href');
+                            if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
+                                window.open(url);
+                            } else {
+                                location.href = url;
+                            }
+                        })
+                    }
+                    // this.findH3Tags()
+                    this.findAllHeadings()
+                }
+            },
+            search() {
+                if (this.where.search == '') {
+                    this.isSearch = false
+                } else {
+                    if (!this.isSearch) this.isSearch = true
+                    this.getSearchList()
+                }
+            },
+            currentChange(page){
+                this.where.page = page
+                this.getSearchList()
+            },
+            getSearchList(){
+                this.loading = true
+                getRequest('/api/search/' + this.objId, this.where,false).then(res => {
+                    this.wikiSearchList = res.data.list
+                    this.wikiCount = res.data.count
+                    this.loading = false
+                }).catch(res=>{
+                    this.loading = false
+                });
+            },
+            // 跳转用户地址
+            goUser() {
+                window.open("/user/index")
+            },
+            // 获取个人信息
+            getuserInfo() {
+                request('/api/user', 'get').then(res => {
+                    this.userInfo = res.data
+                    this.getWikiLike()
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+            orderCommentList(){
+                this.commentWhere.order = this.commentWhere.order ? 0 : 1
+                this.listLodend = false
+                this.commentWhere.page = 1
+                this.getList()
+            },
+            // 获取评论列表
+            getList() {
+                if(this.listLoding) return
+                if(this.listLodend) return;
+                this.listLoding = true
+                getRequest(`/api/comment/list/${this.cate_id}`,this.commentWhere,false).then(res=>{
+                    this.list = res.data.list
+                    this.count = res.data.count
+                    this.listLoding = false
+                    this.listLodend =  this.list.length < this.commentWhere.limit
+                }).catch(res=>{
+                    this.listLoding = false
+                });
+            },
+            // 登录
+            loginFn() {
+                fetch(`/api/authorize_url`).then(response => response.json()).then(data => {
+                    if (data.status == 200) {
+                        const width = 1300;
+                        const height = 750;
+
+                        const left = (window.innerWidth - width) / 2;
+                        const top = (window.innerHeight - height) / 2;
+
+                        const windowFeatures = `width=${width},height=${height},toolbar=no,location=no,status=no,menubar=no,left=${left},top=${top}`;
+                        if(this.isMobileDevice()){
+                            setCookie('page_url',window.location.href);
+                            window.location.href = data.data.authorizeUrl
+                        }else{
+                            window.open(data.data.authorizeUrl, '_blank', windowFeatures)
+                        }
+                    } else {
+                        this.$message.error(data.msg);
+                    }
+                }).catch(err => {
+                    this.$message.error(err.msg);
+                });
+            },
+            isMobileDevice() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            },
+            like(id,type,item){
+                postRequest('/api/wiki/like/'+id+'/'+type).then(res=>{
+                   if(item){
+                       if(res.data.like){
+                           item.likeUser = {uid:this.userInfo.uid}
+                           if(item.like){
+                               item.like.like_num++
+                           }else{
+                               item.like = {like_num:1}
+                           }
+                       }else{
+                           item.likeUser = null
+                           if(item.like){
+                               item.like.like_num--
+                           }else{
+                               item.like =null
+                           }
+                       }
+                   }else{
+                       this.isVue = true
+                       if(res.data.like){
+                           this.cateWiki.like_num++
+                           this.cateWiki.like = true
+                       }else{
+                           this.cateWiki.like_num--
+                           this.cateWiki.like = false
+                       }
+                   }
+                    this.$message.success(res.msg);
+                }).catch(err => {
+                    this.$message.error(err.msg);
+                });
+            },
+            replyFn(index, item, type,pid) {
+                if (type == 1 && this.replyIndex != index) {
+                    this.replyIndex = index;
+                } else {
+                    this.replyIndex = null
+                }
+                if (type == 2 && this.replyIndexJ != index) {
+                    this.replyIndexJ = index;
+                } else {
+                    this.replyIndexJ = null
+                }
+                this.replyPid = pid
+            },
+
+            //上传前
+            beforeUpload(file) {
+                if (!this.userInfo.uid) {
+                   this.$message.error('请先登陆后再进行评论');
+                }
+                if (this.replyPid) {
+                    if(this.replyChildPicList.length > 10){
+                        return this.$message.error('最多上传10张图片');
+                    }
+                }else{
+                    if(this.replyPicList.length > 10){
+                        return this.$message.error('最多上传10张图片');
+                    }
+                }
+            },
+            picChildDel(index){
+                this.replyChildPicList.splice(index, 1);
+            },
+            picdDel(index){
+                this.replyPicList.splice(index, 1);
+            },
+            handleChildSuccess(response) {
+                console.log(response, '上传')
+                if (response.status === 200) {
+                    this.$message.success('上传成功');
+                    let pic = response.data.url;
+                    this.replyChildPicList.push(pic);
+                } else {
+                    this.$message.error(response.message);
+                }
+            },
+            // 上传成功
+            handleSuccess(response) {
+                console.log(response, '上传')
+                if (response.status === 200) {
+                    this.$message.success('上传成功');
+                    let pic = response.data.url;
+                    this.replyPicList.push(pic);
+                } else {
+                    this.$message.error(response.msg);
+                }
+            },
+            logout(){
+                postRequest('/api/logout').then(res=>{
+                    this.userInfo = {}
+                    deleteCookie('gitee_code')
+                    this.$message.success(res.msg);
+                }).catch(res=>{
+                    this.$message.error(res.msg);
+                })
+            },
+        }
+    })
+
+
+    var objId = parseInt(95), clickId, title = "会员电商系统Pro v4.0", productName = "pro_s", jpath = 'prov40',
+        projectList = [{"name":"\u4f1a\u5458\u7535\u5546\u7cfb\u7edfPro v4.0","path":"prov40"},{"name":"\u4f1a\u5458\u7535\u5546\u7cfb\u7edfPro v3.5","path":"prov35"},{"name":"\u4f1a\u5458\u7535\u5546\u7cfb\u7edfPro v3.4","path":"prov34"},{"name":"CRMEB Pro v3.3","path":"pro_v3_3"},{"name":"CRMEB pro v3.2","path":"pro_v3_2"},{"name":"CRMEB pro v3.1","path":"pro_v3_1"},{"name":"CRMEB pro v3","path":"pro_v3"},{"name":"CRMEB Pro \u5355\u5e97\u7248","path":"pro_single"},{"name":"CRMEB PRO v1","path":"crmebpro"}];
+
+    function openImages(obj) {
+        layer.open({
+            type: 1,
+            offset: 'auto',
+            title: false,
+            closeBtn: 1,
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: '<img src="'+obj+'" style="width:auto;height:auto; max-width:100%;max-height:100%;">'
+        });
+    }
+
+    function addEvt(ifr) {
+        var doc = ifr.contentWindow.document;
+        doc.onclick = function () {
+            ifr.style.height = (document.all ? doc.body.scrollHeight : doc.body.offsetHeight) + 'px';
+        }
+        ifr.style.height = (document.all ? doc.body.scrollHeight : doc.body.offsetHeight) + 'px';
+    }
+
+    function bodyiconclick() {
+        $('#docDemoMenu1 .icon').on('click', function (e) {
+            var open = parseInt($(this).data('open'));
+            if (open === 0) {
+                $(this).parent('li').addClass('layui-menu-item-down').removeClass('layui-menu-item-up');
+                $(this).data('open', 1).children('i').addClass('layui-icon-down').removeClass('layui-icon-right');
+            } else {
+                $(this).parent('li').addClass('layui-menu-item-up').removeClass('layui-menu-item-down');
+                $(this).data('open', 0).children('i').addClass('layui-icon-right').removeClass('layui-icon-down');
+            }
+        })
+    }
+
+    function shows() {
+        event.stopPropagation();
+        document.getElementById("contentLeft").style.animation = "showes 0.1s steps(8) forwards"
+        // document.getElementById("contentRight").style.animation="showes 0.1s steps(8) forwards"
+        // document.getElementById("contentRight").style.marginRight="0rem"
+        if (document.body.clientWidth > 600) {
+            document.getElementById("contentRight").style.marginLeft = "1.25rem"
+        }
+        if (document.body.clientWidth < 600) {
+            document.getElementById("contentRight").style.marginLeft = "0rem"
+        }
+        document.getElementById("menu-mask").style.display = "none"
+        document.getElementById("lists2").style.display = "block"
+        document.getElementById("lists").style.display = "none"
+    }
+
+    function shows2() {
+        event.stopPropagation();
+        document.getElementById("contentLeft").style.animation = "noshowes 0.1s steps(8) forwards"
+        // document.getElementById("contentRight").style.animation="noshowes 0.1s steps(8) forwards"
+        // document.getElementById("contentRight").style.marginRight="21.875rem"
+        if (document.body.clientWidth > 600) {
+            document.getElementById("contentRight").style.marginLeft = "20.875rem"
+        }
+        if (document.body.clientWidth < 600) {
+            document.getElementById("contentRight").style.marginLeft = "0rem"
+        }
+        document.getElementById("menu-mask").style.display = "block"
+        document.getElementById("lists").style.display = "block"
+        document.getElementById("lists2").style.display = "none"
+    }
+
+    function menuBodyTitleClick() {
+        $('.layui-menu-body-title').on('click', function (e) {
+            e.stopPropagation()
+            clickId = $(this).data('id');
+
+            $('.layui-menu-body-title').removeClass('on');
+
+            $(this).addClass('on');
+            document.title = $(this).children('span').text() + ' ' + title;
+            $('#title').text($(this).children('span').text());
+        })
+    }
+
+    function loadeInit() {
+        menuBodyTitleClick();
+        bodyiconclick();
+    }
+
+    loadeInit();
+    if (projectList.length > 1) {
+        layui.use('dropdown', function () {
+            var dropdown = layui.dropdown, data = []
+            projectList.map(item => {
+                data.push({
+                    title: item.name,
+                    id: item.path
+                })
+            })
+            dropdown.render({
+                elem: '#demo1',
+                data: data,
+                id: 'demo1',
+                click: function (obj) {
+                    location.href = '/' + productName + '/' + obj.id
+                }
+            });
+            dropdown.render({
+                elem: '#demo2',
+                data: data,
+                id: 'demo2',
+                click: function (obj) {
+                    location.href = '/' + productName + '/' + obj.id
+                }
+            });
+        });
+    }
+  </script>
+</body>
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?1b7e4f3001887ba6923d8505a0fcbe2b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    (function () {
+        var div = document.createElement("div");
+        var img = document.createElement("img");
+        var a = document.createElement("a");
+        a.href = "https://mbd.baidu.com/ma/s/jd1E0VEY";
+        a.target = "_blank";
+        img.src = "/static/web/images/ai.jpg";
+        img.style.cssText = 'width:100%';
+        a.appendChild(img);
+        div.appendChild(a);
+        div.style.cssText = "position:fixed;bottom:100px;right:26px;z-index:9999;width:66px;height:66px;cursor:pointer";
+        //可以上下拖动div
+        let isDragging = false
+        div.onmousedown = function(event) {
+            isDragging = false; // 每次鼠标按下时重置拖拽标识
+
+            var disY = event.clientY - div.offsetTop;
+            // 鼠标移动事件
+            document.onmousemove = function(event) {
+                isDragging = true; // 如果发生了移动，认为发生了拖拽
+                var y = event.clientY - disY;
+                div.style.top = y + 'px';
+            };
+
+            // 鼠标抬起事件
+            document.onmouseup = function() {
+
+                document.onmousemove = null;
+            };
+
+            return false; // 阻止默认行为
+        };
+
+        // document.body.appendChild(div);
+    })()
+</script>
+<script src='https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.1.0-beta.0/libs/cn/index.js'></script>
+<script>
+  new CozeWebSDK.WebChatClient({
+    config: {
+      bot_id: '7486312475626405923',
+    },
+    componentProps: {
+      title: 'CRMEB小助手',
+      width: 800,
+      icon: 'https://www.crmeb.com/static/images/ai_guanwang.png'
+    },
+    ui: {
+      base: {
+          icon: 'https://www.crmeb.com/static/images/ai_guanwang.png',
+          layout: 'pc',
+          zIndex: 1000,
+      },
+      asstBtn: {
+          isNeed: true,
+      },
+      footer: {
+        isShow: true,
+        expressionText: 'Powered by {{name}}  {{name1}}|{{name2}}',
+        linkvars: {
+          name: {
+            text: 'CRMEB',
+            link: 'https://www.crmeb.com'
+          },
+          name1: {
+            text: '社区',
+            link: 'https://www.crmeb.com/ask'
+          },
+          name2: {
+            text: '文档',
+            link: 'https://doc.crmeb.com'
+          }
+        }
+      }
+    },
+  });
+</script>
+</html>
