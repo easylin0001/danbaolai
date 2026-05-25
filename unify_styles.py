@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会员电商系统团队统计 - DANBAOLAI 使用手册</title>
-    <style>
+import os
+import re
 
+docs_dir = '/Users/shensizaowu-designer/Documents/trae_projects/test_1/manual_docs'
+
+COMMON_CSS = '''
         * {
             margin: 0;
             padding: 0;
@@ -264,14 +262,21 @@
                 display: block;
             }
         }
+'''
 
-    </style>
-</head>
-<body>
-    <button class="toggle-sidebar" onclick="toggleSidebar()">☰ 菜单</button>
-    
-    <div class="layout">
+COMMON_JS = '''
+        function toggleSection(element) {
+            element.classList.toggle('collapsed');
+            const items = element.nextElementSibling;
+            items.classList.toggle('collapsed');
+        }
 
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+'''
+
+SIDER_HTML = '''
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="../index.html"><h1>📖 DANBAOLAI 使用手册</h1></a>
@@ -420,7 +425,7 @@
                         <a href="page_34736.html" class="nav-item">代理商列表</a>
                         <a href="page_34737.html" class="nav-item">代理商申请</a>
                         <a href="page_34738.html" class="nav-item">团队配置</a>
-                        <a href="page_34739.html" class="nav-item active">团队统计</a>
+                        <a href="page_34739.html" class="nav-item">团队统计</a>
                         <a href="page_34740.html" class="nav-item">团队订单</a>
                         <a href="page_34748.html" class="nav-item">返佣说明</a>
                     </div>
@@ -617,18 +622,40 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>'''
+
+def generate_page_html(page_id, title, body_content):
+    sidebar_with_active = SIDER_HTML.replace(
+        f'href="page_{page_id}.html" class="nav-item"', 
+        f'href="page_{page_id}.html" class="nav-item active"'
+    )
+    
+    html = f'''<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} - DANBAOLAI 使用手册</title>
+    <style>
+{COMMON_CSS}
+    </style>
+</head>
+<body>
+    <button class="toggle-sidebar" onclick="toggleSidebar()">☰ 菜单</button>
+    
+    <div class="layout">
+{sidebar_with_active}
 
         <div class="main-content">
             <div class="page-header">
                 <div class="breadcrumb">
-                    <a href="../index.html">首页</a> / 会员电商系统团队统计
+                    <a href="../index.html">首页</a> / {title}
                 </div>
-                <h1>会员电商系统团队统计</h1>
+                <h1>{title}</h1>
             </div>
 
             <div class="content">
-                <p>一、功能介绍<br>统计团队分销信息<br>二、操作步骤<br><img src="images/d266a1ea15e782c195221bba9e3ddcfa.png" alt=""><br>三、功能说明<br>统计团队分销订单，分销佣金，分销订单趋势等数据，各数据排行统计。</p>
+                {body_content}
             </div>
 
             <div class="footer">
@@ -638,17 +665,46 @@
     </div>
 
     <script>
-
-        function toggleSection(element) {
-            element.classList.toggle('collapsed');
-            const items = element.nextElementSibling;
-            items.classList.toggle('collapsed');
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-        }
-
+{COMMON_JS}
     </script>
 </body>
-</html>
+</html>'''
+    return html
+
+files = [f for f in os.listdir(docs_dir) if f.startswith('page_') and f.endswith('.html')]
+print(f"找到 {len(files)} 个页面需要更新...")
+
+updated = 0
+for i, filename in enumerate(files):
+    filepath = os.path.join(docs_dir, filename)
+    page_id = filename.replace('page_', '').replace('.html', '')
+    
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    title_match = re.search(r'<title>([^<]+)</title>', content)
+    title = title_match.group(1) if title_match else f"页面{page_id}"
+    title = title.replace(' - DANBAOLAI文档', '').replace(' - DANBAOLAI 使用手册', '')
+    
+    content_match = re.search(r'<div class="content">\s*(.*?)\s*</div>\s*<div class="footer">', content, re.DOTALL)
+    if not content_match:
+        content_match = re.search(r'<div class="content">(.*?)</div>', content, re.DOTALL)
+    
+    if content_match:
+        body_content = content_match.group(1).strip()
+    else:
+        body_match = re.search(r'<div class="content">(.*?)</div>', content, re.DOTALL)
+        if body_match:
+            body_content = body_match.group(1).strip()
+        else:
+            body_content = f"<p>页面内容</p>"
+    
+    new_html = generate_page_html(page_id, title, body_content)
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(new_html)
+    
+    updated += 1
+    print(f"[{i+1}/{len(files)}] 更新 {filename} - {title}")
+
+print(f"\n完成! 共更新 {updated} 个页面")

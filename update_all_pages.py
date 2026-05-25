@@ -1,280 +1,12 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会员电商系统团队统计 - DANBAOLAI 使用手册</title>
-    <style>
+import os
+import re
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
-        .sidebar {
-            width: 260px;
-            background: #fff;
-            border-right: 1px solid #e8e8e8;
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            overflow-y: auto;
-            z-index: 100;
-        }
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #ddd;
-            border-radius: 2px;
-        }
-        .sidebar::-webkit-scrollbar-track {
-            background: #f5f5f5;
-        }
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #e8e8e8;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .sidebar-header h1 {
-            font-size: 16px;
-            color: #fff;
-            font-weight: 600;
-        }
-        .sidebar-header p {
-            font-size: 12px;
-            color: rgba(255,255,255,0.8);
-            margin-top: 5px;
-        }
-        .sidebar-header a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .sidebar-content {
-            padding: 8px 0;
-        }
-        .nav-section {
-            margin-bottom: 2px;
-        }
-        .nav-title {
-            padding: 10px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #333;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.2s;
-            user-select: none;
-        }
-        .nav-title:hover {
-            background: #f5f7fa;
-        }
-        .nav-title .icon {
-            margin-right: 6px;
-            font-size: 14px;
-        }
-        .nav-title .arrow {
-            font-size: 10px;
-            transition: transform 0.3s;
-            color: #999;
-        }
-        .nav-title.collapsed .arrow {
-            transform: rotate(-90deg);
-        }
-        .nav-items {
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            max-height: 2000px;
-        }
-        .nav-items.collapsed {
-            max-height: 0;
-        }
-        .nav-item {
-            display: block;
-            padding: 8px 16px 8px 32px;
-            color: #666;
-            text-decoration: none;
-            font-size: 13px;
-            transition: all 0.2s;
-            position: relative;
-        }
-        .nav-item:hover {
-            color: #667eea;
-            background: #f5f7fa;
-        }
-        .nav-item.active {
-            color: #667eea;
-            background: linear-gradient(90deg, rgba(102,126,234,0.1) 0%, transparent 100%);
-        }
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: #667eea;
-        }
-        .main-content {
-            flex: 1;
-            margin-left: 260px;
-            padding: 24px 32px;
-        }
-        .page-header {
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #e8e8e8;
-        }
-        .page-header h1 {
-            font-size: 24px;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-        }
-        .breadcrumb {
-            font-size: 12px;
-            color: #999;
-        }
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-        }
-        .content {
-            background: #fff;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-        .content h2 {
-            color: #1a1a2e;
-            font-size: 20px;
-            margin: 20px 0 12px 0;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #667eea;
-        }
-        .content h3 {
-            color: #333;
-            font-size: 16px;
-            margin: 16px 0 8px 0;
-        }
-        .content h4 {
-            color: #333;
-            font-size: 14px;
-            margin: 12px 0 8px 0;
-        }
-        .content p {
-            margin: 8px 0;
-            color: #555;
-            line-height: 1.8;
-        }
-        .content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 4px;
-            margin: 12px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .content ul, .content ol {
-            margin: 8px 0 8px 20px;
-        }
-        .content li {
-            margin: 4px 0;
-            line-height: 1.8;
-        }
-        .content strong {
-            color: #1a1a2e;
-        }
-        .content code {
-            background: #f5f7fa;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: Consolas, monospace;
-            font-size: 13px;
-        }
-        .content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 12px 0;
-        }
-        .content th, .content td {
-            border: 1px solid #e8e8e8;
-            padding: 10px;
-            text-align: left;
-        }
-        .content th {
-            background: #f5f7fa;
-            font-weight: 600;
-        }
-        .content pre {
-            background: #f5f7fa;
-            padding: 12px;
-            border-radius: 4px;
-            overflow-x: auto;
-        }
-        .content blockquote {
-            border-left: 4px solid #667eea;
-            padding-left: 12px;
-            margin: 12px 0;
-            color: #666;
-        }
-        .footer {
-            text-align: center;
-            padding: 24px;
-            color: #999;
-            font-size: 12px;
-        }
-        .toggle-sidebar {
-            display: none;
-            position: fixed;
-            left: 10px;
-            top: 10px;
-            z-index: 200;
-            background: #667eea;
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .toggle-sidebar {
-                display: block;
-            }
-        }
+docs_dir = '/Users/shensizaowu-designer/Documents/trae_projects/test_1/manual_docs'
 
-    </style>
-</head>
-<body>
-    <button class="toggle-sidebar" onclick="toggleSidebar()">☰ 菜单</button>
-    
-    <div class="layout">
-
+sidebar_html = '''
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="../index.html"><h1>📖 DANBAOLAI 使用手册</h1></a>
+                <h1>📖 DANBAOLAI 使用手册</h1>
                 <p>会员电商系统 完整操作指南</p>
             </div>
             <div class="sidebar-content">
@@ -284,6 +16,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34492.html" class="nav-item">商品管理</a>
                         <a href="page_34495.html" class="nav-item">商品添加</a>
                         <a href="page_34496.html" class="nav-item">商品采集</a>
                         <a href="page_34493.html" class="nav-item">商品分类</a>
@@ -304,6 +37,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34503.html" class="nav-item">用户管理</a>
                         <a href="page_34649.html" class="nav-item">用户列表</a>
                         <a href="page_34504.html" class="nav-item">用户等级</a>
                         <a href="page_34818.html" class="nav-item">用户运营</a>
@@ -320,6 +54,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34498.html" class="nav-item">订单管理</a>
                         <a href="page_34499.html" class="nav-item">订单发货</a>
                         <a href="page_34500.html" class="nav-item">订单退款</a>
                         <a href="page_34501.html" class="nav-item">订单打印</a>
@@ -333,6 +68,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34506.html" class="nav-item">客服管理</a>
                         <a href="page_34507.html" class="nav-item">客服功能</a>
                         <a href="page_34508.html" class="nav-item">客服接待</a>
                     </div>
@@ -344,6 +80,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34509.html" class="nav-item">营销管理</a>
                         <a href="page_34677.html" class="nav-item">抽奖</a>
                         <a href="page_34780.html" class="nav-item">礼品卡</a>
                         <a href="page_34781.html" class="nav-item">礼品卡功能说明</a>
@@ -373,6 +110,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34728.html" class="nav-item">内容管理</a>
                         <a href="page_34729.html" class="nav-item">社区</a>
                         <a href="page_34732.html" class="nav-item">社区评论</a>
                         <a href="page_34651.html" class="nav-item">文章管理</a>
@@ -386,6 +124,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34864.html" class="nav-item">直播管理</a>
                         <a href="page_34865.html" class="nav-item">直播前准备</a>
                         <a href="page_34866.html" class="nav-item">阿里云直播配置</a>
                         <a href="page_35613.html" class="nav-item">阿里云资费说明</a>
@@ -409,6 +148,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34518.html" class="nav-item">分销管理</a>
                         <a href="page_34741.html" class="nav-item">分销员申请</a>
                         <a href="page_34519.html" class="nav-item">分销介绍</a>
                         <a href="page_34520.html" class="nav-item">分销配置</a>
@@ -420,7 +160,7 @@
                         <a href="page_34736.html" class="nav-item">代理商列表</a>
                         <a href="page_34737.html" class="nav-item">代理商申请</a>
                         <a href="page_34738.html" class="nav-item">团队配置</a>
-                        <a href="page_34739.html" class="nav-item active">团队统计</a>
+                        <a href="page_34739.html" class="nav-item">团队统计</a>
                         <a href="page_34740.html" class="nav-item">团队订单</a>
                         <a href="page_34748.html" class="nav-item">返佣说明</a>
                     </div>
@@ -432,6 +172,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34595.html" class="nav-item">财务管理</a>
                         <a href="page_34596.html" class="nav-item">财务操作</a>
                         <a href="page_34597.html" class="nav-item">财务记录</a>
                         <a href="page_34598.html" class="nav-item">佣金记录</a>
@@ -444,6 +185,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34524.html" class="nav-item">商城装修</a>
                         <a href="page_34525.html" class="nav-item">主页装修</a>
                         <a href="page_34711.html" class="nav-item">商品详情</a>
                         <a href="page_34709.html" class="nav-item">个人中心</a>
@@ -460,6 +202,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34701.html" class="nav-item">移动端商家管理</a>
                         <a href="page_34715.html" class="nav-item">商家管理开关</a>
                         <a href="page_34702.html" class="nav-item">工作台模块</a>
                         <a href="page_34703.html" class="nav-item">商品管理</a>
@@ -477,6 +220,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34576.html" class="nav-item">商城设置</a>
                         <a href="page_34745.html" class="nav-item">系统设置</a>
                         <a href="page_34717.html" class="nav-item">同城配送</a>
                         <a href="page_34690.html" class="nav-item">商品设置</a>
@@ -500,6 +244,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34579.html" class="nav-item">应用设置</a>
                         <a href="page_34580.html" class="nav-item">服务号</a>
                         <a href="page_34584.html" class="nav-item">小程序</a>
                         <a href="page_34585.html" class="nav-item">PC</a>
@@ -513,6 +258,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34587.html" class="nav-item">第三方接口</a>
                         <a href="page_34727.html" class="nav-item">一号通配置</a>
                         <a href="page_34588.html" class="nav-item">小票打印配置</a>
                         <a href="page_34589.html" class="nav-item">采集商品配置</a>
@@ -529,6 +275,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34615.html" class="nav-item">企业微信</a>
                         <a href="page_34616.html" class="nav-item">客户管理</a>
                         <a href="page_34619.html" class="nav-item">企业渠道码</a>
                         <a href="page_34620.html" class="nav-item">欢迎语</a>
@@ -550,6 +297,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34642.html" class="nav-item">供应商</a>
                         <a href="page_34692.html" class="nav-item">供应商申请</a>
                         <a href="page_34643.html" class="nav-item">供应商管理</a>
                         <a href="page_34644.html" class="nav-item">供应商财务</a>
@@ -569,6 +317,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34782.html" class="nav-item">采购商</a>
                         <a href="page_34783.html" class="nav-item">采购商说明</a>
                     </div>
                 </div>
@@ -599,6 +348,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34821.html" class="nav-item">商城AI</a>
                         <a href="page_34822.html" class="nav-item">功能介绍</a>
                     </div>
                 </div>
@@ -609,6 +359,7 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="nav-items">
+                        <a href="page_34831.html" class="nav-item">库存管理</a>
                         <a href="page_34832.html" class="nav-item">入库管理</a>
                         <a href="page_34833.html" class="nav-item">出库管理</a>
                         <a href="page_34834.html" class="nav-item">库存查询</a>
@@ -617,28 +368,269 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>'''
 
-        <div class="main-content">
-            <div class="page-header">
-                <div class="breadcrumb">
-                    <a href="../index.html">首页</a> / 会员电商系统团队统计
-                </div>
-                <h1>会员电商系统团队统计</h1>
-            </div>
+css_styles = '''
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 280px;
+            background: #fff;
+            border-right: 1px solid #e8e8e8;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: #f5f5f5;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e8e8e8;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .sidebar-header h1 {
+            font-size: 18px;
+            color: #fff;
+            font-weight: 600;
+        }
+        .sidebar-header p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 5px;
+        }
+        .sidebar-header a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .sidebar-content {
+            padding: 10px 0;
+        }
+        .nav-section {
+            margin-bottom: 5px;
+        }
+        .nav-title {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .nav-title:hover {
+            background: #f5f7fa;
+        }
+        .nav-title .icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        .nav-title .arrow {
+            font-size: 12px;
+            transition: transform 0.3s;
+            color: #999;
+        }
+        .nav-title.collapsed .arrow {
+            transform: rotate(-90deg);
+        }
+        .nav-items {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            max-height: 2000px;
+        }
+        .nav-items.collapsed {
+            max-height: 0;
+        }
+        .nav-item {
+            display: block;
+            padding: 10px 20px 10px 40px;
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .nav-item:hover {
+            color: #667eea;
+            background: #f5f7fa;
+        }
+        .nav-item.active {
+            color: #667eea;
+            background: linear-gradient(90deg, rgba(102,126,234,0.1) 0%, transparent 100%);
+        }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #667eea;
+        }
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px 40px;
+        }
+        .page-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+        .breadcrumb {
+            font-size: 13px;
+            color: #999;
+        }
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .content h2 {
+            color: #1a1a2e;
+            font-size: 22px;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .content h3 {
+            color: #333;
+            font-size: 18px;
+            margin: 20px 0 10px 0;
+        }
+        .content h4 {
+            color: #333;
+            font-size: 16px;
+            margin: 15px 0 10px 0;
+        }
+        .content p {
+            margin: 10px 0;
+            color: #555;
+            line-height: 1.8;
+        }
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        .content ul, .content ol {
+            margin: 10px 0 10px 25px;
+        }
+        .content li {
+            margin: 5px 0;
+            line-height: 1.8;
+        }
+        .content strong {
+            color: #1a1a2e;
+        }
+        .content code {
+            background: #f5f7fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+        }
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .content th, .content td {
+            border: 1px solid #e8e8e8;
+            padding: 12px;
+            text-align: left;
+        }
+        .content th {
+            background: #f5f7fa;
+            font-weight: 600;
+        }
+        .content pre {
+            background: #f5f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+            margin: 15px 0;
+            color: #666;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+        .toggle-sidebar {
+            display: none;
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 200;
+            background: #667eea;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .toggle-sidebar {
+                display: block;
+            }
+        }
+'''
 
-            <div class="content">
-                <p>一、功能介绍<br>统计团队分销信息<br>二、操作步骤<br><img src="images/d266a1ea15e782c195221bba9e3ddcfa.png" alt=""><br>三、功能说明<br>统计团队分销订单，分销佣金，分销订单趋势等数据，各数据排行统计。</p>
-            </div>
-
-            <div class="footer">
-                <p>DANBAOLAI 使用手册</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-
+js_script = '''
         function toggleSection(element) {
             element.classList.toggle('collapsed');
             const items = element.nextElementSibling;
@@ -648,7 +640,86 @@
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
         }
+'''
 
+def generate_page_html(page_id, title, body_content):
+    sidebar_with_active = sidebar_html.replace(f'href="page_{page_id}.html"', f'href="page_{page_id}.html" class="nav-item active"')
+    
+    html = f'''<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} - DANBAOLAI 使用手册</title>
+    <style>
+{css_styles}
+    </style>
+</head>
+<body>
+    <button class="toggle-sidebar" onclick="toggleSidebar()">☰ 菜单</button>
+    
+    <div class="layout">
+{sidebar_with_active}
+
+        <div class="main-content">
+            <div class="page-header">
+                <div class="breadcrumb">
+                    <a href="../index.html">首页</a> / {title}
+                </div>
+                <h1>{title}</h1>
+            </div>
+
+            <div class="content">
+                {body_content}
+            </div>
+
+            <div class="footer">
+                <p>DANBAOLAI 使用手册</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+{js_script}
     </script>
 </body>
-</html>
+</html>'''
+    return html
+
+files = [f for f in os.listdir(docs_dir) if f.startswith('page_') and f.endswith('.html')]
+print(f"找到 {len(files)} 个页面需要更新...")
+
+updated = 0
+for i, filename in enumerate(files):
+    filepath = os.path.join(docs_dir, filename)
+    page_id = filename.replace('page_', '').replace('.html', '')
+    
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    title_match = re.search(r'<title>([^<]+)</title>', content)
+    title = title_match.group(1) if title_match else f"页面{page_id}"
+    title = title.replace(' - DANBAOLAI文档', '').replace(' - DANBAOLAI 使用手册', '')
+    
+    content_match = re.search(r'<div class="content">\s*(.*?)\s*</div>\s*<div class="footer">', content, re.DOTALL)
+    if not content_match:
+        content_match = re.search(r'<div class="content">(.*?)</div>', content, re.DOTALL)
+    
+    if content_match:
+        body_content = content_match.group(1).strip()
+    else:
+        body_match = re.search(r'<div class="content">(.*?)</div>', content, re.DOTALL)
+        if body_match:
+            body_content = body_match.group(1).strip()
+        else:
+            body_content = f"<p>页面内容</p>"
+    
+    new_html = generate_page_html(page_id, title, body_content)
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(new_html)
+    
+    updated += 1
+    print(f"[{i+1}/{len(files)}] 更新 {filename} - {title}")
+
+print(f"\n完成! 共更新 {updated} 个页面")
