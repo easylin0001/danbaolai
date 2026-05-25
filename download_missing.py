@@ -5,32 +5,41 @@ import requests
 docs_dir = '/Users/shensizaowu-designer/Documents/trae_projects/test_1/manual_docs'
 
 missing_pages = {
-    '34503': '商品标签',
-    '34504': '商品推荐',
-    '34524': '账号注销',
-    '34544': '活动背景图',
-    '34545': '活动边框',
-    '34546': '好友送礼',
-    '34547': '自动化运营',
-    '34552': '小程序直播',
-    '34570': '页面配置',
-    '34574': '悬浮按钮',
-    '34581': '售后维权',
-    '34582': '代客下单',
-    '34587': '商品设置',
-    '34588': '商城邮费',
-    '34591': '定时任务',
-    '34592': '政策协议',
-    '34593': '单据设置',
-    '34602': '采集商品配置',
-    '34604': '电子面单',
-    '34605': '地图配置',
-    '34615': '供应商菜单设置',
-    '34617': '采购商说明',
-    '34618': '商城硬件',
-    '34619': '移动端UI鉴赏',
-    '34620': '功能介绍',
-    '34630': '出入库记录',
+    '34830': '商品推荐',
+    '34649': '用户管理',
+    '34818': '用户运营',
+    '34819': '新人礼包',
+    '34820': '激活有礼',
+    '34780': '礼品卡',
+    '34781': '礼品卡功能说明',
+    '34784': '好友送礼',
+    '34785': '好友送礼功能说明',
+    '34786': '收送礼品',
+    '34810': '自动化运营',
+    '34811': '智能推送',
+    '34813': '生日有礼',
+    '34864': '直播管理',
+    '34865': '直播前准备',
+    '34866': '阿里云直播配置',
+    '35613': '阿里云资费说明',
+    '34867': 'OBS',
+    '34868': '直播功能',
+    '35608': '直播列表',
+    '35610': '中控台',
+    '35611': '观众列表',
+    '35612': '直播统计',
+    '35609': '直播设置',
+    '35614': '小程序直播',
+    '34782': '采购商',
+    '34783': '采购商说明',
+    '34821': '商城AI',
+    '34822': '商城AI功能介绍',
+    '34831': '库存管理',
+    '34832': '入库管理',
+    '34833': '出库管理',
+    '34834': '库存查询',
+    '34835': '库存盘点',
+    '34836': '出入库记录',
 }
 
 base_url = 'https://doc.crmeb.com/pro_s/prov40'
@@ -66,6 +75,7 @@ for i, (page_id, page_name) in enumerate(missing_pages.items()):
                 body_content = f"<p>{page_name}内容暂无</p>"
             
             body_content = re.sub(r'src="(/uploads/[^"]+/)([^"]+)"', r'src="images/\2"', body_content)
+            body_content = re.sub(r'src="https://[^"]+\.doubaocdn\.com/([^"]+)"', r'src="images/\1"', body_content)
             body_content = body_content.replace('CRMEB', 'DANBAOLAI').replace('Crmeb', 'Danbaolai').replace('crmeb', 'danbaolai')
             
             html_template = f'''<!DOCTYPE html>
@@ -93,6 +103,7 @@ for i, (page_id, page_name) in enumerate(missing_pages.items()):
         .content table {{ width: 100%; border-collapse: collapse; margin: 15px 0; }}
         .content th, .content td {{ border: 1px solid #ddd; padding: 10px; text-align: left; }}
         .content th {{ background: #f5f7fa; }}
+        .content pre {{ background: #f5f7fa; padding: 15px; border-radius: 5px; overflow-x: auto; }}
         .footer {{ text-align: center; padding: 20px; color: #999; font-size: 12px; }}
     </style>
 </head>

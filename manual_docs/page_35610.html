@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员电商系统中控台 - DANBAOLAI文档</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #333; line-height: 1.8; }
+        .container { max-width: 100%; margin: 0; padding: 30px 40px; }
+        .header { background: white; color: #191919; padding: 20px; margin-bottom: 30px; border-radius: 10px; }
+        .header h1 { font-size: 24px; margin-bottom: 10px; color: #191919; }
+        .back-link { display: inline-block; color: #191919; text-decoration: none; margin-bottom: 15px; }
+        .content { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .content h3 { color: #1a1a2e; font-size: 20px; margin: 25px 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #4fc3f7; }
+        .content h4 { color: #333; font-size: 16px; margin: 20px 0 10px 0; }
+        .content p { margin: 10px 0; color: #555; }
+        .content img { max-width: 100%; height: auto; border-radius: 5px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .content ul, .content ol { margin: 10px 0 10px 25px; }
+        .content li { margin: 5px 0; }
+        .content strong { color: #1a1a2e; }
+        .content code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: Consolas, monospace; }
+        .content table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .content th, .content td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .content th { background: #f5f7fa; }
+        .content pre { background: #f5f7fa; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-link">← 返回目录</a>
+            <h1>会员电商系统中控台 - DANBAOLAI文档</h1>
+        </div>
+        <div class="content">
+            
+                  <h3 id="h3--"><a name="一、功能介绍" class="reference-link"></a><span class="header-link octicon octicon-link"></span>一、功能介绍</h3><p>为便于管理员及时对直播间内容进行管控，并能迅速实现直播间商品的上架与下架操作，特增设中控台功能。通过该中控台，可迅速全面掌握整个直播间的所有信息。 </p>
+<h3 id="h3--"><a name="二、操作步骤" class="reference-link"></a><span class="header-link octicon octicon-link"></span>二、操作步骤</h3><p><img src="images/eff5be0d509b8076bc0665712af3bae0.png" alt=""></p>
+<h3 id="h3--"><a name="三、页面介绍" class="reference-link"></a><span class="header-link octicon octicon-link"></span>三、页面介绍</h3><h4 id="h4-1-"><a name="1、开始直播" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1、开始直播</h4><p>未开播状态下，管理员可进入直播中控台，查看橱窗内设置的商品。<br>点击“开始直播”后，直播间即转变为“直播中”状态，此时移动端便可看到直播画面。<br><img src="images/6947bebf2cde9a7511577608d88c677d.png" alt=""></p>
+<h4 id="h4-2-"><a name="2、直播中" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2、直播中</h4><p><strong>直播画面：</strong>实时查看直播画面，确保管理员实时掌握直播流程。<br><strong>结束直播：</strong>可点击结束直播，直播间即变为“已结束”状态，用户端提示直播已结束<br><strong>直播数据：</strong>实时显示直播间成交、观看数据。</p>
+<pre><code>成交金额：用户进入直播间下单并购买的实付金额之和；去除退款金额
+实时在线人数：当下观看直播间的人数
+商品点击-成交率：直播间成交人数/直播间商品点击人数
+累计观看人数：进入直播间的人数，同一用户去除重复进入的次数
+成交人数：直播间内下单的用户数
+成交件数：直播间内购买的商品数量
+</code></pre><p><strong>用户评论：</strong>直播间用户评论实时滚动，可将鼠标悬浮至用户评论上，回复、删除评论；也支持禁言对应用户<br><strong>快捷回复：</strong>预先在“店铺-&gt;客服管理-&gt;客服话术”中维护直播话术，可在中控台页面通过模糊搜索话术，以实现快捷回复。<br><strong>观众列表：</strong>查看直播间所有观众的观看时长、购买商品数、订单金额等。支持设置直播虚拟人数<br><strong>商品：</strong>在直播间内进行商品的上架与下架操作，下架后的商品，可在待播商品列表中查看，且支持重新上架；同时，支持通过拖动的方式调整商品顺序，也可通过修改商品序号快速变更顺序；在中控台内，能够快速修改直播商品的直播库存以及虚拟销量；支持编辑商品卖点，该卖点将在移动端商品列表弹窗中展示；还支持实时查看每个商品点击量、成交金额、成交数量等销售数据。<br><strong>讲解：</strong>点击后，移动端将该商品弹出至直播页面，并在直播商品列表置顶<br><img src="images/703c24e97a023f7c83d922cc769d0f14.png" alt=""></p>
+                
+        </div>
+        <div class="footer">
+            <p>DANBAOLAI 使用手册</p>
+        </div>
+    </div>
+</body>
+</html>

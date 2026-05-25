@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员电商系统直播列表 - DANBAOLAI文档</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #333; line-height: 1.8; }
+        .container { max-width: 100%; margin: 0; padding: 30px 40px; }
+        .header { background: white; color: #191919; padding: 20px; margin-bottom: 30px; border-radius: 10px; }
+        .header h1 { font-size: 24px; margin-bottom: 10px; color: #191919; }
+        .back-link { display: inline-block; color: #191919; text-decoration: none; margin-bottom: 15px; }
+        .content { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .content h3 { color: #1a1a2e; font-size: 20px; margin: 25px 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #4fc3f7; }
+        .content h4 { color: #333; font-size: 16px; margin: 20px 0 10px 0; }
+        .content p { margin: 10px 0; color: #555; }
+        .content img { max-width: 100%; height: auto; border-radius: 5px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .content ul, .content ol { margin: 10px 0 10px 25px; }
+        .content li { margin: 5px 0; }
+        .content strong { color: #1a1a2e; }
+        .content code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: Consolas, monospace; }
+        .content table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .content th, .content td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .content th { background: #f5f7fa; }
+        .content pre { background: #f5f7fa; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../index.html" class="back-link">← 返回目录</a>
+            <h1>会员电商系统直播列表 - DANBAOLAI文档</h1>
+        </div>
+        <div class="content">
+            
+                  <h3 id="h3--"><a name="一、功能说明" class="reference-link"></a><span class="header-link octicon octicon-link"></span>一、功能说明</h3><p>在私域会员电商运营中，直播已成为提升转化与用户粘性的关键场景。针对当前商家面临的平台管控严格、部分行业开播受限等痛点，DANBAOLAI Pro 私域会员电商系统将推出全新直播功能，集成OBS推流、外链直播、小程序直播三种直播方式，覆盖创建、推广、互动与数据复盘全流程。</p>
+<h3 id="h3--"><a name="二、直播方式" class="reference-link"></a><span class="header-link octicon octicon-link"></span>二、直播方式</h3><h4 id="h4-1-obs-"><a name="1、第三方推流（OBS）" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1、第三方推流（OBS）</h4><p><img src="images/42277c9a6d1df96b7681788ce65fb1fb.png" alt=""></p>
+<h5 id="h5-u524Du63D0"><a name="前提" class="reference-link"></a><span class="header-link octicon octicon-link"></span>前提</h5><p><strong>1、配置阿里云直播</strong><br>阿里云资费说明：<a href="https://doc.danbaolai.com/pro_s/prov40/35613">https://doc.danbaolai.com/pro_s/prov40/35613</a><br>配置步骤（二选一）：</p>
+<pre><code>选项一（阿里云直播配置）：https://doc.danbaolai.com/pro_s/prov40/35605
+选项二（管理后台配置）：https://doc.danbaolai.com/pro_s/prov40/35606
+</code></pre><p><strong>2、下载OBS软件</strong></p>
+<pre><code>具体步骤见：https://doc.danbaolai.com/pro_s/prov40/34867
+</code></pre><h5 id="h5-u63A8u6D41u6B65u9AA4"><a name="推流步骤" class="reference-link"></a><span class="header-link octicon octicon-link"></span>推流步骤</h5><pre><code>添加第三方推流（OBS）方式的直播间
+点击直播列表 &gt; 更多 &gt; 去直播，复制推流链接及推流码
+粘贴至OBS软件
+</code></pre><h5 id="h5-u6DFBu52A0u76F4u64ADu95F4"><a name="添加直播间" class="reference-link"></a><span class="header-link octicon octicon-link"></span>添加直播间</h5><p><strong>直播时间：</strong>不可早于当前时间。主要用于未开播状态下，移动端的开播时间展示<br><strong>排序：</strong>数值越大，在移动端及列表页的位置越靠前<br><strong>直播头像：</strong>建议上传1：1格式。直播页面内，底部背景取得也是该头像<br><strong>封面图：</strong>主要用于移动端直播组件及直播列表页面，直播间封面图的展示<br><strong>分享图：</strong>分享时海报或分享微信好友时的图片<br><strong>显示样式：</strong>支持设置横屏/竖屏直播画面<br><strong>卖货：</strong>是否支持卖货。关闭后，移动端不展示购物袋按钮<br><strong>评论：</strong>是否支持用户评论，关闭后，移动端用户不可发表评论<br><img src="images/f16394300368beb24e1c0d5a344dd176.png" alt=""></p>
+<h5 id="h5-u63A8u6D41"><a name="推流" class="reference-link"></a><span class="header-link octicon octicon-link"></span>推流</h5><p><strong>去直播：</strong>直播列表页，更多按钮中点击去直播，获取推流链接及推流码<br><strong>粘贴至OBS软件：</strong>粘贴至OBS软件<br><strong>开始直播：</strong>填写好推流信息后，即可于OBS端点击开始直播按钮，点击后，开始推流<br><strong>中控台：</strong>OBS方开始推流后，需于中控台点击开始直播，此处开播后，移动端才可看到直播画面<br><img src="images/0ce22feba626a04ac53bfeff348ffb85.png" alt=""><br><img src="images/60a11419136cefc8683e7df1f890ba08.png" alt=""><br><img src="images/79ace73d895d341c6564b1db16e94bbc.png" alt=""></p>
+<h4 id="h4-2-"><a name="2、第三方外链" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2、第三方外链</h4><p>获取第三方直播间的.m3u8格式链接，复制粘贴。即可获取第三方直播间的画面。<br>于中控台点击开始直播后，移动端即可看到直播画面</p>
+<pre><code>声明：
+请通过合法途径获取外部链接。本系统仅为您提供播放渠道，并不参与链接的获取工作。
+部分链接可能无法播放，为第三方加密，与系统功能并无关。
+</code></pre><p><img src="images/8d84a5d3f030ebca68eae5dde7c26944.png" alt=""><br><img src="images/66bbd4bbe9382b43ac38d1739f820d46.png" alt=""></p>
+<h4 id="h4-3-"><a name="3、小程序直播" class="reference-link"></a><span class="header-link octicon octicon-link"></span>3、小程序直播</h4><p>后台的直播间对接微信小程序直播，可在直播间管理中添加/同步直播间<br>使用直播功能必须前往微信小程序官方后台开通直播权限</p>
+<h5 id="h5-u6DFBu52A0u76F4u64ADu95F4"><a name="添加直播间" class="reference-link"></a><span class="header-link octicon octicon-link"></span>添加直播间</h5><p><img src="images/4572ab56dde0565fdf99ee0324d49fd4.png" alt=""><br><strong>选择主播：</strong>在营销—&gt;直播管理—&gt;主播管理中添加主播<br><strong>直播时间：</strong>设置直播开始及结束时间段<br><strong>排序：</strong>数值越大，直播间的位置越靠前<br><strong>手机号码：</strong>必填<br><strong>直播卖货：</strong>直播卖货开启后需在直播间管理页面添加直播商品<br><strong>添加商品：</strong>需在【直播商品管理】页面提前维护</p>
+<h3 id="h3--"><a name="三、直播橱窗" class="reference-link"></a><span class="header-link octicon octicon-link"></span>三、直播橱窗</h3><p><strong>添加商品：</strong>可添加直播商品。支持普通类型的商品<br><strong>直播价格：</strong>可依据SKU调整商品直播售价。用户在直播间内以该直播售价购买商品，且不参与其他任何营销活动<br><strong>虚拟销量：</strong>可设置各SKU虚拟销量<br><strong>直播间库存：</strong>可设置直播间内商品的库存。直播间库存可以大于该商品当前库存（即支持超卖）<br><img src="images/ca4dcfbb3885d6778b7ddcbf228e7b5b.png" alt=""></p>
+<h3 id="h3--"><a name="四、分享直播间" class="reference-link"></a><span class="header-link octicon octicon-link"></span>四、分享直播间</h3><p>可下载小程序码类型的海报、H5码类型的海报、支持复制链接分享。<br><img src="images/e4bb799ffd38c4f48e5c2d78418418c2.png" alt=""></p>
+                
+        </div>
+        <div class="footer">
+            <p>DANBAOLAI 使用手册</p>
+        </div>
+    </div>
+</body>
+</html>
